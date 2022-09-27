@@ -6,6 +6,9 @@ using MongoDB.Driver;
 using LaikableDogsAPI.Models.Enums;
 using LaikableDogsAPI.Models.Requests;
 using MongoDB.Bson;
+using System.Linq;
+using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization;
 
 namespace LaikableDogsAPI.DataAccess
 {
@@ -22,6 +25,21 @@ namespace LaikableDogsAPI.DataAccess
         public async Task<Dog> GetDogById(Guid id)
         {
             return await dogCollection.Find(x => x.Id == id).SingleOrDefaultAsync();
+        }
+
+        public async Task<DogParameters> GetDogParameters(Guid id)
+        {
+            var dogParamsProjection = Builders<Dog>.Projection.Expression(x => new DogParameters
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Size = x.Size,
+                Height = x.Height,
+                Weight = x.Weight,
+                Width = x.Width,
+            });
+
+            return await dogCollection.Find(x => x.Id == id).Project(dogParamsProjection).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Dog>> GetAllDogs()
@@ -50,15 +68,25 @@ namespace LaikableDogsAPI.DataAccess
 
         public async Task<IEnumerable<Dog>> GetDogFriends(string name)
         {
-            var dogFriendsProjection = Builders<Dog>.Projection
-                .Include(x => x.DogFriends);
-
             var dog = await dogCollection.Find(x => x.Name == name)
-                .Project(dogFriendsProjection)
                 .FirstOrDefaultAsync();
-            return await dogCollection.Find()
+
+            var filter = Builders<Dog>.Filter.AnyIn("_id", dog.DogFriends);
+            return await dogCollection.Find(filter).ToListAsync();
         }
 
+        public async Task AddFriend(Guid dogId, Guid friendId)
+        {
+            var filter = Builders<Dog>.Filter.Eq(x => x.Id, dogId);
+            var dog = dogCollection.Find(filter).FirstOrDefault();
+
+            if (dog.DogFriends == null)
+            {
+                await dogCollection.UpdateOneAsync(filter, Builders<Dog>.Update.Set(x => x.DogFriends, new List<Guid>()));
+            }
+
+            await dogCollection.UpdateOneAsync(filter, Builders<Dog>.Update.AddToSet(y => y.DogFriends, friendId));
+        }
         public async Task CreateDog(Dog request)
         {
             await dogCollection.InsertOneAsync(request);

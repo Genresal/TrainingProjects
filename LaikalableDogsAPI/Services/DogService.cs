@@ -17,6 +17,11 @@ namespace LaikableDogsAPI.Services
         {
             return await dogProvider.GetDogById(id);
         }
+
+        public async Task<DogParameters> GetDogParameters(Guid id)
+        {
+            return await dogProvider.GetDogParameters(id);
+        }
         public async Task<IEnumerable<Dog>> GetAllDogs()
         {
             return await dogProvider.GetAllDogs();
@@ -30,6 +35,11 @@ namespace LaikableDogsAPI.Services
         public async Task<IEnumerable<Dog>> GetDogFriends(string name)
         {
             return await dogProvider.GetDogFriends(name);
+        }
+
+        public async Task AddFriend(Guid dogId, Guid friendId)
+        {
+            await dogProvider.AddFriend(dogId, friendId);
         }
 
         public async Task CreateDog(Dog request)

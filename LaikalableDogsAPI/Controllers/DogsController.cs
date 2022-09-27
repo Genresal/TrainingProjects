@@ -34,15 +34,35 @@ namespace LaikalableDogsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDogById(Guid id)
         {
+            /*
+            if (id.)
+            {
+                return BadRequest();
+            }*/
+
             return Ok(await dogService.GetDogById(id));
         }
-        
+
+        [HttpGet("params/{id}")]
+        public async Task<IActionResult> GetDogParameters(Guid id)
+        {
+            return Ok(await dogService.GetDogParameters(id));
+        }
+
         [HttpGet("friends/{name}")]
         public async Task<IActionResult> GetDogFriends(string name)
         {
             return Ok(await dogService.GetDogFriends(name));
         }
-        
+
+        [HttpPut("friends/add")]
+        public async Task<IActionResult> AddFriend(Guid dogId, Guid friendId)
+        {
+            await dogService.AddFriend(dogId, friendId);
+
+            return NoContent();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateDog(Dog request)
         {

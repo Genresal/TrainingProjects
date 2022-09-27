@@ -1,4 +1,5 @@
-﻿using LaikableDogsAPI.Models.Enums;
+﻿using System.ComponentModel;
+using LaikableDogsAPI.Models.Enums;
 
 namespace LaikableDogsAPI.Models.Requests
 {
@@ -6,6 +7,7 @@ namespace LaikableDogsAPI.Models.Requests
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
+        [DefaultValue(SortingDirection.Ascending)]
         public SortingDirection SortingDirection { get; set; }
     }
 }
