@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientAPI", "ClientAPI\Clie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorAndTextInMongo", "TextEditorAndTextInMongo\TextEditorAndTextInMongo.csproj", "{EBA853F9-E470-47D6-A7C6-BCC5B405BC71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorMessageTemplating", "RazorMessageTemplating\RazorMessageTemplating.csproj", "{857D807C-A711-468A-B0B7-B55C2C5F740C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorMessageTemplating", "RazorMessageTemplating\RazorMessageTemplating.csproj", "{857D807C-A711-468A-B0B7-B55C2C5F740C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQProducer", "RabbitMQProducer\RabbitMQProducer.csproj", "{140385C4-9483-48ED-BE73-79214840EBEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQConsumer", "RabbitMQConsumer\RabbitMQConsumer.csproj", "{F6877BEE-12C3-4921-B2DD-46460B41EDEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{35C61815-1786-4D79-916F-339CF419FE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{857D807C-A711-468A-B0B7-B55C2C5F740C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{857D807C-A711-468A-B0B7-B55C2C5F740C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{857D807C-A711-468A-B0B7-B55C2C5F740C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{140385C4-9483-48ED-BE73-79214840EBEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{140385C4-9483-48ED-BE73-79214840EBEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140385C4-9483-48ED-BE73-79214840EBEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{140385C4-9483-48ED-BE73-79214840EBEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6877BEE-12C3-4921-B2DD-46460B41EDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6877BEE-12C3-4921-B2DD-46460B41EDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6877BEE-12C3-4921-B2DD-46460B41EDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6877BEE-12C3-4921-B2DD-46460B41EDEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C61815-1786-4D79-916F-339CF419FE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C61815-1786-4D79-916F-339CF419FE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C61815-1786-4D79-916F-339CF419FE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C61815-1786-4D79-916F-339CF419FE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
