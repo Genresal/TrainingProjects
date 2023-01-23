@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextEditorAndTextInMongo", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorMessageTemplating", "RazorMessageTemplating\RazorMessageTemplating.csproj", "{857D807C-A711-468A-B0B7-B55C2C5F740C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQProducer", "RabbitMQProducer\RabbitMQProducer.csproj", "{140385C4-9483-48ED-BE73-79214840EBEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQProducer", "RabbitMQProducer\RabbitMQProducer.csproj", "{140385C4-9483-48ED-BE73-79214840EBEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQConsumer", "RabbitMQConsumer\RabbitMQConsumer.csproj", "{F6877BEE-12C3-4921-B2DD-46460B41EDEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQConsumer", "RabbitMQConsumer\RabbitMQConsumer.csproj", "{F6877BEE-12C3-4921-B2DD-46460B41EDEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{35C61815-1786-4D79-916F-339CF419FE1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{35C61815-1786-4D79-916F-339CF419FE1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerTest", "BlazorServerTest\BlazorServerTest.csproj", "{2D9AF06B-29C7-4853-8277-94E5F1CE9619}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{35C61815-1786-4D79-916F-339CF419FE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35C61815-1786-4D79-916F-339CF419FE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35C61815-1786-4D79-916F-339CF419FE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D9AF06B-29C7-4853-8277-94E5F1CE9619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D9AF06B-29C7-4853-8277-94E5F1CE9619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D9AF06B-29C7-4853-8277-94E5F1CE9619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D9AF06B-29C7-4853-8277-94E5F1CE9619}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
