@@ -45,9 +45,9 @@ else
 			</li>
 			@for (var i = 1; i <= totalPages; i++)
 			{
-				var localVar = i;
-				<li class="page-item @(currentPage == localVar ? "active" : "")">
-					<a class="page-link" @onclick="() => SetPage(localVar)">@localVar</a>
+				var pageNum = i;
+				<li class="page-item @(currentPage == pageNum ? "active" : "")">
+					<a class="page-link" @onclick="() => SetPage(pageNum)">@pageNum</a>
 				</li>
 			}
 			<li class="page-item @(currentPage == totalPages ? "disabled" : "")">
