@@ -15,7 +15,13 @@
 }
 else
 {
-    <button onclick="@(async () => await ForecastService.AddDefault())">➕</button>
+	<button onclick="@(async () => await ForecastService.AddDefault())">➕</button>
+	<ModalFormComponent OnDataSaved="@DataAddedHandler" />
+	<input type="search" class="form-control" id="search" @bind="SearchTerm" @bind:event="oninput" placeholder="Enter search term..." autocomplete="off" />
+
+	<p>@SearchTerm</p>
+	<p>@pageSize</p>
+
 	<table class="table">
 		<thead>
 		<tr>
@@ -33,7 +39,7 @@ else
 				<td>@forecast.TemperatureC</td>
 				<td>@forecast.TemperatureF</td>
 				<td>@forecast.Summary</td>
-				<td><button onclick="@(async () => await ForecastService.Delete(forecast.Id))">❌</button></td>
+				<td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@forecast.Id" OnYes="@DeleteHandler" /></td>
 			</tr>
 		}
 		</tbody>
@@ -58,24 +64,67 @@ else
 }
 
 @code {
-    private IEnumerable<WeatherForecast>? rawData;
+    private List<WeatherForecast> rawData;
 	private List<WeatherForecast> forecasts;
-	private int pageSize = 2;
+	private int pageSize = 4;
 	private int currentPage = 1;
 	private int totalPages;
 
-    protected override async Task OnInitializedAsync()
-    {
-	    rawData = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+	string _searchTerm;
+	private string SearchTerm
+	{
+		get => _searchTerm;
+		set
+		{
+			_searchTerm = value;
+			OnSearchChanged();
+		}
+	}
 
-		totalPages = (int)Math.Ceiling(rawData.Count() / (double)pageSize);
-		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+	protected override async Task OnInitializedAsync()
+    {
+		rawData = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+	    AuxCalculating();
     }
+
+	private void AuxCalculating()
+	{
+		totalPages = (int)Math.Ceiling(rawData.Count() / (double)pageSize);
+		if (currentPage > totalPages)
+		{
+			currentPage = totalPages;
+		}
+
+		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+	}
+
+	private void DataAddedHandler(WeatherForecast addedItem)
+	{
+		rawData.Add(addedItem);
+		AuxCalculating();
+		StateHasChanged();
+	}
 
 	private void SetPage(int newPage)
 	{
 		currentPage = newPage;
 		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+		StateHasChanged();
+	}
+
+	private async Task DeleteHandler(int id)
+	{
+		await ForecastService.Delete(id);
+		rawData = rawData.Where(x => x.Id != id).ToList();
+		AuxCalculating();
+		StateHasChanged();
+	}
+
+	private async Task OnSearchChanged()
+	{
+		Console.WriteLine(SearchTerm);
+		rawData = (await ForecastService.GetForecastAsync(SearchTerm)).ToList();
+		AuxCalculating();
 		StateHasChanged();
 	}
 }

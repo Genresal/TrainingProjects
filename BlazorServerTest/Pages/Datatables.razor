@@ -1,0 +1,58 @@
+﻿@page "/datatables"
+@using BlazorServerTest.Data;
+@using BlazorServerTest.Services;
+@inject WeatherForecastService ForecastService
+@inject IJSRuntime JS
+
+<table id="example" class="table table-border table-hover">
+	<thead>
+	<tr>
+		<th>Column 1</th>
+		<th>Column 2</th>
+        <th>Column 3</th>
+        <th></th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var forecast in forecasts)
+	{
+		<tr>
+			<td>@forecast.Id</td>
+			<td>@forecast.Summary</td>
+            <td>@forecast.Date</td>
+            <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@forecast.Id" OnYes="@DeleteHandler" /></td>
+		</tr>
+	}
+	</tbody>
+</table>
+
+@code {
+    private List<WeatherForecast> forecasts;
+
+    protected override async  Task OnInitializedAsync()
+    {
+        forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            await JS.InvokeAsync<object>("DataTablesAdd", "#example");
+
+        }
+    }
+
+    private async Task DeleteHandler(int id)
+    {
+        await ForecastService.Delete(id);
+        forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+        StateHasChanged();
+    }
+	/*
+    public void Dispose()
+    {
+        JS.InvokeAsync<IJSObjectReference>("DataTablesRemove", "#example");
+    }*/
+}

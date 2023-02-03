@@ -5,11 +5,6 @@ namespace BlazorServerTest.Services
 {
     public class WeatherForecastService
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
         IWeatherForecastRepository _repository;
 
         public WeatherForecastService(IWeatherForecastRepository repository)
@@ -17,12 +12,23 @@ namespace BlazorServerTest.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<WeatherForecast>> GetForecastAsync(DateOnly startDate)
+        public async Task<IEnumerable<WeatherForecast>> GetForecastAsync(string? search)
         {
-            return await _repository.GetAll();
+	        var data = (await _repository.GetAll()).ToList();
+	        if (!string.IsNullOrEmpty(search))
+	        {
+		        return data.Where(x => x.Summary is not null && x.Summary.ToUpper().Contains(search.ToUpper()));
+			}
+
+	        return data;
         }
 
-        public async Task<WeatherForecast> AddDefault()
+        public async Task<WeatherForecast> Add(WeatherForecast model)
+        {
+	        return await _repository.Add(model);
+        }
+
+		public async Task<WeatherForecast> AddDefault()
         {
             return await _repository.Add(new WeatherForecast
             {
@@ -36,16 +42,5 @@ namespace BlazorServerTest.Services
         {
             await _repository.Delete(id);
         }
-
-        /*
-        public Task<WeatherForecast[]> GetForecastAsync(DateOnly startDate)
-        {
-            return Task.FromResult(Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = startDate.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            }).ToArray());
-        }*/
     }
 }

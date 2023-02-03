@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQConsumer", "RabbitM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{35C61815-1786-4D79-916F-339CF419FE1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerTest", "BlazorServerTest\BlazorServerTest.csproj", "{2D9AF06B-29C7-4853-8277-94E5F1CE9619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest", "BlazorServerTest\BlazorServerTest.csproj", "{2D9AF06B-29C7-4853-8277-94E5F1CE9619}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
