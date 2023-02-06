@@ -12,11 +12,14 @@ using BackgroundService = BlazorServerTest.Services.BackgroundService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<WeatherForecastService>();
+builder.Services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
+builder.Services.AddTransient<IBackgroundService, BackgroundService>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddTransient<WeatherForecastService>();
-builder.Services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
+
 
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<AppDbContext>();
 builder.Services.AddHangfire(config =>
@@ -25,7 +28,7 @@ builder.Services.AddHangfire(config =>
 });
 builder.Services.AddHangfireServer();
 
-builder.Services.AddTransient<IBackgroundService, BackgroundService>();
+
 
 var app = builder.Build();
 
@@ -48,6 +51,6 @@ app.UseHangfireDashboard();
 
 //var serv = app.Services.GetRequiredService<IBackgroundService>();
 //RecurringJob.AddOrUpdate(() => serv.GetAndSaveBackgroundAsync(), Cron.Minutely);
-RecurringJob.AddOrUpdate<IBackgroundService>(x => x.GetAndSaveBackgroundAsync(), Cron.Minutely);
+//RecurringJob.AddOrUpdate<IBackgroundService>(x => x.GetAndSaveBackgroundAsync(), Cron.Minutely);
 
 app.Run();

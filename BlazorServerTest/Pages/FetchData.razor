@@ -16,7 +16,10 @@
 else
 {
 	<button onclick="@(async () => await ForecastService.AddDefault())">➕</button>
-	<ModalFormComponent OnDataSaved="@DataAddedHandler" />
+    <ModalFormComponent OnDataSaved="@DataAddedHandler" />
+    <CascadingValue Value="Message">
+        <ShowDataModalComponent />
+    </CascadingValue>
 	<input type="search" class="form-control" id="search" @bind="SearchTerm" @bind:event="oninput" placeholder="Enter search term..." autocomplete="off" />
 
 	<p>@SearchTerm</p>
@@ -28,7 +31,8 @@ else
 			<th>Date</th>
 			<th>Temp. (C)</th>
 			<th>Temp. (F)</th>
-			<th>Summary</th>
+            <th>Summary</th>
+			<th>Is Checked</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -38,7 +42,8 @@ else
 				<td>@forecast.Date.ToShortDateString()</td>
 				<td>@forecast.TemperatureC</td>
 				<td>@forecast.TemperatureF</td>
-				<td>@forecast.Summary</td>
+                <td>@forecast.Summary</td>
+                <td>@forecast.IsChecked</td>
 				<td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@forecast.Id" OnYes="@DeleteHandler" /></td>
 			</tr>
 		}
@@ -64,6 +69,7 @@ else
 }
 
 @code {
+    private string Message { get; set; } = "Test message";
     private List<WeatherForecast> rawData;
 	private List<WeatherForecast> forecasts;
 	private int pageSize = 4;
