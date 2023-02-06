@@ -1,5 +1,5 @@
-﻿using BlasorServerTest.Repositories.Interfaces;
-using BlazorServerTest.Data;
+﻿using BlazorServerTest.Data;
+using BlazorServerTest.Data.Repositories.Interfaces;
 using BlazorServerTest.Services.Interfaces;
 using Hangfire;
 using Hangfire.Storage;

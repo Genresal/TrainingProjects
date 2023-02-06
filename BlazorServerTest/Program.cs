@@ -1,6 +1,3 @@
-using BlasorServerTest.Repositories.Interfaces;
-using BlazorServerTest.Infrastructure;
-using BlazorServerTest.Repositories;
 using BlazorServerTest.Services;
 using BlazorServerTest.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -9,6 +6,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using BackgroundService = BlazorServerTest.Services.BackgroundService;
+using BlazorServerTest.Data.Repositories.Interfaces;
+using BlazorServerTest.Data.Repositories;
+using BlazorServerTest.Data.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

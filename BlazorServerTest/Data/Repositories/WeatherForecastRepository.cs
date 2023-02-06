@@ -1,9 +1,9 @@
-﻿using BlasorServerTest.Repositories.Interfaces;
-using BlazorServerTest.Data;
+﻿using BlazorServerTest.Data;
+using BlazorServerTest.Data.Repositories.Interfaces;
 using BlazorServerTest.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorServerTest.Repositories
+namespace BlazorServerTest.Data.Repositories
 {
     public class WeatherForecastRepository : IWeatherForecastRepository
     {

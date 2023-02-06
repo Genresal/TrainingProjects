@@ -1,6 +1,6 @@
 ﻿using BlazorServerTest.Data;
 
-namespace BlasorServerTest.Repositories.Interfaces
+namespace BlazorServerTest.Data.Repositories.Interfaces
 {
     public interface IWeatherForecastRepository
     {

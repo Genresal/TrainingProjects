@@ -1,5 +1,5 @@
-using BlasorServerTest.Repositories.Interfaces;
 using BlazorServerTest.Data;
+using BlazorServerTest.Data.Repositories.Interfaces;
 
 namespace BlazorServerTest.Services
 {
