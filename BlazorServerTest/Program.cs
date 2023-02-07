@@ -1,34 +1,22 @@
-using BlazorServerTest.Services;
-using BlazorServerTest.Services.Interfaces;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-
 using Hangfire;
-using Microsoft.Extensions.Configuration;
-using BackgroundService = BlazorServerTest.Services.BackgroundService;
-using BlazorServerTest.Data.Repositories.Interfaces;
-using BlazorServerTest.Data.Repositories;
-using BlazorServerTest.Data.Infrastructure;
+using BlazorServerTest.Data.DI;
+using BlazorServerTest.Services.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<WeatherForecastService>();
-builder.Services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
-builder.Services.AddTransient<IBackgroundService, BackgroundService>();
+builder.Services.AddServices();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
+builder.Services.AddEntityFrameworkSetup();
+builder.Services.AddRepositories();
 
-
-builder.Services.AddEntityFrameworkSqlite().AddDbContext<AppDbContext>();
 builder.Services.AddHangfire(config =>
 {
     config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DBConnection"));
 });
 builder.Services.AddHangfireServer();
-
-
 
 var app = builder.Build();
 
@@ -48,9 +36,5 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.UseHangfireDashboard();
-
-//var serv = app.Services.GetRequiredService<IBackgroundService>();
-//RecurringJob.AddOrUpdate(() => serv.GetAndSaveBackgroundAsync(), Cron.Minutely);
-//RecurringJob.AddOrUpdate<IBackgroundService>(x => x.GetAndSaveBackgroundAsync(), Cron.Minutely);
 
 app.Run();

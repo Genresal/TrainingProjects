@@ -1,6 +1,6 @@
 ﻿using BlazorServerTest.Data;
+using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories.Interfaces;
-using BlazorServerTest.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Data.Repositories
@@ -8,25 +8,28 @@ namespace BlazorServerTest.Data.Repositories
     public class WeatherForecastRepository : IWeatherForecastRepository
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<IWeatherForecastRepository> _logger;
 
-        public WeatherForecastRepository(AppDbContext context)
+        public WeatherForecastRepository(AppDbContext context, ILogger<IWeatherForecastRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<WeatherForecast> Add(WeatherForecast entity)
         {
             await _context.WeatherForecasts.AddAsync(entity);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Added entity {entity}");
 
             return entity;
         }
 
         public async Task<WeatherForecast> Update(WeatherForecast entity)
         {
-            //_context.WeatherForecasts.Update(entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Updated entity {entity}");
 
             return entity;
         }
