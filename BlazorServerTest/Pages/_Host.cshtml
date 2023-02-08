@@ -5,6 +5,7 @@
 @namespace BlazorServerTest.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @attribute [IgnoreAntiforgeryToken]
+@Html.AntiForgeryToken()
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,19 +48,34 @@
                 searching: searching,
                 processing: true,
                 serverSide: true,
+                paging: true,
+                
                 ajax: {
                     url: "/api/Home/LoadTable",
                     type: "POST",
-                    contentType: "application/json",
+                    contentType: "application/json; charset=utf-8",
                     dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("RequestVerificationToken",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
                     data: function (d) {
+                        console.log("data stringifyed");
                         return JSON.stringify(d);
                     },
                 },
+                /*
+                ajax: {
+                    url: "/api/Home/LoadTable1",
+                    dataSrc: "",
+                },*/
                 // Columns Setups
                 columns: [
                     { data: "id" },
                     { data: "summary" },
+                ],
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
                 ]
             });
         }

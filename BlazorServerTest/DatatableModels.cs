@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace jQueryDatatableServerSideNetCore.Models.AuxiliaryModels
+namespace BlazorServerTest
 {
     ///This view model class has been referred from example created by Marien Monnier at Soft.it. All credits to Marien for this class
 
@@ -131,7 +131,7 @@ namespace jQueryDatatableServerSideNetCore.Models.AuxiliaryModels
         /// <summary>
         /// For Posting Additional Parameters to Server
         /// </summary>
-        public IEnumerable<string> AdditionalValues { get; set; }
+        public IEnumerable<string>? AdditionalValues { get; set; }
 
     }
 

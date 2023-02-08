@@ -16,7 +16,7 @@ public class TimerHosterService : BackgroundService
     protected override Task ExecuteAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Scoped service running");
-        _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5)); //TimeSpan.FromMinutes(5)
+        _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5)); //TimeSpan.FromMinutes(5)
         return Task.CompletedTask;
     }
 

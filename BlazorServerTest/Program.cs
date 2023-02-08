@@ -1,7 +1,8 @@
-using Hangfire;
 using BlazorServerTest.Data.DI;
 using BlazorServerTest.Services.DI;
+using Hangfire;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +14,20 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddEntityFrameworkSetup();
 builder.Services.AddRepositories();
 
-builder.Services.AddControllers();
-    /*.AddNewtonsoftJson(options =>
+builder.Services.AddControllers().AddJsonOptions(options =>
     {
-        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-    });*/
+        var enumConverter = new JsonStringEnumConverter();
+        options.JsonSerializerOptions.Converters.Add(enumConverter);
+    });
+/*
+.AddNewtonsoftJson(options =>
+{
+options.SerializerSettings.Converters.Add(new StringEnumConverter());
+});*/
+/*.AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+});*/
 
 builder.Services.AddHangfire(config =>
 {
@@ -30,6 +40,8 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
+// for DT
+//builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 var app = builder.Build();
 

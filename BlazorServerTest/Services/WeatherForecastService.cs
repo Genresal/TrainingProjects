@@ -5,19 +5,26 @@ namespace BlazorServerTest.Services
 {
     public class WeatherForecastService : BaseService<WeatherForecast>
     {
+        private IWeatherForecastRepository _weatherForecastRepository;
         public WeatherForecastService(IWeatherForecastRepository repository) : base(repository)
         {
+            _weatherForecastRepository = repository;
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetForecastAsync(string? search)
         {
-	        var data = (await _repository.GetAll()).ToList();
-	        if (!string.IsNullOrEmpty(search))
-	        {
-		        return data.Where(x => x.Summary is not null && x.Summary.ToUpper().Contains(search.ToUpper()));
-			}
+            var data = (await _repository.GetAll()).ToList();
+            if (!string.IsNullOrEmpty(search))
+            {
+                return data.Where(x => x.Summary is not null && x.Summary.ToUpper().Contains(search.ToUpper()));
+            }
 
-	        return data;
+            return data;
+        }
+
+        public Task<DtResponce<WeatherForecast>> LoadTable(DtParameters dtParameters)
+        {
+            return _weatherForecastRepository.LoadTable(dtParameters);
         }
 
         public Task<WeatherForecast> AddDefault()
