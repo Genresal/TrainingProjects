@@ -1,15 +1,12 @@
-using BlazorServerTest.Data;
+using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
 
 namespace BlazorServerTest.Services
 {
-    public class WeatherForecastService
+    public class WeatherForecastService : BaseService<WeatherForecast>
     {
-        IWeatherForecastRepository _repository;
-
-        public WeatherForecastService(IWeatherForecastRepository repository)
+        public WeatherForecastService(IWeatherForecastRepository repository) : base(repository)
         {
-            _repository = repository;
         }
 
         public async Task<IEnumerable<WeatherForecast>> GetForecastAsync(string? search)
@@ -23,24 +20,14 @@ namespace BlazorServerTest.Services
 	        return data;
         }
 
-        public async Task<WeatherForecast> Add(WeatherForecast model)
+        public Task<WeatherForecast> AddDefault()
         {
-	        return await _repository.Add(model);
-        }
-
-		public async Task<WeatherForecast> AddDefault()
-        {
-            return await _repository.Add(new WeatherForecast
+            return _repository.Add(new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Summary = "qwerty",
                 TemperatureC = 24,
             });
-        }
-
-        public async Task Delete(int id)
-        {
-            await _repository.Delete(id);
         }
     }
 }

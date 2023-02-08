@@ -1,0 +1,39 @@
+﻿@page "/datatables"
+@using BlazorServerTest.Services
+@using BlazorServerTest.Data.Entities
+@using Microsoft.AspNetCore.Mvc
+@inject WeatherForecastService ForecastService
+@inject IJSRuntime JS
+@attribute [IgnoreAntiforgeryToken]
+
+
+<DataTable>
+	<thead>
+	<tr>
+		<th>id</th>
+		<th>summary</th>
+        <th></th>
+	</tr>
+	</thead>
+</DataTable>
+
+@code {
+    private List<WeatherForecast> forecasts;
+
+    protected override async  Task OnInitializedAsync()
+    {
+        ///forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+    }
+
+    private async Task DeleteHandler(int id)
+    {
+        await ForecastService.Delete(id);
+        forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+        StateHasChanged();
+    }
+	/*
+    public void Dispose()
+    {
+        JS.InvokeAsync<IJSObjectReference>("DataTablesRemove", "#example");
+    }*/
+}

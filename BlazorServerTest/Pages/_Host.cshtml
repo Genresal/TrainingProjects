@@ -1,7 +1,10 @@
 ﻿@page "/"
+@using System.Net
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @namespace BlazorServerTest.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,18 +40,36 @@
 <script src="_framework/blazor.server.js"></script>
 <!--Datatables-->
     <script>
-        function DataTablesAdd(table) {
+        function AddDataTable(table, searching) {
             $(table).DataTable({
-                lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                //lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
                 stateSave: true,
-                //ajax: 'scripts/server_processing.php',
+                searching: searching,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/api/Home/LoadTable",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: function (d) {
+                        return JSON.stringify(d);
+                    },
+                },
+                // Columns Setups
+                columns: [
+                    { data: "id" },
+                    { data: "summary" },
+                ]
             });
         }
+        /*
         function DataTablesRemove(table) {
             $(function () {
                 $(table).DataTable().destroy();
             });
         }
+        */
     </script>
 
 </body>

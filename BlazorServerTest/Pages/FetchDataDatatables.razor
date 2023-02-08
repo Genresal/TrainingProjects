@@ -1,10 +1,10 @@
-﻿@page "/datatables"
-@using BlazorServerTest.Data;
-@using BlazorServerTest.Services;
+﻿@page "/datatablesTest"
+@using BlazorServerTest.Services
+@using BlazorServerTest.Data.Entities
 @inject WeatherForecastService ForecastService
 @inject IJSRuntime JS
 
-<table id="example" class="table table-border table-hover">
+<DataTable>
 	<thead>
 	<tr>
 		<th>Column 1</th>
@@ -24,7 +24,7 @@
 		</tr>
 	}
 	</tbody>
-</table>
+</DataTable>
 
 @code {
     private List<WeatherForecast> forecasts;
@@ -33,15 +33,6 @@
     {
         forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
 
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-
-        if (firstRender)
-        {
-            await JS.InvokeAsync<object>("DataTablesAdd", "#example");
-
-        }
     }
 
     private async Task DeleteHandler(int id)

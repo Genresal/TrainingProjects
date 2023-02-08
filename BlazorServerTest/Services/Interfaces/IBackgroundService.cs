@@ -8,5 +8,6 @@ namespace BlazorServerTest.Services.Interfaces
         Task AddJobs();
         Task RemoveJobs();
         Task CheckAndMarkNewData();
+        Task JobImitation();
     }
 }

@@ -1,4 +1,4 @@
-﻿using BlazorServerTest.Data;
+﻿using BlazorServerTest.Data.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 

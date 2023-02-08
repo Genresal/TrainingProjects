@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.Data;
+using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
 using BlazorServerTest.Services.Interfaces;
 using Hangfire;
@@ -9,9 +10,11 @@ namespace BlazorServerTest.Services
     public class BackgroundService : IBackgroundService
     {
         IWeatherForecastRepository _repository;
-        public BackgroundService(IWeatherForecastRepository repository)
+        private readonly ILogger<BackgroundService> _logger;
+        public BackgroundService(IWeatherForecastRepository repository, ILogger<BackgroundService> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public async Task GetAndSaveBackgroundAsync()
@@ -25,7 +28,7 @@ namespace BlazorServerTest.Services
 
             await Task.Delay(2 * 1000);
 
-            _repository.Add(data);
+            await _repository.Add(data);
         }
 
         public async Task CheckAndMarkNewData()
@@ -35,13 +38,17 @@ namespace BlazorServerTest.Services
             foreach (var forecast in newValues)
             {
                 forecast.IsChecked = true;
-                _repository.Update(forecast);
+                await _repository.Update(forecast);
             }
+        }
+
+        public async Task JobImitation()
+        {
+            _logger.LogInformation("Job imitation fired");
         }
 
         public async Task AddJobs()
         {
-            //RecurringJob.AddOrUpdate<IBackgroundService>(x => x.GetAndSaveBackgroundAsync(), Cron.Minutely);
             RecurringJob.AddOrUpdate<IBackgroundService>(x => x.CheckAndMarkNewData(), Cron.Minutely);
         }
 

@@ -1,13 +1,6 @@
-﻿using BlazorServerTest.Data;
+﻿using BlazorServerTest.Data.Entities;
 
-namespace BlazorServerTest.Data.Repositories.Interfaces
+namespace BlazorServerTest.Data.Repositories.Interfaces;
+public interface IWeatherForecastRepository : IBaseRepository<WeatherForecast>
 {
-    public interface IWeatherForecastRepository
-    {
-        Task<WeatherForecast> Add(WeatherForecast entity);
-        Task<WeatherForecast> Update(WeatherForecast entity);
-        Task Delete(int id);
-        Task<WeatherForecast> Get(int id);
-        Task<List<WeatherForecast>> GetAll();
-    }
 }
