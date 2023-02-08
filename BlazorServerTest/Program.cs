@@ -19,15 +19,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         var enumConverter = new JsonStringEnumConverter();
         options.JsonSerializerOptions.Converters.Add(enumConverter);
     });
-/*
-.AddNewtonsoftJson(options =>
-{
-options.SerializerSettings.Converters.Add(new StringEnumConverter());
-});*/
-/*.AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-});*/
 
 builder.Services.AddHangfire(config =>
 {
@@ -40,8 +31,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
-// for DT
-//builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 var app = builder.Build();
 
@@ -60,7 +49,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.RoutePrefix = "docs";
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "jQueryDatatableServerSideNetCore Docs v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blazor APP Docs v1");
 });
 
 app.UseRouting();

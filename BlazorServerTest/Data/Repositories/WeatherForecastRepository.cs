@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.Data.Entities;
+using BlazorServerTest.Data.Extensions;
 using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace BlazorServerTest.Data.Repositories
                 result = result.Where(r => r.Summary != null && r.Summary.ToUpper().Contains(searchBy.ToUpper()));
             }
 
-            //result = orderAscendingDirection ? result.OrderByDynamic(orderCriteria, DtOrderDir.Asc) : result.OrderByDynamic(orderCriteria, DtOrderDir.Desc);
+            result = orderAscendingDirection ? result.OrderByDynamic(orderCriteria, DtOrderDir.Asc) : result.OrderByDynamic(orderCriteria, DtOrderDir.Desc);
 
             // now just get the count of items (without the skip and take) - eg how many could be returned with filtering
             var filteredResultsCount = await result.CountAsync();

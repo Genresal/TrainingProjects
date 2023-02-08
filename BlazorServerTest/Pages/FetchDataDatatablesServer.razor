@@ -1,11 +1,10 @@
 ﻿@page "/datatables"
 @using BlazorServerTest.Services
 @using BlazorServerTest.Data.Entities
-@using Microsoft.AspNetCore.Mvc
 @inject WeatherForecastService ForecastService
 @inject IJSRuntime JS
 
-<DataTable>
+<DataTable Searchable="true">
 	<thead>
 	<tr>
 		<th>id</th>

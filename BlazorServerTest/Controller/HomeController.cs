@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTest.Controller;
-//[IgnoreAntiforgeryToken]
+
 [ApiController]
 [Route("api/[controller]")]
 public class HomeController : ControllerBase
@@ -14,7 +14,6 @@ public class HomeController : ControllerBase
         _service = service;
     }
 
-    //[HttpGet]
     [HttpPost("LoadTable")]
     public async Task<IActionResult> LoadTable([FromBody] DtParameters dtParameters)
     {
