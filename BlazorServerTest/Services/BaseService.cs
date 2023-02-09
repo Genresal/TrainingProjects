@@ -37,31 +37,4 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntit
     {
         return _repository.Update(entity);
     }
-
-    public Task<DtResponce<TEntity>> LoadTable(DtParameters dtParameters)
-    {
-        //return _weatherForecastRepository.LoadTable(dtParameters);
-
-        var searchBy = dtParameters.Search?.Value;
-
-        // if we have an empty search then just order the results by Id ascending
-        var orderCriteria = "Id";
-        var orderAscendingDirection = true;
-
-        if (dtParameters.Order != null)
-        {
-            // in this example we just default sort on the 1st column
-            orderCriteria = dtParameters.Columns[dtParameters.Order[0].Column].Data;
-            orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == "asc";
-        }
-
-        Expression<Func<TEntity, bool>> searchByEx = default;
-
-        if (!string.IsNullOrEmpty(searchBy))
-        {
-            searchByEx = r => r.Summary != null && r.Summary.ToUpper().Contains(searchBy.ToUpper());
-        }
-
-        return _repository.LoadTable(dtParameters.Draw, dtParameters.Start, dtParameters.Length, orderCriteria, orderAscendingDirection, searchByEx);
-    }
 }
