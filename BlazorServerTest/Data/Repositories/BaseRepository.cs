@@ -1,7 +1,9 @@
 ﻿using BlazorServerTest.Data.Entities.Interfaces;
+using BlazorServerTest.Data.Extensions;
 using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BlazorServerTest.Data.Repositories;
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IEntity
@@ -49,5 +51,38 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbSet.Update(entity);
 
         return _context.SaveChangesAsync().ContinueWith(x => entity);
+    }
+
+    public async Task<DtResponce<TEntity>> LoadTable(int draw,
+        int start,
+        int length,
+        string orderCriteria,
+        bool orderAscendingDirection,
+        Expression<Func<TEntity, bool>>? searchBy = null)
+    {
+        var result = _dbSet.AsQueryable();
+
+        if (searchBy != null)
+        {
+            result = result.Where(searchBy);
+        }
+
+        result = orderAscendingDirection
+            ? result.OrderByDynamic(orderCriteria, DtOrderDir.Asc)
+            : result.OrderByDynamic(orderCriteria, DtOrderDir.Desc);
+
+        var filteredResultsCount = await result.CountAsync();
+        var totalResultsCount = await _dbSet.CountAsync();
+
+        return new DtResponce<TEntity>()
+        {
+            Draw = draw,
+            RecordsTotal = totalResultsCount,
+            RecordsFiltered = filteredResultsCount,
+            Data = await result
+                .Skip(start)
+                .Take(length)
+                .ToListAsync()
+        };
     }
 }

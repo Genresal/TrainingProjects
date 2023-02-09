@@ -18,6 +18,12 @@ public class HomeController : ControllerBase
     public async Task<IActionResult> LoadTable([FromBody] DtParameters dtParameters)
     {
         var res = await _service.LoadTable(dtParameters);
+        /*
+        if (res == null)
+        {
+            return NotFound();
+        }*/
+
         return Ok(res);
     }
 }

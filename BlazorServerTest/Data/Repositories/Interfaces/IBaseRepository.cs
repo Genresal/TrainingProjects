@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.Data.Entities.Interfaces;
+using System.Linq.Expressions;
 
 namespace BlazorServerTest.Data.Repositories.Interfaces
 {
@@ -9,5 +10,12 @@ namespace BlazorServerTest.Data.Repositories.Interfaces
         Task<TEntity> Add(TEntity entity);
         Task<TEntity> Update(TEntity entity);
         Task<bool> Delete(int id);
+
+        Task<DtResponce<TEntity>> LoadTable(int draw,
+            int start,
+            int length,
+            string orderCriteria,
+            bool orderAscendingDirection,
+            Expression<Func<TEntity, bool>>? searchBy = null);
     }
 }

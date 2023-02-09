@@ -2,12 +2,12 @@
 
 namespace BlazorServerTest.Services.Interfaces
 {
-    public interface IBaseService<TEntity> where TEntity : IEntity
+    public interface IBaseService<TModel> where TModel : IEntity
     {
-        Task<TEntity> Get(int id);
-        Task<List<TEntity>> GetAll();
-        Task<TEntity> Add(TEntity entity);
-        Task<TEntity> Update(TEntity entity);
+        Task<TModel> Get(int id);
+        Task<List<TModel>> GetAll();
+        Task<TModel> Add(TModel entity);
+        Task<TModel> Update(TModel entity);
         Task<bool> Delete(int id);
     }
 }
