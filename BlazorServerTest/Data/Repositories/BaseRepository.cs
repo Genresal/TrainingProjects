@@ -34,7 +34,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task<TEntity> Get(int id)
     {
-        var entity = await _dbSet.FindAsync(id).AsTask();
+        var entity = await _dbSet.FindAsync(id);
         if (entity is null)
         {
             throw new DataNotFoundException(
