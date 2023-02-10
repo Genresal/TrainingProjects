@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.Data.Exceptions;
+using FluentValidation;
 using System.Net;
 
 namespace BlazorServerTest.Middlewares;
@@ -21,7 +22,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            HandleExceptionAsync(context, ex);
+            await HandleExceptionAsync(context, ex);
         }
     }
 
@@ -33,6 +34,7 @@ public class ExceptionMiddleware
         context.Response.StatusCode = exception switch
         {
             DataNotFoundException => (int)HttpStatusCode.NotFound,
+            ValidationException => (int)HttpStatusCode.BadRequest,
             _ => (int)HttpStatusCode.NotFound,
         };
 

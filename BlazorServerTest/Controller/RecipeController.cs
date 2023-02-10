@@ -1,18 +1,26 @@
-﻿using BlazorServerTest.BLL.Services;
+﻿using AutoMapper;
+using BlazorServerTest.BLL.Services;
 using BlazorServerTest.Data.Entities;
+using BlazorServerTest.Validators;
+using BlazorServerTest.ViewModels;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTest.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
-public class HomeController : ControllerBase
+public class RecipeController : ControllerBase
 {
     private readonly RecipeService _service;
+    private readonly IMapper _mapper;
+    private readonly ChangeRecipeValidator _validator;
 
-    public HomeController(RecipeService service)
+    public RecipeController(RecipeService service, ChangeRecipeValidator validator, IMapper mapper)
     {
         _service = service;
+        _mapper = mapper;
+        _validator = validator;
     }
 
     [HttpPost("LoadTable")]
@@ -26,6 +34,16 @@ public class HomeController : ControllerBase
         }*/
 
         return Ok(res);
+    }
+
+    [HttpPost]
+    public async Task<RecipeEntity> Add([FromBody] ChangeRecipeViewModel viewModel)
+    {
+        await _validator.ValidateAndThrowAsync(viewModel);
+
+        var model = _mapper.Map<RecipeEntity>(viewModel);
+
+        return await _service.Add(model);
     }
 
     [HttpGet("{id}")]

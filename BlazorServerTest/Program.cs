@@ -1,11 +1,19 @@
 using BlazorServerTest.BLL.DI;
 using BlazorServerTest.Data.DI;
-using BlazorServerTest.Middlewares;
+using BlazorServerTest.Profiles;
+using FluentValidation;
 using Hangfire;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json.Serialization;
+using BlazorServerTest.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<ApiMappingProfile>();
+});
 
 builder.Services.AddServices();
 
@@ -20,6 +28,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         var enumConverter = new JsonStringEnumConverter();
         options.JsonSerializerOptions.Converters.Add(enumConverter);
     });
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddHangfire(config =>
 {
