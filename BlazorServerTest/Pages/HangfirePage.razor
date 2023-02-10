@@ -6,7 +6,8 @@
 
 <button class="btn-primary" @onclick="AddJobsHandler">Add jobs</button>
 <button class="btn-danger" @onclick="RemoveJobsHandler">Remove jobs</button>
-<button class="btn-secondary" @onclick="GoToHangforeDasboardHandler">Go to Hangfire Dashboard</button>
+
+<iframe src="/hangfire" style="width:90%;height:1200px;border:none;" />
 
 @code {
     private List<IngredientEntity> forecasts;
@@ -26,10 +27,5 @@
     {
         await BackgroundService.RemoveJobs();
         StateHasChanged();
-    }
-
-    private async Task GoToHangforeDasboardHandler()
-    {
-        NavigationManager.NavigateTo("/hangfire");
     }
 }
