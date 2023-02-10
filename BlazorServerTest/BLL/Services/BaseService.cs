@@ -17,7 +17,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntit
         return _repository.Add(entity);
     }
 
-    public Task<bool> Delete(int id)
+    public Task Delete(int id)
     {
         return _repository.Delete(id);
     }

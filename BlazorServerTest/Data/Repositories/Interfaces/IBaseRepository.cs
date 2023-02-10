@@ -9,7 +9,7 @@ namespace BlazorServerTest.Data.Repositories.Interfaces
         Task<List<TEntity>> GetAll();
         Task<TEntity> Add(TEntity entity);
         Task<TEntity> Update(TEntity entity);
-        Task<bool> Delete(int id);
+        Task Delete(int id);
 
         Task<DtResponce<TEntity>> LoadTable(int draw,
             int start,

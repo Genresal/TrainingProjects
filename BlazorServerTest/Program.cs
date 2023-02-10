@@ -1,5 +1,6 @@
 using BlazorServerTest.BLL.DI;
 using BlazorServerTest.Data.DI;
+using BlazorServerTest.Middlewares;
 using Hangfire;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
@@ -39,6 +40,8 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+// custom exception middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

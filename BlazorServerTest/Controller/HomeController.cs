@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.BLL.Services;
+using BlazorServerTest.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTest.Controller;
@@ -25,5 +26,17 @@ public class HomeController : ControllerBase
         }*/
 
         return Ok(res);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<RecipeEntity> Get(int id)
+    {
+        return await _service.Get(id);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task Delete(int id)
+    {
+        await _service.Delete(id);
     }
 }

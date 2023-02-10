@@ -1,4 +1,5 @@
 ﻿using BlazorServerTest.Data.Entities.Interfaces;
+using BlazorServerTest.Data.Exceptions;
 using BlazorServerTest.Data.Extensions;
 using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories.Interfaces;
@@ -23,22 +24,24 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return _context.SaveChangesAsync().ContinueWith(x => entity);
     }
 
-    public async Task<bool> Delete(int id)
+    public async Task Delete(int id)
     {
         var entity = await Get(id);
-        if (entity is not null)
-        {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
-            return true;
-        }
 
-        return false;
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<TEntity> Get(int id)
+    public async Task<TEntity> Get(int id)
     {
-        return _dbSet.FindAsync(id).AsTask();
+        var entity = await _dbSet.FindAsync(id).AsTask();
+        if (entity is null)
+        {
+            throw new DataNotFoundException(
+                $"Entity {typeof(TEntity).FullName} with Id {id} was not found in the database");
+        }
+
+        return entity;
     }
 
     public Task<List<TEntity>> GetAll()

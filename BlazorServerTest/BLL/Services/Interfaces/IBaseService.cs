@@ -8,6 +8,6 @@ namespace BlazorServerTest.BLL.Services.Interfaces
         Task<List<TModel>> GetAll();
         Task<TModel> Add(TModel entity);
         Task<TModel> Update(TModel entity);
-        Task<bool> Delete(int id);
+        Task Delete(int id);
     }
 }
