@@ -7,9 +7,9 @@ namespace BlazorServerTest.Controller;
 [Route("api/[controller]")]
 public class HomeController : ControllerBase
 {
-    private readonly WeatherForecastService _service;
+    private readonly RecipeService _service;
 
-    public HomeController(WeatherForecastService service)
+    public HomeController(RecipeService service)
     {
         _service = service;
     }

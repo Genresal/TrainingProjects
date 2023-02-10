@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Net
+@using BlazorServerTest.Data.Entities
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @namespace BlazorServerTest.Pages
@@ -71,10 +72,10 @@
                 },*/
                 // Columns Setups
                 columns: [
-                    { data: "id" },
-                    { data: "summary" },
-                    { data: "temperatureC" },
-                    { data: "isChecked" },
+                    { data: "@nameof(RecipeEntity.Id).ToLower()" },
+                    { data: "@nameof(RecipeEntity.Name).ToLower()" },
+                    { data: "@nameof(RecipeEntity.Description).ToLower()" }, // Need to provide it as camelCase with lower first char
+                    { data: "@nameof(RecipeEntity.Servings).ToLower()" },
                 ],
                 columnDefs: [
                     { targets: "no-sort", orderable: false },

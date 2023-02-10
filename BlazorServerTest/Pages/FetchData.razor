@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
 @using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
-@inject WeatherForecastService ForecastService
+@inject RecipeService RecipeService
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -9,13 +9,13 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (recipes == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-	<button onclick="@(async () => await ForecastService.AddDefault())">➕</button>
+	<button onclick="@(async () => await RecipeService.AddDefault())">➕</button>
     <ModalFormComponent OnDataSaved="@DataAddedHandler" />
     <CascadingValue Value="Message">
         <ShowDataModalComponent />
@@ -28,23 +28,24 @@ else
 	<table class="table">
 		<thead>
 		<tr>
-			<th>Date</th>
-			<th>Temp. (C)</th>
-			<th>Temp. (F)</th>
-            <th>Summary</th>
-			<th>Is Checked</th>
+            <th>@nameof(RecipeEntity.Id)</th>
+            <th>@nameof(RecipeEntity.Name)</th>
+            <th>@nameof(RecipeEntity.Description)</th>
+            <th>@nameof(RecipeEntity.CookTime)</th>
+            <th>@nameof(RecipeEntity.Servings)</th>
+			<th></th>
 		</tr>
 		</thead>
 		<tbody>
-		@foreach (var forecast in forecasts)
+		@foreach (var recipe in recipes)
 		{
 			<tr>
-				<td>@forecast.Date.ToShortDateString()</td>
-				<td>@forecast.TemperatureC</td>
-				<td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
-                <td>@forecast.IsChecked</td>
-				<td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@forecast.Id" OnYes="@DeleteHandler" /></td>
+				<td>@recipe.Id</td>
+				<td>@recipe.Name</td>
+				<td>@recipe.Description</td>
+                <td>@recipe.CookTime</td>
+                <td>@recipe.Servings</td>
+				<td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@recipe.Id" OnYes="@DeleteHandler" /></td>
 			</tr>
 		}
 		</tbody>
@@ -70,8 +71,8 @@ else
 
 @code {
     private string Message { get; set; } = "Test message";
-    private List<IngredientEntity> rawData;
-	private List<IngredientEntity> forecasts;
+    private List<RecipeEntity> rawData;
+	private List<RecipeEntity> recipes;
 	private int pageSize = 4;
 	private int currentPage = 1;
 	private int totalPages;
@@ -89,7 +90,7 @@ else
 
 	protected override async Task OnInitializedAsync()
     {
-		rawData = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+		rawData = (await RecipeService.GetForecastAsync(String.Empty)).ToList();
 	    AuxCalculating();
     }
 
@@ -101,10 +102,10 @@ else
 			currentPage = totalPages;
 		}
 
-		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+		recipes = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 	}
 
-	private void DataAddedHandler(IngredientEntity addedItem)
+	private void DataAddedHandler(RecipeEntity addedItem)
 	{
 		rawData.Add(addedItem);
 		AuxCalculating();
@@ -114,13 +115,13 @@ else
 	private void SetPage(int newPage)
 	{
 		currentPage = newPage;
-		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+		recipes = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 		StateHasChanged();
 	}
 
 	private async Task DeleteHandler(int id)
 	{
-		await ForecastService.Delete(id);
+		await RecipeService.Delete(id);
 		rawData = rawData.Where(x => x.Id != id).ToList();
 		AuxCalculating();
 		StateHasChanged();
@@ -129,7 +130,7 @@ else
 	private async Task OnSearchChanged()
 	{
 		Console.WriteLine(SearchTerm);
-		rawData = (await ForecastService.GetForecastAsync(SearchTerm)).ToList();
+		rawData = (await RecipeService.GetForecastAsync(SearchTerm)).ToList();
 		AuxCalculating();
 		StateHasChanged();
 	}

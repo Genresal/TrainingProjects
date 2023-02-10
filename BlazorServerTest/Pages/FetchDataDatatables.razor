@@ -1,44 +1,47 @@
 ﻿@page "/datatablesTest"
 @using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
-@inject WeatherForecastService ForecastService
+@inject RecipeService RecipeService
 @inject IJSRuntime JS
 
 <DataTable>
 	<thead>
 	<tr>
-		<th>Column 1</th>
-		<th>Column 2</th>
-        <th>Column 3</th>
-        <th></th>
+        <th>@nameof(RecipeEntity.Id)</th>
+        <th>@nameof(RecipeEntity.Name)</th>
+        <th>@nameof(RecipeEntity.Description)</th>
+        <th>@nameof(RecipeEntity.CookTime)</th>
+        <th>@nameof(RecipeEntity.Servings)</th>
 	</tr>
 	</thead>
 	<tbody>
-	@foreach (var forecast in forecasts)
+	@foreach (var recipe in recipes)
 	{
 		<tr>
-			<td>@forecast.Id</td>
-			<td>@forecast.Summary</td>
-            <td>@forecast.Date</td>
-            <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@forecast.Id" OnYes="@DeleteHandler" /></td>
+            <td>@recipe.Id</td>
+            <td>@recipe.Name</td>
+            <td>@recipe.Description</td>
+            <td>@recipe.CookTime</td>
+            <td>@recipe.Servings</td>
+            <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@recipe.Id" OnYes="@DeleteHandler" /></td>
 		</tr>
 	}
 	</tbody>
 </DataTable>
 
 @code {
-    private List<IngredientEntity> forecasts;
+    private List<RecipeEntity> recipes;
 
     protected override async  Task OnInitializedAsync()
     {
-        forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+        recipes = (await RecipeService.GetForecastAsync(String.Empty)).ToList();
 
     }
 
     private async Task DeleteHandler(int id)
     {
-        await ForecastService.Delete(id);
-        forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
+        await RecipeService.Delete(id);
+        recipes = (await RecipeService.GetForecastAsync(String.Empty)).ToList();
         StateHasChanged();
     }
 	/*

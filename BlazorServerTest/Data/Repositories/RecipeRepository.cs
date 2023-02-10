@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Data.Repositories
 {
-    public class RecipeRepository : BaseRepository<IngredientEntity>, IRecipeRepository
+    public class RecipeRepository : BaseRepository<RecipeEntity>, IRecipeRepository
     {
         private readonly ILogger<IRecipeRepository> _logger;
 
@@ -16,7 +16,7 @@ namespace BlazorServerTest.Data.Repositories
         }
 
         // No obviously reasons to override basic method by it only for showing a different approach.
-        public override Task<IngredientEntity> Update(IngredientEntity entity)
+        public override Task<RecipeEntity> Update(RecipeEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
 
@@ -25,7 +25,7 @@ namespace BlazorServerTest.Data.Repositories
             return _context.SaveChangesAsync().ContinueWith(x => entity);
         }
 
-        public async Task<DtResponce<IngredientEntity>> LoadTable(DtParameters dtParameters)
+        public async Task<DtResponce<RecipeEntity>> LoadTable(DtParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
 
@@ -53,7 +53,7 @@ namespace BlazorServerTest.Data.Repositories
             var filteredResultsCount = await result.CountAsync();
             var totalResultsCount = await _dbSet.CountAsync();
 
-            return new DtResponce<IngredientEntity>()
+            return new DtResponce<RecipeEntity>()
             {
                 Draw = dtParameters.Draw,
                 RecordsTotal = totalResultsCount,

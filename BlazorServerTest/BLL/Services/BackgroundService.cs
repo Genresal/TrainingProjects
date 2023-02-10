@@ -18,11 +18,9 @@ namespace BlazorServerTest.BLL.Services
 
         public async Task GetAndSaveBackgroundAsync()
         {
-            var data = new IngredientEntity
+            var data = new RecipeEntity
             {
-                TemperatureC = 1,
-                Summary = "Getted from background",
-                Date = DateOnly.FromDateTime(DateTime.Now),
+                Name = "Getted from background",
             };
 
             await Task.Delay(2 * 1000);
@@ -33,11 +31,11 @@ namespace BlazorServerTest.BLL.Services
         public async Task CheckAndMarkNewData()
         {
             var values = await _repository.GetAll();
-            var newValues = values.Where(x => !x.IsChecked);
-            foreach (var forecast in newValues)
+            var newValues = values.Where(x => string.IsNullOrEmpty(x.Description));
+            foreach (var recipe in newValues)
             {
-                forecast.IsChecked = true;
-                await _repository.Update(forecast);
+                recipe.Description = "This is not a drill, this is auto-generated recipe description";
+                await _repository.Update(recipe);
             }
         }
 

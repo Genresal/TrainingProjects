@@ -7,7 +7,7 @@ public static class ServiceCollectionRegistry
 {
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddTransient<WeatherForecastService>();
+        services.AddTransient<RecipeService>();
         services.AddTransient<IBackgroundService, Services.BackgroundService>();
         services.AddHostedService<TimerHosterService>();
     }

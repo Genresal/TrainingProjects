@@ -1,7 +1,7 @@
 ﻿@using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
 @using Microsoft.AspNetCore.Components
-@inject WeatherForecastService ForecastService
+@inject RecipeService ForecastService
 
 <button type="button" class="btn btn-primary" @onclick="ShowModal">Show Modal </button>
 <div class="modal" tabindex="-1" role="dialog" style="display: @(showModal ? "block" : "none")">
@@ -17,15 +17,15 @@
 				<form>
 					<div class="form-group">
 						<label for="name">Sum</label>
-						<input type="text" class="form-control" id="name" @bind="newItem.Summary" />
+						<input type="text" class="form-control" id="name" @bind="newItem.Name" />
 					</div>
 					<div class="form-group">
 						<label for="email">Temp</label>
-						<input type="email" class="form-control" id="email" @bind="newItem.TemperatureC" />
+						<input type="email" class="form-control" id="email" @bind="newItem.Description" />
 					</div>
 					<div class="form-group">
 						<label for="date">Date</label>
-						<input type="date" class="form-control" id="date" @bind="newItem.Date" />
+						<input type="number" class="form-control" id="date" @bind="newItem.CookTime" />
 					</div>
 				</form>
 			</div>
@@ -39,10 +39,10 @@
 
 @code {
 	[Parameter]
-	public EventCallback<IngredientEntity> OnDataSaved { get; set; }
+	public EventCallback<RecipeEntity> OnDataSaved { get; set; }
 
 	private bool showModal;
-	private IngredientEntity newItem = new IngredientEntity();
+	private RecipeEntity newItem = new ();
 
 	private void ShowModal()
 	{
