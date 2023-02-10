@@ -1,5 +1,5 @@
 ﻿@page "/datatablesTest"
-@using BlazorServerTest.Services
+@using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
 @inject WeatherForecastService ForecastService
 @inject IJSRuntime JS
@@ -27,7 +27,7 @@
 </DataTable>
 
 @code {
-    private List<WeatherForecast> forecasts;
+    private List<IngredientEntity> forecasts;
 
     protected override async  Task OnInitializedAsync()
     {

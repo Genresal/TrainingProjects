@@ -12,6 +12,6 @@ public static class DatabaseServiceRegistry
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddTransient<IRecipeRepository, WeatherForecastRepository>();
     }
 }

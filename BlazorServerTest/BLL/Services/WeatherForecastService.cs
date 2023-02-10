@@ -2,17 +2,17 @@ using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
 using System.Linq.Expressions;
 
-namespace BlazorServerTest.Services
+namespace BlazorServerTest.BLL.Services
 {
-    public class WeatherForecastService : BaseService<WeatherForecast>
+    public class WeatherForecastService : BaseService<IngredientEntity>
     {
-        private IWeatherForecastRepository _weatherForecastRepository;
-        public WeatherForecastService(IWeatherForecastRepository repository) : base(repository)
+        private IRecipeRepository _weatherForecastRepository;
+        public WeatherForecastService(IRecipeRepository repository) : base(repository)
         {
             _weatherForecastRepository = repository;
         }
 
-        public async Task<IEnumerable<WeatherForecast>> GetForecastAsync(string? search)
+        public async Task<IEnumerable<IngredientEntity>> GetForecastAsync(string? search)
         {
             var data = (await _repository.GetAll()).ToList();
             if (!string.IsNullOrEmpty(search))
@@ -23,7 +23,7 @@ namespace BlazorServerTest.Services
             return data;
         }
 
-        public Task<DtResponce<WeatherForecast>> LoadTable(DtParameters dtParameters)
+        public Task<DtResponce<IngredientEntity>> LoadTable(DtParameters dtParameters)
         {
             //return _weatherForecastRepository.LoadTable(dtParameters);
 
@@ -40,7 +40,7 @@ namespace BlazorServerTest.Services
                 orderAscendingDirection = dtParameters.Order[0].Dir.ToString().ToLower() == "asc";
             }
 
-            Expression<Func<WeatherForecast, bool>> searchByEx = default;
+            Expression<Func<IngredientEntity, bool>> searchByEx = default;
 
             if (!string.IsNullOrEmpty(searchBy))
             {
@@ -50,9 +50,9 @@ namespace BlazorServerTest.Services
             return _repository.LoadTable(dtParameters.Draw, dtParameters.Start, dtParameters.Length, orderCriteria, orderAscendingDirection, searchByEx);
         }
 
-        public Task<WeatherForecast> AddDefault()
+        public Task<IngredientEntity> AddDefault()
         {
-            return _repository.Add(new WeatherForecast
+            return _repository.Add(new IngredientEntity
             {
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 Summary = "qwerty",

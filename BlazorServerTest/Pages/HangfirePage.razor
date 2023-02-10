@@ -1,5 +1,5 @@
 ﻿@page "/hangfirePage"
-@using BlazorServerTest.Services.Interfaces
+@using BlazorServerTest.BLL.Services.Interfaces
 @using BlazorServerTest.Data.Entities
 @inject IBackgroundService BackgroundService
 @inject NavigationManager NavigationManager
@@ -9,7 +9,7 @@
 <button class="btn-secondary" @onclick="GoToHangforeDasboardHandler">Go to Hangfire Dashboard</button>
 
 @code {
-    private List<WeatherForecast> forecasts;
+    private List<IngredientEntity> forecasts;
 
     protected override async  Task OnInitializedAsync()
     {

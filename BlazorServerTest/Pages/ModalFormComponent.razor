@@ -1,6 +1,6 @@
-﻿@using BlazorServerTest.Services
-@using Microsoft.AspNetCore.Components
+﻿@using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
+@using Microsoft.AspNetCore.Components
 @inject WeatherForecastService ForecastService
 
 <button type="button" class="btn btn-primary" @onclick="ShowModal">Show Modal </button>
@@ -39,10 +39,10 @@
 
 @code {
 	[Parameter]
-	public EventCallback<WeatherForecast> OnDataSaved { get; set; }
+	public EventCallback<IngredientEntity> OnDataSaved { get; set; }
 
 	private bool showModal;
-	private WeatherForecast newItem = new WeatherForecast();
+	private IngredientEntity newItem = new IngredientEntity();
 
 	private void ShowModal()
 	{

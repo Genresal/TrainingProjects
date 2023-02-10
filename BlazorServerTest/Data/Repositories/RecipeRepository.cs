@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using BlazorServerTest.Data.Entities;
+﻿using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Extensions;
 using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories.Interfaces;
@@ -7,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Data.Repositories
 {
-    public class WeatherForecastRepository : BaseRepository<WeatherForecast>, IWeatherForecastRepository
+    public class RecipeRepository : BaseRepository<IngredientEntity>, IRecipeRepository
     {
-        private readonly ILogger<IWeatherForecastRepository> _logger;
+        private readonly ILogger<IRecipeRepository> _logger;
 
-        public WeatherForecastRepository(AppDbContext context, ILogger<IWeatherForecastRepository> logger) : base(context)
+        public RecipeRepository(AppDbContext context, ILogger<IRecipeRepository> logger) : base(context)
         {
             _logger = logger;
         }
 
         // No obviously reasons to override basic method by it only for showing a different approach.
-        public override Task<WeatherForecast> Update(WeatherForecast entity)
+        public override Task<IngredientEntity> Update(IngredientEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
 
@@ -26,7 +25,7 @@ namespace BlazorServerTest.Data.Repositories
             return _context.SaveChangesAsync().ContinueWith(x => entity);
         }
 
-        public async Task<DtResponce<WeatherForecast>> LoadTable(DtParameters dtParameters)
+        public async Task<DtResponce<IngredientEntity>> LoadTable(DtParameters dtParameters)
         {
             var searchBy = dtParameters.Search?.Value;
 
@@ -45,7 +44,7 @@ namespace BlazorServerTest.Data.Repositories
 
             if (!string.IsNullOrEmpty(searchBy))
             {
-                result = result.Where(r => r.Summary != null && r.Summary.ToUpper().Contains(searchBy.ToUpper()));
+                result = result.Where(r => r.Name != null && r.Name.ToUpper().Contains(searchBy.ToUpper()));
             }
 
             result = orderAscendingDirection ? result.OrderByDynamic(orderCriteria, DtOrderDir.Asc) : result.OrderByDynamic(orderCriteria, DtOrderDir.Desc);
@@ -54,7 +53,7 @@ namespace BlazorServerTest.Data.Repositories
             var filteredResultsCount = await result.CountAsync();
             var totalResultsCount = await _dbSet.CountAsync();
 
-            return new DtResponce<WeatherForecast>()
+            return new DtResponce<IngredientEntity>()
             {
                 Draw = dtParameters.Draw,
                 RecordsTotal = totalResultsCount,

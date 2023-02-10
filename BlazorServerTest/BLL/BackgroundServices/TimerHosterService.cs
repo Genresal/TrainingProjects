@@ -1,6 +1,6 @@
-﻿using BlazorServerTest.Services.Interfaces;
+﻿using BlazorServerTest.BLL.Services.Interfaces;
 
-namespace BlazorServerTest.BackgroundServices;
+namespace BlazorServerTest.BLL.BackgroundServices;
 public class TimerHosterService : BackgroundService
 {
     private readonly ILogger<TimerHosterService> _logger;

@@ -1,9 +1,8 @@
-﻿using BlazorServerTest.Data.Entities.Interfaces;
+﻿using BlazorServerTest.BLL.Services.Interfaces;
+using BlazorServerTest.Data.Entities.Interfaces;
 using BlazorServerTest.Data.Repositories.Interfaces;
-using BlazorServerTest.Services.Interfaces;
-using System.Linq.Expressions;
 
-namespace BlazorServerTest.Services;
+namespace BlazorServerTest.BLL.Services;
 public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntity
 {
     protected readonly IBaseRepository<TEntity> _repository;

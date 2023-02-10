@@ -1,6 +1,4 @@
-﻿using BlazorServerTest.Data;
-
-namespace BlazorServerTest.Services.Interfaces
+﻿namespace BlazorServerTest.BLL.Services.Interfaces
 {
     public interface IBackgroundService
     {

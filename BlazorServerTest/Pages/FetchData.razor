@@ -1,5 +1,5 @@
 ﻿@page "/fetchdata"
-@using BlazorServerTest.Services
+@using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
 @inject WeatherForecastService ForecastService
 
@@ -70,8 +70,8 @@ else
 
 @code {
     private string Message { get; set; } = "Test message";
-    private List<WeatherForecast> rawData;
-	private List<WeatherForecast> forecasts;
+    private List<IngredientEntity> rawData;
+	private List<IngredientEntity> forecasts;
 	private int pageSize = 4;
 	private int currentPage = 1;
 	private int totalPages;
@@ -104,7 +104,7 @@ else
 		forecasts = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 	}
 
-	private void DataAddedHandler(WeatherForecast addedItem)
+	private void DataAddedHandler(IngredientEntity addedItem)
 	{
 		rawData.Add(addedItem);
 		AuxCalculating();

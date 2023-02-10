@@ -1,17 +1,16 @@
-﻿using BlazorServerTest.Data;
+﻿using BlazorServerTest.BLL.Services.Interfaces;
 using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
-using BlazorServerTest.Services.Interfaces;
 using Hangfire;
 using Hangfire.Storage;
 
-namespace BlazorServerTest.Services
+namespace BlazorServerTest.BLL.Services
 {
     public class BackgroundService : IBackgroundService
     {
-        IWeatherForecastRepository _repository;
+        IRecipeRepository _repository;
         private readonly ILogger<BackgroundService> _logger;
-        public BackgroundService(IWeatherForecastRepository repository, ILogger<BackgroundService> logger)
+        public BackgroundService(IRecipeRepository repository, ILogger<BackgroundService> logger)
         {
             _repository = repository;
             _logger = logger;
@@ -19,7 +18,7 @@ namespace BlazorServerTest.Services
 
         public async Task GetAndSaveBackgroundAsync()
         {
-            var data = new WeatherForecast
+            var data = new IngredientEntity
             {
                 TemperatureC = 1,
                 Summary = "Getted from background",

@@ -1,4 +1,4 @@
-﻿using BlazorServerTest.Services;
+﻿using BlazorServerTest.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTest.Controller;

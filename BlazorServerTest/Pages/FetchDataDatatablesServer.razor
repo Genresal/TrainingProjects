@@ -1,5 +1,5 @@
 ﻿@page "/datatables"
-@using BlazorServerTest.Services
+@using BlazorServerTest.BLL.Services
 @using BlazorServerTest.Data.Entities
 @inject WeatherForecastService ForecastService
 @inject IJSRuntime JS
@@ -8,14 +8,16 @@
 	<thead>
 	<tr>
 		<th>id</th>
-		<th>summary</th>
+        <th>summary</th>
+        <th>temp</th>
+        <th>is checked</th>
         <th></th>
 	</tr>
 	</thead>
 </DataTable>
 
 @code {
-    private List<WeatherForecast> forecasts;
+    private List<IngredientEntity> forecasts;
 
     protected override async  Task OnInitializedAsync()
     {
@@ -28,9 +30,5 @@
         forecasts = (await ForecastService.GetForecastAsync(String.Empty)).ToList();
         StateHasChanged();
     }
-	/*
-    public void Dispose()
-    {
-        JS.InvokeAsync<IJSObjectReference>("DataTablesRemove", "#example");
-    }*/
+
 }

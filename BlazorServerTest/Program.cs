@@ -1,5 +1,5 @@
+using BlazorServerTest.BLL.DI;
 using BlazorServerTest.Data.DI;
-using BlazorServerTest.Services.DI;
 using Hangfire;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;

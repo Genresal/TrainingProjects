@@ -1,6 +1,6 @@
 ﻿using BlazorServerTest.Data.Entities.Interfaces;
 
-namespace BlazorServerTest.Services.Interfaces
+namespace BlazorServerTest.BLL.Services.Interfaces
 {
     public interface IBaseService<TModel> where TModel : IEntity
     {
