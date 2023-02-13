@@ -44,7 +44,19 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return entity;
     }
 
-    public Task<List<TEntity>> GetAll()
+    public Task<List<TEntity>> Get(Expression<Func<TEntity, bool>>? predicate)
+    {
+        return _dbSet.AsNoTracking()
+            .Where(predicate)
+            .ToListAsync();
+    }
+
+    public Task<int> Count(Expression<Func<TEntity, bool>>? predicate)
+    {
+	    return _dbSet.CountAsync(predicate);
+    }
+
+	public Task<List<TEntity>> GetAll()
     {
         return _dbSet.ToListAsync();
     }

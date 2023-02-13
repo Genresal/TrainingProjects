@@ -1,4 +1,5 @@
-﻿using BlazorServerTest.Data.Infrastructure;
+﻿using BlazorServerTest.Data.Entities;
+using BlazorServerTest.Data.Infrastructure;
 using BlazorServerTest.Data.Repositories;
 using BlazorServerTest.Data.Repositories.Interfaces;
 
@@ -13,5 +14,6 @@ public static class DatabaseServiceRegistry
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IRecipeRepository, RecipeRepository>();
+        services.AddTransient<IBaseRepository<CategoryEntity>, BaseRepository<CategoryEntity>>();
     }
 }

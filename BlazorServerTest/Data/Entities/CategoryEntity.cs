@@ -8,6 +8,5 @@ public class CategoryEntity : IEntity
     public decimal? Quantity { get; set; }
     public string? Unit { get; set; }
 
-    public int RecipeId { get; set; }
-    public RecipeEntity Recipe { get; set; }
+    public ICollection<RecipeEntity> Recipes { get; set; }
 }

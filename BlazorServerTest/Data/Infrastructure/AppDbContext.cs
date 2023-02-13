@@ -36,10 +36,9 @@ public class AppDbContext : DbContext
             .HasMany(x => x.Steps)
             .WithOne(x => x.Recipe)
             .HasForeignKey(x => x.RecipeId);
-
+        /*
         modelBuilder.Entity<RecipeEntity>()
             .HasMany(x => x.Categories)
-            .WithOne(x => x.Recipe)
-            .HasForeignKey(x => x.RecipeId);
+            .WithMany(x => x.Recipes);*/
     }
 }

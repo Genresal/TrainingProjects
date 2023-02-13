@@ -6,6 +6,8 @@ namespace BlazorServerTest.Data.Repositories.Interfaces
     public interface IBaseRepository<TEntity> where TEntity : IEntity
     {
         Task<TEntity> Get(int id);
+        Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate);
+        Task<int> Count(Expression<Func<TEntity, bool>> predicate);
         Task<List<TEntity>> GetAll();
         Task<TEntity> Add(TEntity entity);
         Task<TEntity> Update(TEntity entity);

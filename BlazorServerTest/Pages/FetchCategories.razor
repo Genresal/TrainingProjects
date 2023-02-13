@@ -1,0 +1,78 @@
+﻿@page "/fetchcategories"
+@using BlazorServerTest.BLL.Services.Interfaces
+@using BlazorServerTest.Data.Entities
+@inject ICategoryService CategoryService
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ModalWrapperComponent Title="Add/Update Recipe" OnSave="DataAddedHandler">
+        <!--<ChildContent>-->
+        <form>
+            <div class="form-group">
+                <label for="name">Sum</label>
+                <input type="text" class="form-control" id="name" @bind="newCategory.Name"/>
+            </div>
+        </form>
+            <!--</ChildContent>-->
+    </ModalWrapperComponent>
+
+    <table class="table">
+		<thead>
+		<tr>
+            <th>@nameof(CategoryEntity.Id)</th>
+                <th>@nameof(CategoryEntity.Name)</th>
+                <th>@nameof(CategoryEntity.Quantity)</th>
+                <th>@nameof(CategoryEntity.Unit)</th>
+            <th></th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var cat in categories)
+		{
+			<tr>
+				<td>@cat.Id</td>
+				<td>@cat.Name</td>
+				<td>@cat.Quantity</td>
+                <td>@cat.Unit</td>
+                <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@cat.Id" OnYes="@DeleteHandler" /></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+
+@code {
+    private List<CategoryEntity> categories;
+    private CategoryEntity newCategory = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CategoryService.CalculateRecipesQuantity();
+        categories = (await CategoryService.GetAll()).ToList();
+    }
+
+    private async Task DataAddedHandler(bool isVisible)
+	{
+        var newCat = await CategoryService.Add(newCategory);
+		categories.Add(newCat);
+        isVisible = false;
+        StateHasChanged();
+	}
+
+    private async Task DeleteHandler(int id)
+	{
+		await CategoryService.Delete(id);
+		categories = categories.Where(x => x.Id != id).ToList();
+        StateHasChanged();
+	}
+}

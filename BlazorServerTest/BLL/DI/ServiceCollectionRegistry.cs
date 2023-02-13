@@ -8,6 +8,8 @@ public static class ServiceCollectionRegistry
     public static void AddServices(this IServiceCollection services)
     {
         services.AddTransient<RecipeService>();
+        services.AddTransient<ICategoryService, CategoryService>();
+
         services.AddTransient<IBackgroundService, Services.BackgroundService>();
         services.AddHostedService<TimerHosterService>();
     }
