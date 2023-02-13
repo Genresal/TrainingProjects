@@ -15,7 +15,7 @@
 }
 else
 {
-	<button onclick="@(async () => await RecipeService.AddDefault())">➕</button>
+	<button onclick="@AddDefaultHandler">➕</button>
     <ModalFormComponent OnDataSaved="@DataAddedHandler" />
     <CascadingValue Value="Message">
         <ShowDataModalComponent />
@@ -104,6 +104,12 @@ else
 
 		recipes = rawData.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 	}
+
+    private async Task AddDefaultHandler()
+    {
+		var addedItem = await RecipeService.AddDefault();
+		DataAddedHandler(addedItem);
+    }
 
 	private void DataAddedHandler(RecipeEntity addedItem)
 	{

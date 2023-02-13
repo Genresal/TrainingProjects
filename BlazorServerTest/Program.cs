@@ -1,12 +1,12 @@
 using BlazorServerTest.BLL.DI;
 using BlazorServerTest.Data.DI;
+using BlazorServerTest.Middlewares;
 using BlazorServerTest.Profiles;
 using FluentValidation;
 using Hangfire;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using BlazorServerTest.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,16 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddEntityFrameworkSetup();
 builder.Services.AddRepositories();
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: "client", builder =>
+    {
+        builder.WithOrigins("http://localhost/3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
@@ -52,6 +62,8 @@ if (!app.Environment.IsDevelopment())
 }
 // custom exception middleware
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseCors("client");
 
 app.UseHttpsRedirection();
 

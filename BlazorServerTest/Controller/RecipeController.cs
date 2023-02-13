@@ -46,6 +46,12 @@ public class RecipeController : ControllerBase
         return await _service.Add(model);
     }
 
+    [HttpGet]
+    public async Task<List<RecipeEntity>> GetAll()
+    {
+        return await _service.GetAll();
+    }
+
     [HttpGet("{id}")]
     public async Task<RecipeEntity> Get(int id)
     {
