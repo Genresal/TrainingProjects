@@ -4,6 +4,7 @@ using BlazorServerTest.Middlewares;
 using BlazorServerTest.Profiles;
 using FluentValidation;
 using Hangfire;
+using InMemoryCachingLibrary;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -12,10 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(cfg =>
 {
-    cfg.AddProfile<ApiMappingProfile>();
+	cfg.AddProfile<ApiMappingProfile>();
 });
 
 builder.Services.AddServices();
+// InMemory service
+builder.Services.AddInMemoryCachingSevice();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -25,40 +28,40 @@ builder.Services.AddRepositories();
 
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy(name: "client", builder =>
-    {
-        builder.WithOrigins("http://localhost/3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
+	opt.AddPolicy(name: "client", builder =>
+	{
+		builder.WithOrigins("http://localhost/3000")
+			.AllowAnyHeader()
+			.AllowAnyMethod();
+	});
 });
 
 builder.Services.AddControllers().AddJsonOptions(options =>
-    {
-        var enumConverter = new JsonStringEnumConverter();
-        options.JsonSerializerOptions.Converters.Add(enumConverter);
-    });
+	{
+		var enumConverter = new JsonStringEnumConverter();
+		options.JsonSerializerOptions.Converters.Add(enumConverter);
+	});
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddHangfire(config =>
 {
-    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DBConnection"));
+	config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DBConnection"));
 });
 builder.Services.AddHangfireServer();
 
 // Register the Swagger generator, defining 1 or more Swagger documents
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+	c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+	app.UseExceptionHandler("/Error");
+	app.UseHsts();
 }
 // custom exception middleware
 app.UseMiddleware<ExceptionMiddleware>();
@@ -73,8 +76,8 @@ app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.RoutePrefix = "docs";
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blazor APP Docs v1");
+	c.RoutePrefix = "docs";
+	c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blazor APP Docs v1");
 });
 
 app.UseRouting();

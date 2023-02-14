@@ -27,7 +27,7 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntit
         return _repository.Get(id);
     }
 
-    public Task<List<TEntity>> GetAll()
+    virtual public Task<List<TEntity>> GetAll()
     {
         return _repository.GetAll();
     }

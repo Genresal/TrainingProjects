@@ -1,5 +1,7 @@
+using AutoMapper;
 using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
+using BlazorServerTest.ViewModels;
 using System.Linq.Expressions;
 
 namespace BlazorServerTest.BLL.Services
@@ -7,9 +9,17 @@ namespace BlazorServerTest.BLL.Services
     public class RecipeService : BaseService<RecipeEntity>
     {
         private IRecipeRepository _recipeRepository;
-        public RecipeService(IRecipeRepository repository) : base(repository)
+		private IMapper _mapper;
+		public RecipeService(IRecipeRepository repository, IMapper mapper) : base(repository)
         {
             _recipeRepository = repository;
+            _mapper = mapper;
+        }
+
+        public Task<RecipeEntity> Add(ChangeRecipeViewModel viewModel)
+        {
+            var entity = _mapper.Map<RecipeEntity>(viewModel);
+            return _repository.Add(entity);
         }
 
         public async Task<IEnumerable<RecipeEntity>> GetForecastAsync(string? search)

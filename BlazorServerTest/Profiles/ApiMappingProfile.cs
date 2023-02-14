@@ -8,5 +8,8 @@ public class ApiMappingProfile : Profile
     public ApiMappingProfile()
     {
         CreateMap<ChangeRecipeViewModel, RecipeEntity>();
+
+        CreateMap<int, CategoryEntity>().ForMember(dest => dest.Id, opts => opts.MapFrom(src => src));
+        CreateMap<CategoryEntity, CategoryViewModel>();
     }
 }
