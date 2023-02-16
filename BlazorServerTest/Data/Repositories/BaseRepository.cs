@@ -21,6 +21,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public virtual Task<TEntity> Add(TEntity entity)
     {
         _dbSet.AddAsync(entity);
+
+        //_dbSet.Entry(entity).State = EntityState.Detached;
         return _context.SaveChangesAsync().ContinueWith(x => entity);
     }
 
@@ -53,7 +55,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public Task<int> Count(Expression<Func<TEntity, bool>>? predicate)
     {
-        return _dbSet.CountAsync(predicate);
+        return _dbSet.AsNoTracking().CountAsync(predicate);
     }
 
     public Task<List<TEntity>> GetAll()

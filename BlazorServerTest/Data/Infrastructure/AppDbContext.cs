@@ -12,11 +12,14 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "Db.db" };
-        var connectionString = connectionStringBuilder.ToString();
-        var connection = new SqliteConnection(connectionString);
+        if (!optionsBuilder.IsConfigured)   // For inmemory testing
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "Db.db" };
+            var connectionString = connectionStringBuilder.ToString();
+            var connection = new SqliteConnection(connectionString);
 
-        optionsBuilder.UseSqlite(connection);
+            optionsBuilder.UseSqlite(connection);
+        }
     }
 
     public DbSet<RecipeEntity> Recipes { get; set; }

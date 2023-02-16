@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApp", "TestConso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest", "BlazorServerTest\BlazorServerTest.csproj", "{2D9AF06B-29C7-4853-8277-94E5F1CE9619}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryCachingLibrary", "InMemoryCachingLibrary\InMemoryCachingLibrary.csproj", "{9B72D636-FDCA-4911-AFBE-122978E2E0FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryCachingLibrary", "InMemoryCachingLibrary\InMemoryCachingLibrary.csproj", "{9B72D636-FDCA-4911-AFBE-122978E2E0FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F64432D-5F8F-47E8-B2A7-2FF741BDB6C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTestAppTests", "BlazorTestAppTests\BlazorTestAppTests.csproj", "{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +61,16 @@ Global
 		{9B72D636-FDCA-4911-AFBE-122978E2E0FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B72D636-FDCA-4911-AFBE-122978E2E0FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B72D636-FDCA-4911-AFBE-122978E2E0FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B} = {4F64432D-5F8F-47E8-B2A7-2FF741BDB6C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A923F7E-8E29-46FB-848B-B88C196B6BD5}
