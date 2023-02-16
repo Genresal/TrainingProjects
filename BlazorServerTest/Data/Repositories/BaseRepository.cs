@@ -18,7 +18,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbSet = _context.Set<TEntity>();
     }
 
-    public Task<TEntity> Add(TEntity entity)
+    public virtual Task<TEntity> Add(TEntity entity)
     {
         _dbSet.AddAsync(entity);
         return _context.SaveChangesAsync().ContinueWith(x => entity);
@@ -53,12 +53,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public Task<int> Count(Expression<Func<TEntity, bool>>? predicate)
     {
-	    return _dbSet.CountAsync(predicate);
+        return _dbSet.CountAsync(predicate);
     }
 
-	public Task<List<TEntity>> GetAll()
+    public Task<List<TEntity>> GetAll()
     {
-        return _dbSet.ToListAsync();
+        return _dbSet.AsNoTracking().ToListAsync();
     }
 
     public virtual Task<TEntity> Update(TEntity entity)

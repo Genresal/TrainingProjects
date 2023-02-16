@@ -1,17 +1,17 @@
 ﻿@page "/datatablesTest"
 @using BlazorServerTest.BLL.Services
-@using BlazorServerTest.Data.Entities
+@using BlazorServerTest.BLL.Models
 @inject RecipeService RecipeService
 @inject IJSRuntime JS
 
 <DataTable>
 	<thead>
 	<tr>
-        <th>@nameof(RecipeEntity.Id)</th>
-        <th>@nameof(RecipeEntity.Name)</th>
-        <th>@nameof(RecipeEntity.Description)</th>
-        <th>@nameof(RecipeEntity.CookTime)</th>
-        <th>@nameof(RecipeEntity.Servings)</th>
+        <th>@nameof(RecipeModel.Id)</th>
+        <th>@nameof(RecipeModel.Name)</th>
+        <th>@nameof(RecipeModel.Description)</th>
+        <th>@nameof(RecipeModel.CookTime)</th>
+        <th>@nameof(RecipeModel.PrepTime)</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -22,7 +22,7 @@
             <td>@recipe.Name</td>
             <td>@recipe.Description</td>
             <td>@recipe.CookTime</td>
-            <td>@recipe.Servings</td>
+                <td>@recipe.PrepTime</td>
             <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@recipe.Id" OnYes="@DeleteHandler" /></td>
 		</tr>
 	}
@@ -30,7 +30,7 @@
 </DataTable>
 
 @code {
-    private List<RecipeEntity> recipes;
+    private List<RecipeModel> recipes;
 
     protected override async  Task OnInitializedAsync()
     {

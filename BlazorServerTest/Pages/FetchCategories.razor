@@ -1,6 +1,6 @@
 ﻿@page "/fetchcategories"
 @using BlazorServerTest.BLL.Services.Interfaces
-@using BlazorServerTest.Data.Entities
+@using BlazorServerTest.BLL.Models
 @inject ICategoryService CategoryService
 
 <PageTitle>Weather forecast</PageTitle>
@@ -29,10 +29,9 @@ else
     <table class="table">
 		<thead>
 		<tr>
-            <th>@nameof(CategoryEntity.Id)</th>
-                <th>@nameof(CategoryEntity.Name)</th>
-                <th>@nameof(CategoryEntity.Quantity)</th>
-                <th>@nameof(CategoryEntity.Unit)</th>
+            <th>@nameof(CategoryModel.Id)</th>
+                <th>@nameof(CategoryModel.Name)</th>
+                <th>@nameof(CategoryModel.Quantity)</th>
             <th></th>
 		</tr>
 		</thead>
@@ -43,7 +42,6 @@ else
 				<td>@cat.Id</td>
 				<td>@cat.Name</td>
 				<td>@cat.Quantity</td>
-                <td>@cat.Unit</td>
                 <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@cat.Id" OnYes="@DeleteHandler" /></td>
 			</tr>
 		}
@@ -52,8 +50,8 @@ else
 }
 
 @code {
-    private List<CategoryEntity> categories;
-    private CategoryEntity newCategory = new();
+    private List<CategoryModel> categories;
+    private CategoryModel newCategory = new();
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,30 +1,24 @@
 using AutoMapper;
+using BlazorServerTest.BLL.Models;
 using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
-using BlazorServerTest.ViewModels;
 using System.Linq.Expressions;
 
 namespace BlazorServerTest.BLL.Services
 {
-    public class RecipeService : BaseService<RecipeEntity>
+    public class RecipeService : BaseService<RecipeModel, RecipeEntity>
     {
         private IRecipeRepository _recipeRepository;
-		private IMapper _mapper;
-		public RecipeService(IRecipeRepository repository, IMapper mapper) : base(repository)
+        private IMapper _mapper;
+        public RecipeService(IRecipeRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _recipeRepository = repository;
             _mapper = mapper;
         }
 
-        public Task<RecipeEntity> Add(ChangeRecipeViewModel viewModel)
+        public async Task<IEnumerable<RecipeModel>> GetForecastAsync(string? search)
         {
-            var entity = _mapper.Map<RecipeEntity>(viewModel);
-            return _repository.Add(entity);
-        }
-
-        public async Task<IEnumerable<RecipeEntity>> GetForecastAsync(string? search)
-        {
-            var data = (await _repository.GetAll()).ToList();
+            var data = (await GetAll()).ToList();
             if (!string.IsNullOrEmpty(search))
             {
                 return data.Where(x => x.Name is not null && x.Name.ToUpper().Contains(search.ToUpper()));
@@ -60,9 +54,9 @@ namespace BlazorServerTest.BLL.Services
             return _repository.LoadTable(dtParameters.Draw, dtParameters.Start, dtParameters.Length, orderCriteria, orderAscendingDirection, searchByEx);
         }
 
-        public Task<RecipeEntity> AddDefault()
+        public Task<RecipeModel> AddDefault()
         {
-            return _repository.Add(new RecipeEntity
+            return Add(new RecipeModel
             {
                 Name = "DefaultRecipe"
             });

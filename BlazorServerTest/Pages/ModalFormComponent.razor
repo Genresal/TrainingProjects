@@ -3,6 +3,7 @@
 @using BlazorServerTest.Data.Entities
 @using BlazorServerTest.ViewModels
 @using Microsoft.AspNetCore.Components
+@using BlazorServerTest.BLL.Models
 @inject RecipeService ForecastService
 @inject ICategoryService CategoryService
 
@@ -54,11 +55,11 @@
 
 @code {
 	[Parameter]
-	public EventCallback<RecipeEntity> OnDataSaved { get; set; }
+	public EventCallback<RecipeModel> OnDataSaved { get; set; }
 
 	private bool showModal;
-	private ChangeRecipeViewModel newItem = new ();
-	private List<CategoryViewModel> categories = new();
+	private RecipeModel newItem = new ();
+	private List<CategoryModel> categories = new();
 
 	private void ShowModal()
 	{
@@ -72,12 +73,12 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		categories = await CategoryService.GetAllViews();
+		categories = await CategoryService.GetAll();
 	}
 
 	private async Task SaveData()
 	{
-		newItem.Categories = categories.Select(x => x.Id).ToList();
+		newItem.Categories = categories.ToList();
 		// Save data to database or do something with the form data
 		var added = await ForecastService.Add(newItem);
 		newItem = new ();

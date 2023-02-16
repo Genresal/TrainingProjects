@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using BlazorServerTest.Data.Entities
+@using BlazorServerTest.BLL.Models
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @namespace BlazorServerTest.Pages
@@ -69,10 +69,10 @@
             },*/
             // Columns Setups
             columns: [
-                { data: "@nameof(RecipeEntity.Id).ToLower()" },
-                { data: "@nameof(RecipeEntity.Name).ToLower()" },
-                { data: "@nameof(RecipeEntity.Description).ToLower()" }, // Need to provide it as camelCase with lower first char
-                { data: "@nameof(RecipeEntity.Servings).ToLower()" },
+                { data: "@nameof(RecipeModel.Id).ToLower()" },
+                { data: "@nameof(RecipeModel.Name).ToLower()" },
+                { data: "@nameof(RecipeModel.Description).ToLower()" }, // Need to provide it as camelCase with lower first char
+                    { data: "@nameof(RecipeModel.PrepTime).ToLower()" },
             ],
             columnDefs: [
                 { targets: "no-sort", orderable: false },

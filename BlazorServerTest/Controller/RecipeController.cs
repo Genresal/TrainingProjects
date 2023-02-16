@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using BlazorServerTest.BLL.Models;
 using BlazorServerTest.BLL.Services;
-using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Validators;
 using BlazorServerTest.ViewModels;
 using FluentValidation;
@@ -37,25 +37,31 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<RecipeEntity> Add([FromBody] ChangeRecipeViewModel viewModel)
+    public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
     {
         await _validator.ValidateAndThrowAsync(viewModel);
 
-        var model = _mapper.Map<RecipeEntity>(viewModel);
+        var model = _mapper.Map<RecipeModel>(viewModel);
 
-        return await _service.Add(model);
+        var result = await _service.Add(model);
+
+        return _mapper.Map<RecipeViewModel>(result);
     }
 
     [HttpGet]
-    public async Task<List<RecipeEntity>> GetAll()
+    public async Task<List<RecipeViewModel>> GetAll()
     {
-        return await _service.GetAll();
+        var result = await _service.GetAll();
+
+        return _mapper.Map<List<RecipeViewModel>>(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<RecipeEntity> Get(int id)
+    public async Task<RecipeViewModel> Get(int id)
     {
-        return await _service.Get(id);
+        var result = await _service.Get(id);
+
+        return _mapper.Map<RecipeViewModel>(result);
     }
 
     [HttpDelete("{id}")]

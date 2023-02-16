@@ -1,20 +1,27 @@
-﻿using BlazorServerTest.BLL.Services.Interfaces;
+﻿using AutoMapper;
+using BlazorServerTest.BLL.Models.Interfaces;
+using BlazorServerTest.BLL.Services.Interfaces;
 using BlazorServerTest.Data.Entities.Interfaces;
 using BlazorServerTest.Data.Repositories.Interfaces;
 
 namespace BlazorServerTest.BLL.Services;
-public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntity
+public class BaseService<TModel, TEntity> : IBaseService<TModel> where TEntity : IEntity where TModel : IModel
 {
     protected readonly IBaseRepository<TEntity> _repository;
+    protected readonly IMapper _mapper;
 
-    public BaseService(IBaseRepository<TEntity> repository)
+    public BaseService(IBaseRepository<TEntity> repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public Task<TEntity> Add(TEntity entity)
+    public async Task<TModel> Add(TModel model)
     {
-        return _repository.Add(entity);
+        var entity = _mapper.Map<TEntity>(model);
+        var result = await _repository.Add(entity);
+
+        return _mapper.Map<TModel>(result);
     }
 
     public Task Delete(int id)
@@ -22,18 +29,25 @@ public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : IEntit
         return _repository.Delete(id);
     }
 
-    public Task<TEntity> Get(int id)
+    public async Task<TModel> Get(int id)
     {
-        return _repository.Get(id);
+        var result = await _repository.Get(id);
+
+        return _mapper.Map<TModel>(result);
     }
 
-    virtual public Task<List<TEntity>> GetAll()
+    public virtual async Task<List<TModel>> GetAll()
     {
-        return _repository.GetAll();
+        var result = await _repository.GetAll();
+
+        return _mapper.Map<List<TModel>>(result);
     }
 
-    public Task<TEntity> Update(TEntity entity)
+    public async Task<TModel> Update(TModel model)
     {
-        return _repository.Update(entity);
+        var entity = _mapper.Map<TEntity>(model);
+        var result = await _repository.Update(entity);
+
+        return _mapper.Map<TModel>(result);
     }
 }

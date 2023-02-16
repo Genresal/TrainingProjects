@@ -15,6 +15,21 @@ namespace BlazorServerTest.Data.Repositories
             _logger = logger;
         }
 
+        public override Task<RecipeEntity> Add(RecipeEntity entity)
+        {
+            foreach (var category in entity.Categories)
+            {
+                _context.Categories.Attach(category);
+                //_context.Entry(category).State = EntityState.Unchanged;
+            }
+
+            _dbSet.AddAsync(entity);
+
+            //_dbSet.Entry(entity).State = EntityState.Detached;
+
+            return _context.SaveChangesAsync().ContinueWith(x => entity);
+        }
+
         // No obviously reasons to override basic method by it only for showing a different approach.
         public override Task<RecipeEntity> Update(RecipeEntity entity)
         {

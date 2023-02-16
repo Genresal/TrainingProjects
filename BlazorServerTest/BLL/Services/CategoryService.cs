@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlazorServerTest.BLL.Models;
 using BlazorServerTest.BLL.Services.Interfaces;
 using BlazorServerTest.Data.Entities;
 using BlazorServerTest.Data.Repositories.Interfaces;
@@ -7,14 +8,14 @@ using InMemoryCachingLibrary;
 
 namespace BlazorServerTest.BLL.Services
 {
-	public class CategoryService : BaseService<CategoryEntity>, ICategoryService
+	public class CategoryService : BaseService<CategoryModel, CategoryEntity>, ICategoryService
 	{
 		private readonly IBaseRepository<CategoryEntity> _categoryRepository;
 		private readonly IRecipeRepository _recipeRepository;
 		private readonly IMapper _mapper;
 		private readonly ICacheService _cacheService;
 
-		public CategoryService(IBaseRepository<CategoryEntity> categoryRepository, IRecipeRepository recipeRepository, IMapper mapper, ICacheService cacheService) : base(categoryRepository)
+		public CategoryService(IBaseRepository<CategoryEntity> categoryRepository, IRecipeRepository recipeRepository, IMapper mapper, ICacheService cacheService) : base(categoryRepository, mapper)
 		{
 			_categoryRepository = categoryRepository;
 			_recipeRepository = recipeRepository;
@@ -38,14 +39,11 @@ namespace BlazorServerTest.BLL.Services
 			}
 		}
 
-		public override Task<List<CategoryEntity>> GetAll()
+		public override Task<List<CategoryModel>> GetAll()
 		{
-			return _cacheService.GetOrCreateAsync("test", TimeSpan.FromSeconds(30), () => _repository.GetAll());
-		}
+			var key = nameof(CategoryModel);
 
-		public async Task<List<CategoryViewModel>> GetAllViews()
-		{
-			return _mapper.Map<List<CategoryViewModel>>(await _repository.GetAll());
+			return _cacheService.GetOrCreateAsync(key, () => base.GetAll());
 		}
-	}
+    }
 }

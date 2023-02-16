@@ -1,11 +1,9 @@
-﻿using BlazorServerTest.Data.Entities;
-using BlazorServerTest.ViewModels;
+﻿using BlazorServerTest.BLL.Models;
 
 namespace BlazorServerTest.BLL.Services.Interfaces
 {
-	public interface ICategoryService : IBaseService<CategoryEntity>
-	{
-		Task CalculateRecipesQuantity();
-		Task<List<CategoryViewModel>> GetAllViews();
-	}
+    public interface ICategoryService : IBaseService<CategoryModel>
+    {
+        Task CalculateRecipesQuantity();
+    }
 }
