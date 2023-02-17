@@ -1,10 +1,10 @@
-﻿using BlazorServerTest.Data.Entities;
+﻿using BlazorServerTest.Core.Data.Entities;
 
 namespace BlazorTestAppTests.TestsData;
 
 public static class TestRecipes
 {
-    public static RecipeEntity RecipeEntity => new()
+    public static Recipe RecipeEntity => new()
     {
         //Id = 1,
         Name = "Test Recipe",
@@ -23,14 +23,14 @@ public static class TestRecipes
             new StepEntity { Id = 1, Description = "Step 1" },
             new StepEntity { Id = 2, Description = "Step 2" }
         },*/
-        Categories = new List<CategoryEntity>
+        Categories = new List<Category>
         {
-            new CategoryEntity { Id = 1, },
+            new Category { Id = 1, },
             //new CategoryEntity { Id = 2, }
         }
     };
 
-    public static List<RecipeEntity> RecipeEntityCollection => new()
+    public static List<Recipe> RecipeEntityCollection => new()
         {
             RecipeEntity,
         };

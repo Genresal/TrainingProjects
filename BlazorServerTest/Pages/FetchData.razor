@@ -1,6 +1,6 @@
 ﻿@page "/fetchdata"
-@using BlazorServerTest.BLL.Services
-@using BlazorServerTest.BLL.Models
+@using BlazorServerTest.Core.Services
+@using BlazorServerTest.Core.Data.Entities
 @inject RecipeService RecipeService
 
 <PageTitle>Weather forecast</PageTitle>
@@ -28,11 +28,12 @@ else
 	<table class="table">
 		<thead>
 		<tr>
-            <th>@nameof(RecipeModel.Id)</th>
-            <th>@nameof(RecipeModel.Name)</th>
-            <th>@nameof(RecipeModel.Description)</th>
-            <th>@nameof(RecipeModel.CookTime)</th>
-            <th>@nameof(RecipeModel.PrepTime)</th>
+            <th>@nameof(Recipe.Id)</th>
+            <th>@nameof(Recipe.Name)</th>
+            <th>@nameof(Recipe.Description)</th>
+            <th>@nameof(Recipe.CookTime)</th>
+            <th>@nameof(Recipe.PrepTime)</th>
+            <th>Categories</th>
 			<th></th>
 		</tr>
 		</thead>
@@ -45,6 +46,7 @@ else
 				<td>@recipe.Description</td>
                 <td>@recipe.CookTime</td>
                 <td>@recipe.PrepTime</td>
+                <td>@recipe.Categories.Count()</td>
 				<td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@recipe.Id" OnYes="@DeleteHandler" /></td>
 			</tr>
 		}
@@ -71,8 +73,8 @@ else
 
 @code {
     private string Message { get; set; } = "Test message";
-    private List<RecipeModel> rawData;
-	private List<RecipeModel> recipes;
+    private List<Recipe> rawData;
+	private List<Recipe> recipes;
 	private int pageSize = 4;
 	private int currentPage = 1;
 	private int totalPages;
@@ -111,7 +113,7 @@ else
 		DataAddedHandler(addedItem);
     }
 
-	private void DataAddedHandler(RecipeModel addedItem)
+	private void DataAddedHandler(Recipe addedItem)
 	{
 		rawData.Add(addedItem);
 		AuxCalculating();

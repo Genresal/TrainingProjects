@@ -1,19 +1,19 @@
-﻿using BlazorServerTest.Data.Entities;
+﻿using BlazorServerTest.Core.Data.Entities;
 
 namespace BlazorTestAppTests.TestsData;
 
 public static class TestCategories
 {
-    public static CategoryEntity CategoryEntity => new()
+    public static Category CategoryEntity => new()
     {
         Id = 1,
         Name = "Test Category",
         Quantity = 10.5m,
         Unit = "lbs",
-        Recipes = new List<RecipeEntity>(),
+        Recipes = new List<Recipe>(),
     };
 
-    public static List<CategoryEntity> RecipeEntityCollection => new()
+    public static List<Category> RecipeEntityCollection => new()
         {
             CategoryEntity,
         };

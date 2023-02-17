@@ -1,7 +1,7 @@
 ﻿@page "/hangfirePage"
-@using BlazorServerTest.BLL.Services.Interfaces
-@using BlazorServerTest.Data.Entities
-@inject IBackgroundService BackgroundService
+@using BlazorServerTest.Core.Services
+@using BlazorServerTest.Core.Data.Entities
+@inject AuxService BackgroundService
 @inject NavigationManager NavigationManager
 
 <button class="btn-primary" @onclick="AddJobsHandler">Add jobs</button>
@@ -10,7 +10,7 @@
 <iframe src="/hangfire" style="width:90%;height:1200px;border:none;" />
 
 @code {
-    private List<IngredientEntity> forecasts;
+    private List<Ingredient> forecasts;
 
     protected override async  Task OnInitializedAsync()
     {

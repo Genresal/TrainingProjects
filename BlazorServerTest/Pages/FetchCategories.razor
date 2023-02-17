@@ -1,7 +1,8 @@
 ﻿@page "/fetchcategories"
-@using BlazorServerTest.BLL.Services.Interfaces
-@using BlazorServerTest.BLL.Models
-@inject ICategoryService CategoryService
+@using BlazorServerTest.Core.Services
+@using Microsoft.AspNetCore.Components
+@using BlazorServerTest.Core.Data.Entities
+@inject CategoryService CategoryService
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -29,9 +30,9 @@ else
     <table class="table">
 		<thead>
 		<tr>
-            <th>@nameof(CategoryModel.Id)</th>
-                <th>@nameof(CategoryModel.Name)</th>
-                <th>@nameof(CategoryModel.Quantity)</th>
+            <th>@nameof(Category.Id)</th>
+                <th>@nameof(Category.Name)</th>
+                <th>@nameof(Category.Quantity)</th>
             <th></th>
 		</tr>
 		</thead>
@@ -50,8 +51,8 @@ else
 }
 
 @code {
-    private List<CategoryModel> categories;
-    private CategoryModel newCategory = new();
+    private List<Category> categories;
+    private Category newCategory = new();
 
     protected override async Task OnInitializedAsync()
     {

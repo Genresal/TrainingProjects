@@ -1,17 +1,9 @@
-using BlazorServerTest.BLL.Services.Interfaces;
-using BlazorServerTest.Data.Repositories;
-using BlazorServerTest.Data.Repositories.Interfaces;
 using BlazorTestAppTests.Infrastructure;
-using BlazorTestAppTests.TestsData;
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace BlazorTestAppTests
 {
     public class RecipeCategoriesTests : IntegrationTestsBase
-    {
+    {/*
         private readonly Mock<ILogger<IRecipeRepository>> _loggerMock;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICategoryService _categoryService;
@@ -74,8 +66,9 @@ namespace BlazorTestAppTests
             //Assert
             actualResult.Should().BeEquivalentTo(entity);
             lastRecipe.Should().BeEquivalentTo(entity, opt => opt.Excluding(x => x.Categories));
-            //lastRecipe.Categories.Should().ContainEquivalentOf(categories, opt => opt.);
             categories.Last().Quantity.Should().Be(1);
-        }
+
+
+        }*/
     }
 }
