@@ -1,6 +1,6 @@
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Services;
-using InMemoryCachingLibrary;
+using InMemoryCachingLibrary.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTestApi.Controllers
