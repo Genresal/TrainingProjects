@@ -5,11 +5,12 @@ namespace InMemoryCachingLibrary
 {
 	public static class ServiceRegistry
 	{
-		public static void AddInMemoryCachingSevice(this IServiceCollection services, IConfiguration configuration)
+		public static void AddInMemoryCachingService(this IServiceCollection services, IConfiguration configuration)
 		{
+            services.AddMemoryCache();
 			services.Configure<CacheSettings>(configuration.GetSection(nameof(CacheSettings)));
 			services.AddSingleton<ICacheService, CacheService>();
-			services.AddMemoryCache();
+
 		}
 	}
 }

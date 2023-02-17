@@ -1,5 +1,4 @@
 using BlazorServerTest.Core;
-using BlazorServerTest.Core.Data;
 using BlazorServerTest.Services;
 using Hangfire;
 using InMemoryCachingLibrary;
@@ -7,11 +6,11 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddServices();
+builder.Services.AddCoreServices();
 
 builder.Services.AddTransient<RecipeViewService>();
 // InMemory service
-builder.Services.AddInMemoryCachingSevice(builder.Configuration);
+builder.Services.AddInMemoryCachingService(builder.Configuration);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -22,8 +21,6 @@ builder.Services.AddMudBlazorResizeListener();
 builder.Services.AddMudBlazorScrollListener();
 */
 builder.Services.AddMudServices();
-
-builder.Services.AddEntityFrameworkSetup();
 
 builder.Services.AddCors(opt =>
 {

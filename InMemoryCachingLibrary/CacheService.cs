@@ -59,6 +59,7 @@ namespace InMemoryCachingLibrary
 
 			return new MemoryCacheEntryOptions()
 			{
+				//Size = 1,
 				AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(expirationTime),
 			};
 		}

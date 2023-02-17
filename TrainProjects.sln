@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryCachingLibrary", "I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F64432D-5F8F-47E8-B2A7-2FF741BDB6C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTestAppTests", "BlazorTestAppTests\BlazorTestAppTests.csproj", "{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTestAppTests", "BlazorTestAppTests\BlazorTestAppTests.csproj", "{38E5D3E5-7D87-40A9-AAAE-AFCC457D628B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerTest.Core", "BlazorServerTest.Core\BlazorServerTest.Core.csproj", "{800E6683-5D88-4F7F-9A97-E97E0926F0E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest.Core", "BlazorServerTest.Core\BlazorServerTest.Core.csproj", "{800E6683-5D88-4F7F-9A97-E97E0926F0E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerTestApi", "BlazorServerTestApi\BlazorServerTestApi.csproj", "{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
