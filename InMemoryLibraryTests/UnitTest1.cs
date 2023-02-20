@@ -1,9 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using FluentAssertions;
-using InMemoryCachingLibrary;
-using InMemoryCachingLibrary.Services;
-using InMemoryCachingLibrary.Services.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
+using InMemoryLibraryTests.Infrastructure.Helpers;
 using Moq;
 using Moq.AutoMock;
 
@@ -11,26 +7,29 @@ namespace InMemoryLibraryTests
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
-        public async Task Test1()
+        public async Task GetOrCreateAsync_DataChangesBetwennCalls_ShouldReturnFromCache()
         {
             // Arrange
             var key = "testKey";
             var expectedValue = "testValue";
+            var isFactoryCalled = false;
             var mocker = new AutoMocker(MockBehavior.Default, DefaultValue.Mock);
-            mocker.Setup<IMemoryCache, bool>(x => x.TryGetValue(key, out expectedValue)).Returns(true);
-            var memoryCache = mocker.CreateInstance<CacheService>();
+
+            Func<Task<string>> factory = () =>
+            {
+                isFactoryCalled = true;
+                return Task.FromResult(isFactoryCalled ? expectedValue : string.Empty);
+            };
+            var memoryCache = mocker.CreateInstanceOfMemoryCache();
 
             // Act
-            var actualValue = await memoryCache.GetOrCreateAsync(key, () => Task.FromResult(expectedValue));
+            var firstCall = await memoryCache.GetOrCreateAsync(key, factory);
+            var secondCall = await memoryCache.GetOrCreateAsync(key, factory);
 
             // Assert
-            actualValue.Should().Be(expectedValue);
+            firstCall.Should().Be(expectedValue);
+            secondCall.Should().Be(expectedValue);
         }
     }
 }

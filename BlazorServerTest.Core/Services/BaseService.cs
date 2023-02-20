@@ -15,7 +15,7 @@ public class BaseService<TEntity> where TEntity : class, IEntity
         _dbSet = _context.Set<TEntity>();
     }
 
-    public Task<TEntity> Add(TEntity entity)
+    public virtual Task<TEntity> Add(TEntity entity)
     {
         _dbSet.AddAsync(entity);
 

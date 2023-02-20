@@ -1,5 +1,7 @@
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Services;
+using BlazorServerTestApi.VIewModels;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerTestApi.Controllers
@@ -18,9 +20,10 @@ namespace BlazorServerTestApi.Controllers
         }
 
         [HttpPost]
-        public async Task<Recipe> Add([FromBody] Recipe viewModel)
+        public async Task<Recipe> Add([FromBody] ChangeRecipeViewModel viewModel)
         {
-            var result = await _service.Add(viewModel);
+
+            var result = await _service.Add(viewModel.Adapt<Recipe>(), viewModel.CategoryIds);
 
             return result;
         }

@@ -1,5 +1,6 @@
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Core.Services
 {
@@ -7,6 +8,20 @@ namespace BlazorServerTest.Core.Services
     {
         public RecipeService(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<Recipe> Add(Recipe model, List<int>? categoryIds)
+        {/*
+            foreach (var id in categoryIds)
+            {
+                var category = new Category { Id = id };
+                _context.Categories.Attach(category);
+                model.Categories.Add(category);
+            }
+            */
+            model.Categories = await _context.Categories.Where(x => categoryIds.Contains(x.Id)).ToListAsync();
+
+            return await Add(model);
         }
 
         public async Task<IEnumerable<Recipe>> GetForecastAsync(string? search)
