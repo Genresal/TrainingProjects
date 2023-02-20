@@ -13,4 +13,5 @@ public class Recipe : IEntity
     public IEnumerable<Ingredient> Ingredients { get; set; }
     public IEnumerable<Step> Steps { get; set; }
     public IEnumerable<Category> Categories { get; set; } = new List<Category>();
+    public List<RecipeCategory> RecipeCategories { get; set; } = new();
 }

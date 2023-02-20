@@ -1,7 +1,10 @@
 ﻿namespace BlazorServerTest.Core.Data.Entities;
 
-public class CategoryRecipe
+public class RecipeCategory
 {
-    public int CategoryId { get; set; }
-    public int RecipeId { get; set; }
+	public int RecipeId { get; set; }
+	public int CategoryId { get; set; }
+
+	public Recipe Recipe { get; set; }
+	public Category Category { get; set; }
 }

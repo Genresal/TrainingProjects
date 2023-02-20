@@ -77,9 +77,9 @@
 
 	private async Task SaveData()
 	{
-		newItem.Categories = categories.Adapt<List<Category>>();
+		var categoriesIds = categories.Where(x => x.IsSelected).Select(x => x.Id).ToList();
 		// Save data to database or do something with the form data
-		var added = await ForecastService.Add(newItem);
+		var added = await ForecastService.Add(newItem, categoriesIds);
 		newItem = new ();
 		HideModal();
 		await OnDataSaved.InvokeAsync(added);

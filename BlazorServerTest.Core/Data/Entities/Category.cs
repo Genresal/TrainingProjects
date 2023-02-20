@@ -9,4 +9,5 @@ public class Category : IEntity
     public string? Unit { get; set; }
 
     public ICollection<Recipe> Recipes { get; set; }
+    public List<RecipeCategory> RecipeCategories { get; set; } = new();
 }

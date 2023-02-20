@@ -1,6 +1,5 @@
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Core.Data.Repositories
 {
@@ -11,17 +10,15 @@ namespace BlazorServerTest.Core.Data.Repositories
         }
 
         public async Task<Recipe> Add(Recipe model, List<int>? categoryIds)
-        {/*
-            foreach (var id in categoryIds)
-            {
-                var category = new Category { Id = id };
-                _context.Categories.Attach(category);
-                model.Categories.Add(category);
-            }
-            */
-            model.Categories = await _context.Categories.Where(x => categoryIds.Contains(x.Id)).ToListAsync();
+        {
+            await Add(model);
 
-            return await Add(model);
+            var categoryRecipes = categoryIds.Select(x => new RecipeCategory() { CategoryId = x, RecipeId = model.Id });
+            model.RecipeCategories.AddRange(categoryRecipes);
+
+            await _context.SaveChangesAsync();
+
+            return model;
         }
 
         public async Task<IEnumerable<Recipe>> GetForecastAsync(string? search)
