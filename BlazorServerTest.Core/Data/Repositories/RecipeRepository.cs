@@ -2,11 +2,11 @@ using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorServerTest.Core.Services
+namespace BlazorServerTest.Core.Data.Repositories
 {
-    public class RecipeService : BaseService<Recipe>
+    public class RecipeRepository : BaseRepository<Recipe>
     {
-        public RecipeService(AppDbContext context) : base(context)
+        public RecipeRepository(AppDbContext context) : base(context)
         {
         }
 

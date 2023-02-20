@@ -1,5 +1,6 @@
 ﻿using BlazorServerTest.Core.BackgroundServices;
 using BlazorServerTest.Core.Data.Infrastructure;
+using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTest.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,8 +11,8 @@ public static class ServiceCollectionRegistry
     {
         services.AddEntityFrameworkSqlite().AddDbContext<AppDbContext>();
 
-        services.AddTransient<RecipeService>();
-        services.AddTransient<CategoryService>();
+        services.AddTransient<RecipeRepository>();
+        services.AddTransient<CategoryRepository>();
 
         services.AddTransient<AuxService>();
         services.AddHostedService<TimerHostedService>();

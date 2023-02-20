@@ -1,14 +1,14 @@
 ﻿@page "/fetchcategories"
-@using BlazorServerTest.Core.Services
 @using Microsoft.AspNetCore.Components
 @using BlazorServerTest.Core.Data.Entities
-@inject CategoryService CategoryService
+@using BlazorServerTest.Core.Data.Repositories
+@inject CategoryRepository CategoryRepository
 
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from a repository.</p>
 
 @if (categories == null)
 {
@@ -56,13 +56,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await CategoryService.CalculateRecipesQuantity();
-        categories = (await CategoryService.GetAll()).ToList();
+        await CategoryRepository.CalculateRecipesQuantity();
+        categories = (await CategoryRepository.GetAll()).ToList();
     }
 
     private async Task DataAddedHandler(bool isVisible)
 	{
-        var newCat = await CategoryService.Add(newCategory);
+        var newCat = await CategoryRepository.Add(newCategory);
 		categories.Add(newCat);
         isVisible = false;
         StateHasChanged();
@@ -70,7 +70,7 @@ else
 
     private async Task DeleteHandler(int id)
 	{
-		await CategoryService.Delete(id);
+		await CategoryRepository.Delete(id);
 		categories = categories.Where(x => x.Id != id).ToList();
         StateHasChanged();
 	}

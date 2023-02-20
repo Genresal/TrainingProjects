@@ -3,13 +3,13 @@ using BlazorServerTest.Core.Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace BlazorServerTest.Core.Services;
-public class BaseService<TEntity> where TEntity : class, IEntity
+namespace BlazorServerTest.Core.Data.Repositories;
+public class BaseRepository<TEntity> where TEntity : class, IEntity
 {
     protected readonly AppDbContext _context;
     protected readonly DbSet<TEntity> _dbSet;
 
-    public BaseService(AppDbContext context)
+    public BaseRepository(AppDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();

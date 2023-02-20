@@ -10,7 +10,7 @@
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from a repository.</p>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Recipe>>>(ServerReload))"
           Dense="true" Hover="true" @ref="table">
@@ -54,7 +54,7 @@
     /*
     protected override async Task OnInitializedAsync()
     {
-        data = await RecipeService.LoadTable();
+        data = await RecipeRepository.LoadTable();
     }
     */
     private async Task<TableData<Recipe>> ServerReload(TableState state)

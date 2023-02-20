@@ -1,20 +1,20 @@
 ﻿using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Services;
+using BlazorServerTest.Core.Data.Repositories;
 using MudBlazor;
 
 namespace BlazorServerTest.Services;
 
 public class RecipeViewService
 {
-    private readonly RecipeService _service;
-    public RecipeViewService(RecipeService service)
+    private readonly RecipeRepository _repository;
+    public RecipeViewService(RecipeRepository repository)
     {
-        _service = service;
+        _repository = repository;
     }
 
     public async Task<TableData<Recipe>> LoadTable(TableState state)
     {
-        var data = await _service.GetForecastAsync("");
+        var data = await _repository.GetForecastAsync("");
         var totalItems = data.Count();
         switch (state.SortLabel)
         {

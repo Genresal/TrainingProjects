@@ -1,10 +1,10 @@
-﻿@using BlazorServerTest.Core.Services
-@using Microsoft.AspNetCore.Components
+﻿@using Microsoft.AspNetCore.Components
 @using BlazorServerTest.Core.Data.Entities
+@using BlazorServerTest.Core.Data.Repositories
 @using BlazorServerTest.Core.Models
 @using Mapster
-@inject RecipeService ForecastService
-@inject CategoryService CategoryService
+@inject RecipeRepository ForecastService
+@inject CategoryRepository CategoryService
 
 <button type="button" class="btn btn-primary" @onclick="ShowModal">Show Modal </button>
 <div class="modal" tabindex="-1" role="dialog" style="display: @(showModal ? "block" : "none")">

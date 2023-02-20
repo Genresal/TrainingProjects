@@ -1,15 +1,15 @@
 ﻿using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Infrastructure;
 
-namespace BlazorServerTest.Core.Services
+namespace BlazorServerTest.Core.Data.Repositories
 {
-    public class CategoryService : BaseService<Category>
+    public class CategoryRepository : BaseRepository<Category>
     {
-        private readonly RecipeService _recipeService;
+        private readonly RecipeRepository _recipeRepository;
 
-        public CategoryService(AppDbContext context, RecipeService recipeService) : base(context)
+        public CategoryRepository(AppDbContext context, RecipeRepository recipeRepository) : base(context)
         {
-            _recipeService = recipeService;
+            _recipeRepository = recipeRepository;
         }
 
         public async Task CalculateRecipesQuantity()
@@ -18,7 +18,7 @@ namespace BlazorServerTest.Core.Services
 
             foreach (var cat in categories)
             {
-                var catRecipesCount = await _recipeService.Count(x => x.Categories.Contains(cat));
+                var catRecipesCount = await _recipeRepository.Count(x => x.Categories.Contains(cat));
 
                 if (cat.Quantity != catRecipesCount)
                 {

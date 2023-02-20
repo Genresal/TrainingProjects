@@ -4,13 +4,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorServerTest.Core.BackgroundServices;
-public class TimerHosterService : BackgroundService
+public class TimerHostedService : BackgroundService
 {
-    private readonly ILogger<TimerHosterService> _logger;
+    private readonly ILogger<TimerHostedService> _logger;
     private Timer? _timer = null;
     private readonly IServiceProvider _serviceProvider;
 
-    public TimerHosterService(ILogger<TimerHosterService> logger, IServiceProvider serviceProvider)
+    public TimerHostedService(ILogger<TimerHostedService> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;

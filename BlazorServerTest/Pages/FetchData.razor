@@ -1,13 +1,13 @@
 ﻿@page "/fetchdata"
-@using BlazorServerTest.Core.Services
 @using BlazorServerTest.Core.Data.Entities
-@inject RecipeService RecipeService
+@using BlazorServerTest.Core.Data.Repositories
+@inject RecipeRepository RecipeRepository
 
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from a repository.</p>
 
 @if (recipes == null)
 {
@@ -92,7 +92,7 @@ else
 
 	protected override async Task OnInitializedAsync()
     {
-		rawData = (await RecipeService.GetForecastAsync(String.Empty)).ToList();
+		rawData = (await RecipeRepository.GetForecastAsync(String.Empty)).ToList();
 	    AuxCalculating();
     }
 
@@ -109,7 +109,7 @@ else
 
     private async Task AddDefaultHandler()
     {
-		var addedItem = await RecipeService.AddDefault();
+		var addedItem = await RecipeRepository.AddDefault();
 		DataAddedHandler(addedItem);
     }
 
@@ -129,7 +129,7 @@ else
 
 	private async Task DeleteHandler(int id)
 	{
-		await RecipeService.Delete(id);
+		await RecipeRepository.Delete(id);
 		rawData = rawData.Where(x => x.Id != id).ToList();
 		AuxCalculating();
 		StateHasChanged();
@@ -138,7 +138,7 @@ else
 	private async Task OnSearchChanged()
 	{
 		Console.WriteLine(SearchTerm);
-		rawData = (await RecipeService.GetForecastAsync(SearchTerm)).ToList();
+		rawData = (await RecipeRepository.GetForecastAsync(SearchTerm)).ToList();
 		AuxCalculating();
 		StateHasChanged();
 	}

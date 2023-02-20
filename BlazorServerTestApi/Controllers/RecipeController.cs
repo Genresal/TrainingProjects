@@ -1,5 +1,5 @@
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Services;
+using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTestApi.VIewModels;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +10,12 @@ namespace BlazorServerTestApi.Controllers
     [Route("[controller]")]
     public class RecipeController : ControllerBase
     {
-        private readonly RecipeService _service;
+        private readonly RecipeRepository _repository;
         private readonly ILogger<RecipeController> _logger;
 
-        public RecipeController(RecipeService service, ILogger<RecipeController> logger)
+        public RecipeController(RecipeRepository repository, ILogger<RecipeController> logger)
         {
-            _service = service;
+            _repository = repository;
             _logger = logger;
         }
 
@@ -23,7 +23,7 @@ namespace BlazorServerTestApi.Controllers
         public async Task<Recipe> Add([FromBody] ChangeRecipeViewModel viewModel)
         {
 
-            var result = await _service.Add(viewModel.Adapt<Recipe>(), viewModel.CategoryIds);
+            var result = await _repository.Add(viewModel.Adapt<Recipe>(), viewModel.CategoryIds);
 
             return result;
         }
@@ -31,7 +31,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet]
         public async Task<List<Recipe>> GetAll()
         {
-            var result = await _service.GetAll();
+            var result = await _repository.GetAll();
 
             return result;
         }
@@ -39,7 +39,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet("{id}")]
         public async Task<Recipe> Get(int id)
         {
-            var result = await _service.Get(id);
+            var result = await _repository.Get(id);
 
             return result;
         }
@@ -47,7 +47,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            await _service.Delete(id);
+            await _repository.Delete(id);
         }
     }
 }
