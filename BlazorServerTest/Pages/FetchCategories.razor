@@ -56,7 +56,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await CategoryRepository.CalculateRecipesQuantity();
         categories = (await CategoryRepository.GetAll()).ToList();
     }
 

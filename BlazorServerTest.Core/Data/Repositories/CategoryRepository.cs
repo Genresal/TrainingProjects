@@ -12,7 +12,7 @@ namespace BlazorServerTest.Core.Data.Repositories
             _recipeRepository = recipeRepository;
         }
 
-        public async Task CalculateRecipesQuantity()
+        public async Task<List<Category>> CalculateRecipesQuantity()
         {
             var categories = await base.GetAll();
 
@@ -26,6 +26,13 @@ namespace BlazorServerTest.Core.Data.Repositories
                     await Update(cat);
                 }
             }
+
+            return categories;
+        }
+
+        public override Task<List<Category>> GetAll()
+        {
+            return CalculateRecipesQuantity();
         }
     }
 }

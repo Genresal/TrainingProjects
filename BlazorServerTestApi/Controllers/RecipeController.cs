@@ -20,28 +20,28 @@ namespace BlazorServerTestApi.Controllers
         }
 
         [HttpPost]
-        public async Task<Recipe> Add([FromBody] ChangeRecipeViewModel viewModel)
+        public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
         {
 
             var result = await _repository.Add(viewModel.Adapt<Recipe>(), viewModel.CategoryIds);
 
-            return result;
+            return result.Adapt<RecipeViewModel>();
         }
 
         [HttpGet]
-        public async Task<List<Recipe>> GetAll()
+        public async Task<List<RecipeViewModel>> GetAll()
         {
             var result = await _repository.GetAll();
 
-            return result;
+            return result.Adapt<List<RecipeViewModel>>();
         }
 
         [HttpGet("{id}")]
-        public async Task<Recipe> Get(int id)
+        public async Task<RecipeViewModel> Get(int id)
         {
             var result = await _repository.Get(id);
 
-            return result;
+            return result.Adapt<RecipeViewModel>();
         }
 
         [HttpDelete("{id}")]
