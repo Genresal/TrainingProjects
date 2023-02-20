@@ -14,6 +14,6 @@ public static class ServiceCollectionRegistry
         services.AddTransient<CategoryService>();
 
         services.AddTransient<AuxService>();
-        services.AddHostedService<TimerHosterService>();
+        services.AddHostedService<TimerHostedService>();
     }
 }
