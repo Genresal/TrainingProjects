@@ -1,5 +1,5 @@
-﻿using BlazorServerTest.Data.Entities.Interfaces;
-using BlazorServerTest.Data.Infrastructure;
+﻿using BlazorServerTest.Core.Data.Entities.Interfaces;
+using BlazorServerTest.Core.Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorTestAppTests.Infrastructure

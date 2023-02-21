@@ -1,5 +1,5 @@
 ﻿using BlazorServerTest.Core.Data.Entities;
-using Microsoft.Data.Sqlite;
+//using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Core.Data.Infrastructure;
@@ -10,7 +10,8 @@ public class AppDbContext : DbContext
         Database.EnsureCreated();
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     }
-
+    /*  //SqlLite
+     /* //In SqLite when i delete entities from result table count works from cache or smth, it uses onl data!!!
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)   // For inmemory testing
@@ -21,7 +22,7 @@ public class AppDbContext : DbContext
 
             optionsBuilder.UseSqlite(connection);
         }
-    }
+    }*/
 
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }

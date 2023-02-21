@@ -1,74 +1,105 @@
+using AutoFixture;
+using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Repositories;
 using BlazorTestAppTests.Infrastructure;
+using BlazorTestAppTests.TestsData;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace BlazorTestAppTests
 {
-    public class RecipeCategoriesTests : IntegrationTestsBase
-    {/*
-        private readonly Mock<ILogger<IRecipeRepository>> _loggerMock;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly ICategoryService _categoryService;
-        private readonly IRecipeRepository _recipeRepository;
+	public class RecipeCategoriesTests : IntegrationTestsBase
+	{
+		private readonly Mock<ILogger<RecipeRepository>> _loggerMock;
+		private readonly CategoryRepository _categoryRepository;
+		private readonly RecipeRepository _recipeRepository;
+		private readonly Fixture _fixture;
 
-        public RecipeCategoriesTests()
-        {
-            _loggerMock = new Mock<ILogger<IRecipeRepository>>();
-            _categoryRepository = new CategoryRepository(Context);
-            _recipeRepository = new RecipeRepository(Context, _loggerMock.Object);
-        }
+		public RecipeCategoriesTests()
+		{
+			_loggerMock = new Mock<ILogger<RecipeRepository>>();
+			_recipeRepository = new RecipeRepository(Context);
+			_categoryRepository = new CategoryRepository(Context, _recipeRepository);
+			_fixture = new Fixture();
+			//_fixture.Customize<Recipe>(c => c.OmitAutoProperties());    // Avoiding circular references. No it create instance with nullable props
 
-        [Fact]
-        public async Task Create_Entity_ReturnsEntity()
-        {
-            await AddToContext(TestCategories.CategoryEntity);
-            //Arrange
-            var entity = TestRecipes.RecipeEntity;
+		}
 
-            //Act
-            var trackedList = Context.ChangeTracker.Entries();
-            var actualResult = await _recipeRepository.Add(entity);
-            var categories = await _categoryRepository.GetAll();
+		[Fact]
+		public async Task Create_Entity_ReturnsEntity()
+		{
+			await AddToContext(TestCategories.CategoryEntity);
+			//Arrange
+			var entity = TestRecipes.RecipeEntity;
 
-            foreach (var cat in categories)
-            {
-                var catRecipesCount = await _recipeRepository.Count(x => x.Categories.Contains(cat));
+			//Act
+			var trackedList = Context.ChangeTracker.Entries();
+			var actualResult = await _recipeRepository.Add(entity);
+			var categories = await _categoryRepository.GetAll();
 
-                trackedList = Context.ChangeTracker.Entries();
+			foreach (var cat in categories)
+			{
+				var catRecipesCount = await _recipeRepository.Count(x => x.Categories.Contains(cat));
 
-                if (cat.Quantity != catRecipesCount)
-                {
-                    cat.Quantity = catRecipesCount;
-                    await _categoryRepository.Update(cat);
-                }
-            }
+				trackedList = Context.ChangeTracker.Entries();
 
-            var lastRecipe = Context.Recipes.Include(x => x.Categories).Last();
+				if (cat.Quantity != catRecipesCount)
+				{
+					cat.Quantity = catRecipesCount;
+					await _categoryRepository.Update(cat);
+				}
+			}
 
-            //Assert
-            actualResult.Should().BeEquivalentTo(entity);
-            lastRecipe.Should().BeEquivalentTo(entity);
-            lastRecipe.Categories.Should().Contain(categories);
-            categories.Last().Quantity.Should().Be(1);
-        }
+			var lastRecipe = Context.Recipes.Include(x => x.Categories).Last();
 
-        [Fact]
-        public async Task Test2()
-        {
-            await AddToContext(TestCategories.CategoryEntity);
-            //Arrange
-            var entity = TestRecipes.RecipeEntity;
+			//Assert
+			actualResult.Should().BeEquivalentTo(entity);
+			lastRecipe.Should().BeEquivalentTo(entity);
+			lastRecipe.Categories.Should().Contain(categories);
+			categories.Last().Quantity.Should().Be(1);
+		}
 
-            //Act
-            var actualResult = await _recipeRepository.Add(entity);
-            var categories = await _categoryRepository.GetAll();
+		[Fact]
+		public async Task Test2()
+		{
+			await AddToContext(TestCategories.CategoryEntity);
+			//Arrange
+			var entity = TestRecipes.RecipeEntity;
 
-            var lastRecipe = Context.Recipes.Include(x => x.Categories).Last();
+			//Act
+			var actualResult = await _recipeRepository.Add(entity);
+			var categories = await _categoryRepository.GetAll();
 
-            //Assert
-            actualResult.Should().BeEquivalentTo(entity);
-            lastRecipe.Should().BeEquivalentTo(entity, opt => opt.Excluding(x => x.Categories));
-            categories.Last().Quantity.Should().Be(1);
+			var lastRecipe = Context.Recipes.Include(x => x.Categories).Last();
 
+			//Assert
+			actualResult.Should().BeEquivalentTo(entity);
+			lastRecipe.Should().BeEquivalentTo(entity, opt => opt.Excluding(x => x.Categories));
+			categories.Last().Quantity.Should().Be(1);
+		}
 
-        }*/
-    }
+		[Fact]
+		//[AutoDomainDataAttribute]
+		//[Theory, AutoData]
+		//[Theory, AutoDataWithOmitOnRecursion]
+		public async Task Test23(/*[Frozen] Recipe entity*/)
+		{
+			//Arrange
+			var entity = _fixture.Build<Recipe>()
+				.Without(x => x.Categories)
+				.Without(x => x.RecipeCategories)
+				.Without(x => x.Steps)
+				.Without(x => x.Ingredients)
+				.Create();
+			await AddToContext(entity);
+
+			//Act
+			var result = await _recipeRepository.Get(entity.Id);
+
+			//Assert
+			result.Should().BeEquivalentTo(entity);
+		}
+	}
 }
