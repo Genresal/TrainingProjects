@@ -14,22 +14,11 @@ namespace BlazorServerTest.Core.Data.Repositories
             await Add(model);
 
             var categoryRecipes = categoryIds.Select(x => new RecipeCategory() { CategoryId = x, RecipeId = model.Id });
-            model.RecipeCategories.AddRange(categoryRecipes);
+            _context.RecipeCategories.AddRange(categoryRecipes);
 
             await _context.SaveChangesAsync();
 
             return model;
-        }
-
-        public async Task<IEnumerable<Recipe>> GetForecastAsync(string? search)
-        {
-            var data = (await GetAll()).ToList();
-            if (!string.IsNullOrEmpty(search))
-            {
-                return data.Where(x => x.Name is not null && x.Name.ToUpper().Contains(search.ToUpper()));
-            }
-
-            return data;
         }
 
         public Task<Recipe> AddDefault()

@@ -46,6 +46,18 @@ public class BaseRepository<TEntity> where TEntity : class, IEntity
         return _dbSet.CountAsync(predicate);
     }
 
+    public virtual Task<List<TEntity>> GetAll(params Expression<Func<TEntity, object>>[] includeProperties)
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+
+        return query.ToListAsync();
+    }
+
     public virtual Task<List<TEntity>> GetAll()
     {
         return _dbSet.ToListAsync();

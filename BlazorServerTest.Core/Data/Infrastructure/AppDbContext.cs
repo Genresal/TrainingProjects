@@ -25,16 +25,36 @@ public class AppDbContext : DbContext
     }*/
 
     public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<RecipeCategory> RecipeCategories { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Step> Steps { get; set; }
-    public DbSet<Category> Categories { get; set; }
 
 
     //Fluent API
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .Entity<Recipe>()
+
+        modelBuilder.Entity<Recipe>()
+            .HasMany(x => x.Categories)
+            .WithMany(x => x.Recipes)
+            .UsingEntity<RecipeCategory>(
+                e => e
+                    .HasOne(pt => pt.Category)
+                    .WithMany(),
+                e => e
+                    .HasOne(x => x.Recipe)
+                    .WithMany(),
+                e =>
+                {
+                    e.HasKey(t => new { t.RecipeId, t.CategoryId });
+                    e.ToTable("RecipeCategories");
+                });
+
+
+
+        /*
+        modelBuilder.Entity<Recipe>()
             .HasMany(c => c.Categories)
             .WithMany(s => s.Recipes)
             .UsingEntity<RecipeCategory>(
@@ -52,6 +72,6 @@ public class AppDbContext : DbContext
                     //j.Property(pt => pt.Mark).HasDefaultValue(3);
                     j.HasKey(t => new { t.RecipeId, t.CategoryId });
                     j.ToTable("RecipeCategories");
-                });
+                });*/
     }
 }

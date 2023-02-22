@@ -1,5 +1,6 @@
-﻿using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
+﻿using BlazorServerTest.Core.Data.Repositories;
+using BlazorServerTest.Core.Models;
+using Mapster;
 using MudBlazor;
 
 namespace BlazorServerTest.Services;
@@ -12,9 +13,10 @@ public class RecipeViewService
         _repository = repository;
     }
 
-    public async Task<TableData<Recipe>> LoadTable(TableState state)
+    public async Task<TableData<RecipeViewModel>> LoadTable(TableState state)
     {
-        var data = await _repository.GetForecastAsync("");
+        var rawData = await _repository.GetAll(includeProperties: x => x.Categories);
+        var data = rawData.Adapt<IEnumerable<RecipeViewModel>>();
         var totalItems = data.Count();
         switch (state.SortLabel)
         {
@@ -27,15 +29,10 @@ public class RecipeViewService
             case "name_field":
                 data = data.OrderByDirection(state.SortDirection, o => o.Name);
                 break;
-            case "position_field":
-                data = data.OrderByDirection(state.SortDirection, o => o.CookTime);
-                break;
-            case "mass_field":
-                data = data.OrderByDirection(state.SortDirection, o => o.PrepTime);
-                break;
         }
 
         var pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        return new TableData<Recipe>() { TotalItems = totalItems, Items = pagedData };
+        var mappedData = pagedData.Adapt<List<RecipeViewModel>>();
+        return new TableData<RecipeViewModel>() { TotalItems = totalItems, Items = mappedData };
     }
 }

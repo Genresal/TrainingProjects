@@ -1,5 +1,6 @@
 ﻿@page "/fetchdatamud"
 @using BlazorServerTest.Core.Data.Entities
+@using BlazorServerTest.Core.Models
 @using BlazorServerTest.Services
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
@@ -12,7 +13,7 @@
 
 <p>This component demonstrates fetching data from a repository.</p>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Recipe>>>(ServerReload))"
+<MudTable ServerData="@(new Func<TableState, Task<TableData<RecipeViewModel>>>(ServerReload))"
           Dense="true" Hover="true" @ref="table">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Periodic Elements</MudText>
@@ -21,18 +22,21 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortLabel="nr_field" T="Recipe">Nr</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="sign_field" T="Recipe">Sign</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="name_field" T="Recipe">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="position_field" T="Recipe">Position</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="mass_field" T="Recipe">Molar mass</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="nr_field" T="RecipeViewModel">Nr</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="sign_field" T="RecipeViewModel">Description</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name_field" T="RecipeViewModel">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="position_field" T="RecipeViewModel">Categories</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Nr">@context.Id</MudTd>
         <MudTd DataLabel="Sign">@context.Description</MudTd>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Position">@context.CookTime</MudTd>
-        <MudTd DataLabel="Molar mass">@context.PrepTime</MudTd>
+        <MudTd DataLabel="Position">
+            @foreach (var category in context.Categories)
+            {
+                <MudChip>@category.Name</MudChip>
+            }
+        </MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>
@@ -46,8 +50,8 @@
 </MudTable>
 
 @code {
-    private TableData<Recipe> data;
-    private MudTable<Recipe> table;
+    private TableData<RecipeViewModel> data;
+    private MudTable<RecipeViewModel> table;
 
     private int totalItems;
 	private string searchString = null;
@@ -57,7 +61,7 @@
         data = await RecipeRepository.LoadTable();
     }
     */
-    private async Task<TableData<Recipe>> ServerReload(TableState state)
+    private async Task<TableData<RecipeViewModel>> ServerReload(TableState state)
     {
         return await RecipeService.LoadTable(state);
     }

@@ -92,7 +92,7 @@ else
 
 	protected override async Task OnInitializedAsync()
     {
-		rawData = (await RecipeRepository.GetForecastAsync(String.Empty)).ToList();
+		rawData = (await RecipeRepository.GetAll(includeProperties: x => x.Categories)).ToList();
 	    AuxCalculating();
     }
 
@@ -138,7 +138,7 @@ else
 	private async Task OnSearchChanged()
 	{
 		Console.WriteLine(SearchTerm);
-		rawData = (await RecipeRepository.GetForecastAsync(SearchTerm)).ToList();
+		//rawData = (await RecipeRepository.GetForecastAsync(SearchTerm)).ToList();
 		AuxCalculating();
 		StateHasChanged();
 	}

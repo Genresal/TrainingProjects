@@ -10,7 +10,6 @@ public static class TestCategories
         Name = "Test Category",
         Quantity = 10.5m,
         Unit = "lbs",
-        Recipes = new List<Recipe>(),
     };
 
     public static List<Category> RecipeEntityCollection => new()
