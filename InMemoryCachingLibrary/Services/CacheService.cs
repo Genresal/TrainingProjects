@@ -61,6 +61,12 @@ namespace InMemoryCachingLibrary.Services
         {
             optionName ??= type.IsGenericType ? type.GetGenericArguments().First().Name : type.Name;
 
+            if (_cacheSettings is null)
+            {
+                throw new NotImplementedException(
+                    "The cache section does not found inside the application configuration, There is example configuration \"CacheSettings\" { \"MemoryCacheDuration\" { \"TypeName\": TimeInHours }}. Read documentation for more information.");
+            }
+
             if (!_cacheSettings.MemoryCacheDuration.TryGetValue(optionName, out var expirationTime))
             {
                 throw new NotImplementedException($"The time for caching is not specified for the {optionName} entity.");

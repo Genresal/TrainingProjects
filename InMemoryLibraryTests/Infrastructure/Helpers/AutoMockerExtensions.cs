@@ -9,12 +9,25 @@ namespace InMemoryLibraryTests.Infrastructure.Helpers
 {
     internal static class AutoMockerExtensions
     {
-        public static CacheService CreateInstanceOfMemoryCache(this AutoMocker mocker)
+        private const string ConfigFileName = "appsettings.json";
+        private const string InvalidConfigFileName = "appsettings.Invalid.json";
+
+        public static CacheService CreateValidInstanceOfMemoryCache(this AutoMocker mocker)
+        {
+            return CreateInstanceOfMemoryCache(mocker);
+        }
+
+        public static CacheService CreateInvalidInstanceOfMemoryCache(this AutoMocker mocker)
+        {
+            return CreateInstanceOfMemoryCache(mocker, InvalidConfigFileName);
+        }
+
+        private static CacheService CreateInstanceOfMemoryCache(this AutoMocker mocker, string configFileName = ConfigFileName)
         {
             var memoryCache = Create.MockedMemoryCache();
             var configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", false)
+                    .AddJsonFile(configFileName, false)
                     .Build();
 
             var options = Options.Create(configuration.GetSection(nameof(CacheSettings)).Get<CacheSettings>());
