@@ -9,13 +9,18 @@ namespace BlazorServerTest.Core.Data.Repositories
         {
         }
 
-        public async Task<Recipe> Add(Recipe model, List<int>? categoryIds)
+        public override async Task<Recipe> Add(Recipe model)
         {
-            await Add(model);
+            foreach (var category in model.Categories)
+            {
+                _context.Attach(category);
+            }
 
-            var categoryRecipes = categoryIds.Select(x => new RecipeCategory() { CategoryId = x, RecipeId = model.Id });
+            await _context.AddAsync(model);
+            /*
+            var categoryRecipes = model.Categories.Select(x => new RecipeCategory() { CategoryId = x.Id, RecipeId = model.Id });
             _context.RecipeCategories.AddRange(categoryRecipes);
-
+            */
             await _context.SaveChangesAsync();
 
             return model;

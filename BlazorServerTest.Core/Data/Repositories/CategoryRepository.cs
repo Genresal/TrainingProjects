@@ -23,7 +23,7 @@ namespace BlazorServerTest.Core.Data.Repositories
                 if (cat.Quantity != catRecipesCount)
                 {
                     cat.Quantity = catRecipesCount;
-                    await Update(cat);
+                    //await Update(cat);
                 }
             }
 

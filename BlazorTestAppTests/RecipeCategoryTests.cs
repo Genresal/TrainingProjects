@@ -28,29 +28,16 @@ namespace BlazorTestAppTests
         }
 
         [Fact]
-        public async Task Create_Entity_ReturnsEntity()
+        public async Task GetAll_RecipesWithCategories_ReturnsEntity()
         {
-            await AddToContext(TestCategories.CategoryEntity);
             //Arrange
+            await AddToContext(TestCategories.CategoryEntity);
             var entity = TestRecipes.RecipeEntity;
 
             //Act
             var trackedList = Context.ChangeTracker.Entries();
             var actualResult = await _recipeRepository.Add(entity);
             var categories = await _categoryRepository.GetAll();
-
-            foreach (var cat in categories)
-            {
-                var catRecipesCount = await _recipeRepository.Count(x => x.Categories.Contains(cat));
-
-                trackedList = Context.ChangeTracker.Entries();
-
-                if (cat.Quantity != catRecipesCount)
-                {
-                    cat.Quantity = catRecipesCount;
-                    await _categoryRepository.Update(cat);
-                }
-            }
 
             var lastRecipe = Context.Recipes.Include(x => x.Categories).Last();
 

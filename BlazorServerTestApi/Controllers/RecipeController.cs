@@ -23,7 +23,7 @@ namespace BlazorServerTestApi.Controllers
         public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
         {
 
-            var result = await _repository.Add(viewModel.Adapt<Recipe>(), viewModel.CategoryIds);
+            var result = await _repository.Add(viewModel.Adapt<Recipe>());
 
             return result.Adapt<RecipeViewModel>();
         }

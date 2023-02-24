@@ -64,7 +64,10 @@ public class BaseRepository<TEntity> where TEntity : class, IEntity
     }
 
     public Task<TEntity> Update(TEntity entity)
-    {
+    {/*
+        _dbSet.Entry(entity).State = EntityState.Modified;
+        _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        */
         _dbSet.Update(entity);
 
         return _context.SaveChangesAsync().ContinueWith(x => entity);
