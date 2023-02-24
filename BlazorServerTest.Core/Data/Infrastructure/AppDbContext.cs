@@ -50,28 +50,5 @@ public class AppDbContext : DbContext
                     e.HasKey(t => new { t.RecipeId, t.CategoryId });
                     e.ToTable("RecipeCategories");
                 });
-
-
-
-        /*
-        modelBuilder.Entity<Recipe>()
-            .HasMany(c => c.Categories)
-            .WithMany(s => s.Recipes)
-            .UsingEntity<RecipeCategory>(
-                j => j
-                    .HasOne(pt => pt.Category)
-                    .WithMany(t => t.RecipeCategories)
-                    .HasForeignKey(pt => pt.CategoryId),
-                j => j
-                    .HasOne(pt => pt.Recipe)
-                    .WithMany(p => p.RecipeCategories)
-                    .HasForeignKey(pt => pt.RecipeId),
-                j =>
-                {
-                    //j.Property(pt => pt.EnrollmentDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                    //j.Property(pt => pt.Mark).HasDefaultValue(3);
-                    j.HasKey(t => new { t.RecipeId, t.CategoryId });
-                    j.ToTable("RecipeCategories");
-                });*/
     }
 }

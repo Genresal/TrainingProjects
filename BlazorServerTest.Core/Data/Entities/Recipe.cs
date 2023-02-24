@@ -11,9 +11,9 @@ public class Recipe : IEntity
     public int? Servings { get; set; }
     public byte[]? Image { get; set; }
 
-    public ICollection<Ingredient> Ingredients { get; set; }
-    public ICollection<Step> Steps { get; set; }
-    public ICollection<Category> Categories { get; set; } = new List<Category>();
+    public virtual ICollection<Ingredient> Ingredients { get; set; }
+    public virtual ICollection<Step> Steps { get; set; }
+    public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 
 
 }

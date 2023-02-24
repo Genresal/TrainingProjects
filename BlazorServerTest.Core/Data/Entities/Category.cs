@@ -8,5 +8,5 @@ public class Category : IEntity
     public decimal? Quantity { get; set; }
     public string? Unit { get; set; }
 
-    public ICollection<Recipe> Recipes { get; set; }
+    public virtual ICollection<Recipe> Recipes { get; set; }
 }

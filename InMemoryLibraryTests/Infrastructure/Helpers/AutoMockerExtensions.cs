@@ -35,5 +35,19 @@ namespace InMemoryLibraryTests.Infrastructure.Helpers
 
             return memoryCacheHelper;
         }
-    }
+
+        private static CacheService CreateInstanceOfMemoryCache1(this AutoMocker mocker, string configFileName = ConfigFileName)
+        {
+	        var memoryCache = Create.MockedMemoryCache();
+	        var configuration = new ConfigurationBuilder()
+		        .SetBasePath(Directory.GetCurrentDirectory())
+		        .AddJsonFile(configFileName, false)
+		        .Build();
+
+	        var options = Options.Create(configuration.GetSection(nameof(CacheSettings)).Get<CacheSettings>());
+	        var memoryCacheHelper = new CacheService(memoryCache, options);
+
+	        return memoryCacheHelper;
+        }
+	}
 }

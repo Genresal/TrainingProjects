@@ -1,5 +1,6 @@
 using FluentAssertions;
 using InMemoryLibraryTests.Infrastructure.Helpers;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using Moq.AutoMock;
 
@@ -68,6 +69,29 @@ namespace InMemoryLibraryTests
 
             // Assert
             action.Should().Throw<NotImplementedException>();
+        }
+
+        [Test]
+        public async Task GetOrCreateAsync_DataChangesBetweenCalls_1()
+        {
+            // Arrange
+            var key = "testString1";
+            var expectedValue = "testValue";
+            var isFactoryCalled = false;
+            var mocker = new AutoMocker(MockBehavior.Default, DefaultValue.Mock);
+
+            Func<Task<string>> factory = () =>
+            {
+                isFactoryCalled = true;
+                return Task.FromResult(isFactoryCalled ? expectedValue : string.Empty);
+            };
+            var memoryCache = mocker.CreateValidInstanceOfMemoryCache();
+
+            // Act
+            memoryCache.Remove(key);
+
+            // Assert
+            mocker.GetMock<IMemoryCache>().Verify(x => x.Remove(key), Times.Once);
         }
     }
 }
