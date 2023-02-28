@@ -1,10 +1,11 @@
 ﻿@page "/fetchdatamud"
-@using BlazorServerTest.Core.Data.Entities
+@using BlazorServerTest.Core.Data.Repositories
 @using BlazorServerTest.Core.Models
 @using BlazorServerTest.Services
 @using Microsoft.AspNetCore.Components
-@using MudBlazor
 @inject RecipeViewService RecipeService
+@inject RecipeRepository RecipeRepository
+@inject IDialogService DialogService
 @inherits LayoutComponentBase
 
 <PageTitle>Weather forecast</PageTitle>
@@ -26,6 +27,7 @@
         <MudTh><MudTableSortLabel SortLabel="sign_field" T="RecipeViewModel">Description</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="name_field" T="RecipeViewModel">Name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="position_field" T="RecipeViewModel">Categories</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Nr">@context.Id</MudTd>
@@ -36,6 +38,10 @@
             {
                 <MudChip>@category.Name</MudChip>
             }
+        </MudTd>
+        <MudTd>
+            <MudButton OnClick="@((e) => DeleteRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Error">Delete Records</MudButton>
+            <MudButton OnClick="@((e) => UpdateRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Error">Update</MudButton>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -63,7 +69,41 @@
     */
     private async Task<TableData<RecipeViewModel>> ServerReload(TableState state)
     {
-        return await RecipeService.LoadTable(state);
+        return await RecipeService.LoadTable(state, searchString);
+    }
+
+    private async Task DeleteRecipe(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() {CloseButton = true, MaxWidth = MaxWidth.ExtraSmall};
+
+        var dialog = await DialogService.ShowAsync<DialogTemplateExample_Dialog>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await RecipeRepository.Delete(id);
+            await table.ReloadServerData();
+        }
+    }
+
+    private async Task UpdateRecipe(int id)
+    {
+        var recipe = await RecipeRepository.Get(id);
+        var parameters = new DialogParameters { ["recipe"]=recipe };
+
+        var dialog = await DialogService.ShowAsync<DialogUpdate_Dialog>("Delete", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+           //await RecipeRepository.Update(result.Data.ToString());
+            await table.ReloadServerData();
+        }
     }
 
     private void OnSearch(string text)

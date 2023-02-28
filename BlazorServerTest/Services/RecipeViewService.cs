@@ -13,10 +13,18 @@ public class RecipeViewService
         _repository = repository;
     }
 
-    public async Task<TableData<RecipeViewModel>> LoadTable(TableState state)
+    public async Task<TableData<RecipeViewModel>> LoadTable(TableState state, string searchString)
     {
         var rawData = await _repository.GetAll(includeProperties: x => x.Categories);
         var data = rawData.Adapt<IEnumerable<RecipeViewModel>>();
+
+        //move search to db
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            data = data.Where(x => x.Description.ToLower().Contains(searchString.ToLower())).ToArray();
+        }
+
+
         var totalItems = data.Count();
         switch (state.SortLabel)
         {

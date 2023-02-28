@@ -25,4 +25,12 @@
     <ProjectReference Include="..\InMemoryCachingLibrary\InMemoryCachingLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\DialogTemplateExample_Dialog.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\DialogTemplateExample_Dialog.razor" />
+  </ItemGroup>
+
 </Project>

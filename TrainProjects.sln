@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTestAppTests", "Blazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest.Core", "BlazorServerTest.Core\BlazorServerTest.Core.csproj", "{800E6683-5D88-4F7F-9A97-E97E0926F0E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerTestApi", "BlazorServerTestApi\BlazorServerTestApi.csproj", "{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTestApi", "BlazorServerTestApi\BlazorServerTestApi.csproj", "{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryLibraryTests", "InMemoryLibraryTests\InMemoryLibraryTests.csproj", "{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryLibraryTests", "InMemoryLibraryTests\InMemoryLibraryTests.csproj", "{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
