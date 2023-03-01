@@ -13,9 +13,10 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a repository.</p>
+<MudFab OnClick="@((e) => CreateRecipe())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new recipe" Size="Size.Small" Class="mb-3"/>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<RecipeViewModel>>>(ServerReload))"
-          Dense="true" Hover="true" @ref="table">
+          Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Periodic Elements</MudText>
         <MudSpacer />
@@ -39,9 +40,9 @@
                 <MudChip>@category.Name</MudChip>
             }
         </MudTd>
-        <MudTd>
-            <MudButton OnClick="@((e) => DeleteRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Error">Delete Records</MudButton>
-            <MudButton OnClick="@((e) => UpdateRecipe(context.Id))" Variant="Variant.Filled" Color="Color.Error">Update</MudButton>
+        <MudTd Class="d-flex justify-center">
+            <MudFab OnClick="@((e) => UpdateRecipe(context.Id))" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Class="mr-2"/>
+            <MudFab OnClick="@((e) => DeleteRecipe(context.Id))" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" DisableElevation="true" />
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -91,17 +92,31 @@
         }
     }
 
+    private async Task CreateRecipe()
+    {
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Create new Recipe", options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
     private async Task UpdateRecipe(int id)
     {
         var recipe = await RecipeRepository.Get(id);
         var parameters = new DialogParameters { ["recipe"]=recipe };
 
-        var dialog = await DialogService.ShowAsync<DialogUpdate_Dialog>("Delete", parameters);
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Update Recipe", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-           //await RecipeRepository.Update(result.Data.ToString());
             await table.ReloadServerData();
         }
     }

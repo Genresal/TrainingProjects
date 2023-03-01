@@ -1,0 +1,42 @@
+﻿@using BlazorServerTest.Core.Data.Entities
+@using BlazorServerTest.Core.Data.Repositories
+@inject RecipeRepository RecipeRepository
+
+<MudDialog>
+    <DialogContent>
+        @if (recipe.Id != 0)
+        {
+            <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @recipe.Id.ToString().</MudText>
+        }
+
+        <!--<MudTextField Value="@recipe.Id.ToString()" Label="Server ID" ReadOnly="true"/>-->
+        <MudTextField @bind-Value="@recipe.Name" Label="Server Name"/>
+        <MudTextField @bind-Value="@recipe.Description" Label="Location"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public Recipe recipe { get; set; } = new Recipe();
+
+    //void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    private async Task Submit()
+    {
+        if (recipe.Id == 0)
+        {
+            await RecipeRepository.Add(recipe);
+        }
+        else
+        {
+            await RecipeRepository.Update(recipe);
+        }
+
+        MudDialog.Close(DialogResult.Ok(recipe.Id));
+    }
+    void Cancel() => MudDialog.Cancel();
+}
