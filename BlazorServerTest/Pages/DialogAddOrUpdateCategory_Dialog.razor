@@ -1,0 +1,41 @@
+﻿@using BlazorServerTest.Core.Data.Entities
+@using BlazorServerTest.Core.Data.Repositories
+@inject CategoryRepository Repository
+
+<MudDialog>
+    <DialogContent>
+        @if (item.Id != 0)
+        {
+            <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @item.Id.ToString().</MudText>
+        }
+
+        <MudTextField @bind-Value="@item.Name" Label="Category Name"/>
+        <MudTextField @bind-Value="@item.Unit" Label="Unit"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public Category item { get; set; } = new Category();
+
+    //void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    private async Task Submit()
+    {
+        if (item.Id == 0)
+        {
+            await Repository.Add(item);
+        }
+        else
+        {
+            await Repository.Update(item);
+        }
+
+        MudDialog.Close(DialogResult.Ok(item.Id));
+    }
+    void Cancel() => MudDialog.Cancel();
+}

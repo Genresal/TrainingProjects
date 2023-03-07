@@ -1,0 +1,52 @@
+﻿@typeparam T where T : class, BlazorServerTest.Core.Data.Entities.Interfaces.IEntity
+@using BlazorServerTest.Core.Data.Repositories
+@using Microsoft.AspNetCore.Components
+@using System.Collections
+@inject BaseRepository<T> Repository
+
+<MudDialog>
+    <DialogContent>
+        @if (item.Id != 0)
+        {
+            <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @item.Id.ToString().</MudText>
+        }
+
+        @foreach (var prop in item.GetType().GetProperties())
+        {
+            if (typeof(ICollection).IsAssignableFrom(prop.PropertyType))
+            {
+                continue;
+            }
+
+            var value = prop.GetValue(item);
+            <MudTextField @bind-Value="@value" Label="@prop.Name" />
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public T item { get; set; } = (T) Activator.CreateInstance(typeof(T));
+
+    //void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    private async Task Submit()
+    {
+        if (item.Id == 0)
+        {
+            await Repository.Add(item);
+        }
+        else
+        {
+            await Repository.Update(item);
+        }
+
+        MudDialog.Close(DialogResult.Ok(item.Id));
+    }
+    void Cancel() => MudDialog.Cancel();
+}

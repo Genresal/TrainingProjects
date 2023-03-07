@@ -1,4 +1,6 @@
 using BlazorServerTest.Core;
+using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTest.Services;
 using Hangfire;
 using InMemoryCachingLibrary;
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCoreServices();
 
 builder.Services.AddTransient<RecipeViewService>();
+builder.Services.AddTransient<CategoryService>();
+builder.Services.AddTransient<BaseRepository<Category>>();
 // InMemory service
 builder.Services.AddInMemoryCachingService(builder.Configuration);
 

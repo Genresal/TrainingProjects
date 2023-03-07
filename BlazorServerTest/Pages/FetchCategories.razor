@@ -1,76 +1,127 @@
 ﻿@page "/fetchcategories"
+@using BlazorServerTest.Core.Data.Repositories
+@using BlazorServerTest.Core.Models
+@using BlazorServerTest.Services
 @using Microsoft.AspNetCore.Components
 @using BlazorServerTest.Core.Data.Entities
-@using BlazorServerTest.Core.Data.Repositories
+@inject CategoryService CategoryService
 @inject CategoryRepository CategoryRepository
+@inject IDialogService DialogService
+@inherits LayoutComponentBase
 
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a repository.</p>
+<MudFab OnClick="@((e) => CreateCategory())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new item" Size="Size.Small" Class="mb-3" />
 
-@if (categories == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <ModalWrapperComponent Title="Add/Update Recipe" OnSave="DataAddedHandler">
-        <!--<ChildContent>-->
-        <form>
-            <div class="form-group">
-                <label for="name">Sum</label>
-                <input type="text" class="form-control" id="name" @bind="newCategory.Name"/>
-            </div>
-        </form>
-            <!--</ChildContent>-->
-    </ModalWrapperComponent>
-
-    <table class="table">
-		<thead>
-		<tr>
-            <th>@nameof(Category.Id)</th>
-                <th>@nameof(Category.Name)</th>
-                <th>@nameof(Category.Quantity)</th>
-            <th></th>
-		</tr>
-		</thead>
-		<tbody>
-		@foreach (var cat in categories)
-		{
-			<tr>
-				<td>@cat.Id</td>
-				<td>@cat.Name</td>
-				<td>@cat.Quantity</td>
-                <td><ConfirmModalComponent ButtonText="❌" Message="Do you rale want to delete?" Id="@cat.Id" OnYes="@DeleteHandler" /></td>
-			</tr>
-		}
-		</tbody>
-	</table>
-}
+<MudTable ServerData="@(new Func<TableState, Task<TableData<CategoryViewModel>>>(ServerReload))"
+          Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id_field" T="CategoryViewModel">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name_field" T="CategoryViewModel">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="quantity_field" T="CategoryViewModel">Quantity</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Id</MudTd>
+        <MudTd DataLabel="Sign">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.Quantity</MudTd>
+        <MudTd Class="d-flex justify-center">
+            <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" />
+            <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" />
+            <!--
+            <MudFab OnClick="@((e) => UpdateCategory(context.Id))" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small"/>
+            <MudFab OnClick="@((e) => DeleteCategory(context.Id))" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" DisableElevation="true"/>
+            -->
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 
 @code {
-    private List<Category> categories;
-    private Category newCategory = new();
+    private TableData<CategoryViewModel> data;
+    private MudTable<CategoryViewModel> table;
 
+    private int totalItems;
+    private string searchString = null;
+    /*
     protected override async Task OnInitializedAsync()
     {
-        categories = (await CategoryRepository.GetAll()).ToList();
+        data = await CategoryRepository.LoadTable();
+    }
+    */
+    private async Task<TableData<CategoryViewModel>> ServerReload(TableState state)
+    {
+        return await CategoryService.LoadTable(state, searchString);
     }
 
-    private async Task DataAddedHandler(bool isVisible)
-	{
-        var newCat = await CategoryRepository.Add(newCategory);
-		categories.Add(newCat);
-        isVisible = false;
-        StateHasChanged();
-	}
+    private async Task DeleteCategory(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
 
-    private async Task DeleteHandler(int id)
-	{
-		await CategoryRepository.Delete(id);
-		categories = categories.Where(x => x.Id != id).ToList();
-        StateHasChanged();
-	}
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogTemplateExample_Dialog>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await CategoryRepository.Delete(id);
+            await table.ReloadServerData();
+        }
+    }
+
+    private async Task CreateCategory()
+    {
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdateCategory_Dialog>("Create new Category", options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
+    private async Task UpdateCategory(int id)
+    {
+        var category = await CategoryRepository.Get(id);
+        var parameters = new DialogParameters { ["item"] = category };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdateCategory_Dialog>("Update Category", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
 }

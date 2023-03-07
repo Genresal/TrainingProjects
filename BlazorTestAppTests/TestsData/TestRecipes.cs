@@ -8,7 +8,7 @@ public static class TestRecipes
     {
         //Id = 1,
         Name = "Test Recipe",
-        Description = "This is a test recipe",
+        Description = "This is a test item",
         PrepTime = 10,
         CookTime = 20,
         Servings = 4,

@@ -13,7 +13,7 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a repository.</p>
-<MudFab OnClick="@((e) => CreateRecipe())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new recipe" Size="Size.Small" Class="mb-3"/>
+<MudFab OnClick="@((e) => CreateRecipe())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new item" Size="Size.Small" Class="mb-3"/>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<RecipeViewModel>>>(ServerReload))"
           Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
@@ -37,12 +37,16 @@
         <MudTd DataLabel="Position">
             @foreach (var category in context.Categories)
             {
-                <MudChip>@category.Name</MudChip>
+                <MudChip Style="font-size: 8px; max-height: 12px">@category.Name</MudChip>
             }
         </MudTd>
         <MudTd Class="d-flex justify-center">
-            <MudFab OnClick="@((e) => UpdateRecipe(context.Id))" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Class="mr-2"/>
-            <MudFab OnClick="@((e) => DeleteRecipe(context.Id))" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" DisableElevation="true" />
+            <MudIconButton OnClick="@((e) => UpdateRecipe(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" />
+            <MudIconButton OnClick="@((e) => UpdateRecipe(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" />
+            <!--
+            <MudFab OnClick="@((e) => UpdateRecipe(context.Id))" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small"/>
+            <MudFab OnClick="@((e) => DeleteRecipe(context.Id))" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" DisableElevation="true"/>
+            -->
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -107,8 +111,8 @@
 
     private async Task UpdateRecipe(int id)
     {
-        var recipe = await RecipeRepository.Get(id);
-        var parameters = new DialogParameters { ["recipe"]=recipe };
+        var recipe = await RecipeRepository.Get(id, x =>x.Categories);
+        var parameters = new DialogParameters { ["recipe"] = recipe };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 

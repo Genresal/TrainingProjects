@@ -35,6 +35,18 @@ public class BaseRepository<TEntity> where TEntity : class, IEntity
         return _dbSet.FindAsync(id).AsTask();
     }
 
+    public async Task<TEntity?> Get(int id, params Expression<Func<TEntity, object>>[] includeProperties)
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+
+        return await query.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public Task<List<TEntity>> Get(Expression<Func<TEntity, bool>>? predicate)
     {
         return _dbSet.Where(predicate)
@@ -64,7 +76,8 @@ public class BaseRepository<TEntity> where TEntity : class, IEntity
     }
 
     public Task<TEntity> Update(TEntity entity)
-    {/*
+    {
+        /*
         _dbSet.Entry(entity).State = EntityState.Modified;
         _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         */

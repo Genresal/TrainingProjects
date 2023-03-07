@@ -1,6 +1,9 @@
 ﻿@using BlazorServerTest.Core.Data.Entities
 @using BlazorServerTest.Core.Data.Repositories
+@using BlazorServerTest.Core.Models
+@using Mapster
 @inject RecipeRepository RecipeRepository
+@inject CategoryRepository CategoryRepository
 
 <MudDialog>
     <DialogContent>
@@ -12,6 +15,10 @@
         <!--<MudTextField Value="@recipe.Id.ToString()" Label="Server ID" ReadOnly="true"/>-->
         <MudTextField @bind-Value="@recipe.Name" Label="Server Name"/>
         <MudTextField @bind-Value="@recipe.Description" Label="Location"/>
+        @foreach (var cat in categories)
+        {
+            <MudCheckBox @bind-Checked="@cat.IsSelected" Label="@cat.Name" Color="Color.Primary"></MudCheckBox>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -22,11 +29,33 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public Recipe recipe { get; set; } = new Recipe();
+    [Parameter]
+    public Recipe recipe { get; set; } = new Recipe();
+    private List<CategoryViewModel> categories { get; set; } = new List<CategoryViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (await CategoryRepository.GetAll()).Adapt<List<CategoryViewModel>>();
+
+        if (recipe.Id > 0)
+        {
+            var selectedIds = recipe.Categories.Select(x => x.Id);
+            foreach (var category in categories)
+            {
+                if (selectedIds.Contains(category.Id))
+                {
+                    category.IsSelected = true;
+                }
+            }
+        }
+    }
 
     //void Submit() => MudDialog.Close(DialogResult.Ok(true));
     private async Task Submit()
     {
+        var selectedCategories = categories.Where(x => x.IsSelected).ToList();
+        recipe.Categories = selectedCategories.Adapt<List<Category>>();
+
         if (recipe.Id == 0)
         {
             await RecipeRepository.Add(recipe);
@@ -38,5 +67,6 @@
 
         MudDialog.Close(DialogResult.Ok(recipe.Id));
     }
+
     void Cancel() => MudDialog.Cancel();
 }
