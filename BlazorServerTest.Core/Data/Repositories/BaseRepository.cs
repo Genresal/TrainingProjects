@@ -75,14 +75,14 @@ public class BaseRepository<TEntity> where TEntity : class, IEntity
         return _dbSet.ToListAsync();
     }
 
-    public Task<TEntity> Update(TEntity entity)
+    public virtual Task<TEntity> Update(TEntity entity)
     {
-        /*
+
         _dbSet.Entry(entity).State = EntityState.Modified;
         _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        */
+        /*
         _dbSet.Update(entity);
-
+        */
         return _context.SaveChangesAsync().ContinueWith(x => entity);
     }
 }
