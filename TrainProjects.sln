@@ -29,7 +29,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTestApi", "Blaz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryLibraryTests", "InMemoryLibraryTests\InMemoryLibraryTests.csproj", "{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi&React", "WebApi&React\WebApi&React.csproj", "{E6A3C9A2-9B2E-4A96-81F3-9D2DC12B86F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi&React", "WebApi&React\WebApi&React.csproj", "{E6A3C9A2-9B2E-4A96-81F3-9D2DC12B86F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A752AE1C-B32F-416C-BBC5-A0A16AD39156}"
+	ProjectSection(SolutionItems) = preProject
+		MacroCalculator.html = MacroCalculator.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
