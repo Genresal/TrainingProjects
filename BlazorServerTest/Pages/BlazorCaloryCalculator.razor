@@ -1,4 +1,6 @@
 ﻿@page "/calculator"
+@using FluentValidation
+
 <MudGrid>
 <MudItem xs="12" sm="7">
 <MudPaper Class="pa-4">
@@ -16,7 +18,7 @@
                 <MudRadio Option="@("female")" Color="Color.Primary">Female</MudRadio>
             </MudRadioGroup>
         </div>
-        <MudTextField Class="mb-3" Label="Age" @bind-Value="@age" InputType="InputType.Number" Required="true" />
+                <MudTextField Class="mb-3" Label="Age" @bind-Value="@age" Validation="@ccValidator.Validation" Immediate="true" InputType="InputType.Number" Required="true" />
         <MudTextField Class="mb-3" Label="Height (cm)" @bind-Value="@height" InputType="InputType.Number" Required="true" />
         <MudTextField Class="mb-3" Label="Weight (kg)" @bind-Value="@weight" InputType="InputType.Number" Required="true" />
         <MudSelect Class="mb-3" Label="Activity Level" @bind-Value="@activity">
@@ -71,6 +73,29 @@
     private bool breastfeeding = false;
     private int? result;
 
+    FluentValueValidator<int> ccValidator = new FluentValueValidator<int>(x => x
+        .NotEmpty()
+        .GreaterThan(13)
+        .LessThan(99));
+
+    public class FluentValueValidator<T> : AbstractValidator<T>
+    {
+        public FluentValueValidator(Action<IRuleBuilderInitial<T, T>> rule)
+        {
+            rule(RuleFor(x => x));
+        }
+
+        private IEnumerable<string> ValidateValue(T arg)
+        {
+            var result = Validate(arg);
+            if (result.IsValid)
+                return new string[0];
+            return result.Errors.Select(e => e.ErrorMessage);
+        }
+
+        public Func<T, IEnumerable<string>> Validation => ValidateValue;
+    }
+
     private void CalculateCalories()
     {
         decimal bmr;
@@ -97,7 +122,7 @@
 
         if (formula == "harris-benedict")
         {
-            var calories = (int)Math.Round(bmr * activity);
+            var calories = (int)Math.Round(bmr * finalActivity);
             result = calories;
         }
         else if (formula == "mifflin-st-jeor")
@@ -112,7 +137,7 @@
             }
 
     // Increase the calories needed by 500
-            var calories = (int)Math.Round(bmr * activity);
+            var calories = (int)Math.Round(bmr * finalActivity);
             result = calories;
         }
     }
