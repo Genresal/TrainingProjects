@@ -1,0 +1,128 @@
+﻿@page "/calculator"
+<MudGrid>
+<MudItem xs="12" sm="7">
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h3" Align="Align.Center">Calculator</MudText>
+    <MudForm>
+        <!--
+        <MudSelect Label="Gender" @bind-Value="@gender">
+            <MudSelectItem Value="@("male")">Male</MudSelectItem>
+            <MudSelectItem Value="@("female")">Female</MudSelectItem>
+        </MudSelect>
+        -->
+        <div class="d-flex mb-3">
+            <MudRadioGroup @bind-SelectedOption="@gender" T="string" Required="true" RequiredError="Account type is required!">
+                <MudRadio Option="@("male")" Color="Color.Primary">Male</MudRadio>
+                <MudRadio Option="@("female")" Color="Color.Primary">Female</MudRadio>
+            </MudRadioGroup>
+        </div>
+        <MudTextField Class="mb-3" Label="Age" @bind-Value="@age" InputType="InputType.Number" Required="true" />
+        <MudTextField Class="mb-3" Label="Height (cm)" @bind-Value="@height" InputType="InputType.Number" Required="true" />
+        <MudTextField Class="mb-3" Label="Weight (kg)" @bind-Value="@weight" InputType="InputType.Number" Required="true" />
+        <MudSelect Class="mb-3" Label="Activity Level" @bind-Value="@activity">
+            <MudSelectItem T="decimal" Value="1.2m">Sedentary (little or no exercise)</MudSelectItem>
+            <MudSelectItem T="decimal" Value="1.375m">Lightly active (light exercise or sports 1-3 days a week)</MudSelectItem>
+            <MudSelectItem T="decimal" Value="1.55m">Moderately active (moderate exercise or sports 3-5 days a week)</MudSelectItem>
+            <MudSelectItem T="decimal" Value="1.725m">Very active (hard exercise or sports 6-7 days a week)</MudSelectItem>
+            <MudSelectItem T="decimal" Value="1.9m">Extra active (very hard exercise or sports, physical job or training twice a day)</MudSelectItem>
+        </MudSelect>
+        @if (gender == "female")
+        {
+            <MudCheckBox Class="mb-3" Label="Are you currently breastfeeding?" Color="Color.Primary" @bind-Checked="@breastfeeding" />
+        }
+        <MudSelect Class="mb-6" Label="Formula" @bind-Value="@formula">
+            <MudSelectItem Value="@("harris-benedict")">Harris-Benedict</MudSelectItem>
+            <MudSelectItem Value="@("mifflin-st-jeor")">Mifflin St. Jeor</MudSelectItem>
+        </MudSelect>
+        <!--
+        <div class="d-flex align-items-center justify-content-center pa-4">
+            <MudButton OnClick="@Preset" Variant="Variant.Filled" Color="Color.Secondary">Preset</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mx-2">Calculate</MudButton>
+        </div>
+        -->
+    </MudForm>
+</MudPaper>
+
+
+<MudPaper Class="pa-4 mt-4">
+    <MudButton OnClick="@Preset" Variant="Variant.Filled" Color="Color.Secondary">Preset</MudButton>
+    <MudButton OnClick="@CalculateCalories" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mx-2">Calculate</MudButton>
+</MudPaper>
+</MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            @if (result.HasValue)
+            {
+                <h2>Result:</h2>
+                <p>Your daily calorie needs are @result calories.</p>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private string gender = "male";
+    private int age;
+    private int height;
+    private int weight;
+    private decimal activity = 1.2m;
+    private string formula = "harris-benedict";
+    private bool breastfeeding = false;
+    private int? result;
+
+    private void CalculateCalories()
+    {
+        decimal bmr;
+
+        if (gender == "male")
+        {
+            bmr = 88.362m + (13.397m * weight) + (4.799m * height) - (5.677m * age);
+        }
+        else
+        {
+            bmr = 447.593m + (9.247m * weight) + (3.098m * height) - (4.330m * age);
+        }
+
+        if (breastfeeding && gender == "female")
+        {
+    // Increase the calories needed by 500
+            activity += 0.5m;
+        }
+
+        if (formula == "harris-benedict")
+        {
+            var calories = (int)Math.Round(bmr * activity);
+            result = calories;
+        }
+        else if (formula == "mifflin-st-jeor")
+        {
+            if (gender == "male")
+            {
+                bmr = (9.99m * weight) + (6.25m * height) - (4.92m * age) + 5;
+            }
+            else
+            {
+                bmr = (9.99m * weight) + (6.25m * height) - (4.92m * age) - 161;
+            }
+
+            var calories = (int)Math.Round(bmr * activity);
+            result = calories;
+        }
+    }
+
+    private void Preset()
+    {
+        if (gender == "male")
+        {
+            age = 30;
+            height = 192;
+            weight = 110;
+        }
+        else
+        {
+            age = 30;
+            height = 170;
+            weight = 60;
+        }
+    }
+}
