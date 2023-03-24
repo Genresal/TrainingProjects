@@ -66,6 +66,7 @@
     private int height;
     private int weight;
     private decimal activity = 1.2m;
+    private decimal finalActivity;
     private string formula = "harris-benedict";
     private bool breastfeeding = false;
     private int? result;
@@ -83,10 +84,15 @@
             bmr = 447.593m + (9.247m * weight) + (3.098m * height) - (4.330m * age);
         }
 
+    // Increase the calories needed by 500
         if (breastfeeding && gender == "female")
         {
-    // Increase the calories needed by 500
-            activity += 0.5m;
+            finalActivity = activity += 0.5m;
+        }
+        else
+        {
+            breastfeeding = false;
+            finalActivity = activity;
         }
 
         if (formula == "harris-benedict")
@@ -105,6 +111,7 @@
                 bmr = (9.99m * weight) + (6.25m * height) - (4.92m * age) - 161;
             }
 
+    // Increase the calories needed by 500
             var calories = (int)Math.Round(bmr * activity);
             result = calories;
         }
