@@ -57,6 +57,9 @@
             {
                 <h2>Result:</h2>
                 <p>Your daily calorie needs are @result calories.</p>
+                <p>Your daily proteins are @protein .</p>
+                <p>Your daily carbs are @carbs .</p>
+                <p>Your daily fat needs are @fat .</p>
             }
         </MudPaper>
     </MudItem>
@@ -71,7 +74,11 @@
     private decimal finalActivity;
     private string formula = "harris-benedict";
     private bool breastfeeding = false;
+
     private int? result;
+    private int? protein;
+    private int? carbs;
+    private int? fat;
 
     FluentValueValidator<int> ccValidator = new FluentValueValidator<int>(x => x
         .NotEmpty()
@@ -120,10 +127,10 @@
             finalActivity = activity;
         }
 
+        decimal calories;
+
         if (formula == "harris-benedict")
         {
-            var calories = (int)Math.Round(bmr * finalActivity);
-            result = calories;
         }
         else if (formula == "mifflin-st-jeor")
         {
@@ -135,11 +142,20 @@
             {
                 bmr = (9.99m * weight) + (6.25m * height) - (4.92m * age) - 161;
             }
-
-    // Increase the calories needed by 500
-            var calories = (int)Math.Round(bmr * finalActivity);
-            result = calories;
         }
+        else
+        {
+            return;
+        }
+
+        calories = bmr * finalActivity;
+
+    // Calculate macronutrient breakdown based on calories
+        protein = (int)Math.Round(calories * 0.3m / 4);
+        carbs = (int)Math.Round(calories * 0.4m / 4);
+        fat = (int)Math.Round(calories * 0.3m / 9);
+
+        result = (int)Math.Round(calories);
     }
 
     private void Preset()
