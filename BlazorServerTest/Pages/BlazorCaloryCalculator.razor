@@ -4,14 +4,8 @@
 <MudGrid>
 <MudItem xs="12" sm="7">
 <MudPaper Class="pa-4">
-    <MudText Typo="Typo.h3" Align="Align.Center">Calculator</MudText>
+    <MudText Typo="Typo.h2" Align="Align.Center">Calculator</MudText>
     <MudForm>
-        <!--
-        <MudSelect Label="Gender" @bind-Value="@gender">
-            <MudSelectItem Value="@("male")">Male</MudSelectItem>
-            <MudSelectItem Value="@("female")">Female</MudSelectItem>
-        </MudSelect>
-        -->
         <div class="d-flex mb-3">
             <MudRadioGroup @bind-SelectedOption="@gender" T="string" Required="true" RequiredError="Account type is required!">
                 <MudRadio Option="@("male")" Color="Color.Primary">Male</MudRadio>
@@ -55,8 +49,8 @@
         <MudPaper Class="pa-4 mud-height-full">
             @if (result.HasValue)
             {
-                <h2>Result:</h2>
-                <p>Your daily calorie needs are @result calories.</p>
+                <MudText Typo="Typo.h2" Align="Align.Center">Result</MudText>
+                <MudText Align="Align.Left">Your daily calorie needs are <b>@result</b> calories.</MudText>
                 <p>Your daily proteins are @protein .</p>
                 <p>Your daily carbs are @carbs .</p>
                 <p>Your daily fat needs are @fat .</p>
