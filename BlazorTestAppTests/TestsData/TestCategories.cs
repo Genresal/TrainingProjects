@@ -8,7 +8,7 @@ public static class TestCategories
     {
         Id = 1,
         Name = "Test Category",
-        Quantity = 10.5m,
+        //Quantity = 10.5m,
         Unit = "lbs",
     };
 
