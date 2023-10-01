@@ -35,9 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		GTPCalculator.html = GTPCalculator.html
 		MacroCalculator.html = MacroCalculator.html
+		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudinaryWebApi", "CloudinaryWebApi\CloudinaryWebApi.csproj", "{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudinaryWebApi", "CloudinaryWebApi\CloudinaryWebApi.csproj", "{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
