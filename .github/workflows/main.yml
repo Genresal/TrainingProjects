@@ -34,13 +34,13 @@ jobs:
           name: TestCaclulatorSolution
           path: ./publish
 
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: TestCaclulatorSolution  # Replace with your Azure App Service name
-          slot-name: production
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./publish
+      #- name: Deploy to Azure
+      #  uses: azure/webapps-deploy@v2
+      #  with:
+      #    app-name: TestCaclulatorSolution  # Replace with your Azure App Service name
+      #    slot-name: production
+      #    publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+      #    package: ./publish
 
   deploy:
     runs-on: ubuntu-latest
