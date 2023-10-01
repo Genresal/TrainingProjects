@@ -24,13 +24,13 @@ jobs:
           dotnet test
 
       - name: Publish Artifact
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/BlazorServerTest
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{ github.workspace }}/myapp
+          path: ${{ github.workspace }}/BlazorServerTest
 
       #- name: Deploy to Azure
       #  uses: azure/webapps-deploy@v2
