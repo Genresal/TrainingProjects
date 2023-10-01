@@ -1,0 +1,37 @@
+name: Azure Deployment
+
+on:
+  push:
+    branches:
+      - '*'  # This will trigger the workflow on every branch push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x  # Adjust to your desired version
+
+      - name: Build and test
+        run: |
+          dotnet build
+          dotnet test
+
+      - name: Publish Artifact
+        run: |
+          dotnet publish -c Release -o ./publish
+        working-directory: ./YourBlazorApp
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: your-app-name  # Replace with your Azure App Service name
+          slot-name: production
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
