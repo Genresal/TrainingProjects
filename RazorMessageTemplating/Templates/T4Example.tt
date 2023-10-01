@@ -1,7 +1,0 @@
-﻿<#@ output extension=".html" #>
-<#@ parameter type="System.String" name="Text" #>
-
-<html><body>
-<h1> <# Text #> </h1>
- The date and time now is: <#= DateTime.Now #>
-</body></html>
