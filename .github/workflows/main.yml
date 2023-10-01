@@ -22,3 +22,40 @@ jobs:
         run: |
           dotnet build
           dotnet test
+
+      - name: Publish Artifact
+        run: |
+          dotnet publish -c Release -o ./publish
+        working-directory: ./BlazorServerTest
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestCaclulatorSolution
+          path: ./publish
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: TestCaclulatorSolution  # Replace with your Azure App Service name
+          slot-name: production
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: TestCaclulatorSolution
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'TestCaclulatorSolution'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_cbd79b749d9e45069d3086c20c30017a }}
+          package: .
