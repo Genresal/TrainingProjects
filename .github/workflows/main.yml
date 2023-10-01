@@ -60,4 +60,4 @@ jobs:
           app-name: 'TestCaclulatorSolution'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_cbd79b749d9e45069d3086c20c30017a }}
-          package: .
+          package: ./publish
