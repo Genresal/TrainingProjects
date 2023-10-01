@@ -24,15 +24,13 @@ jobs:
           dotnet test
 
       - name: Publish Artifact
-        run: |
-          dotnet publish -c Release -o ./publish
-        working-directory: ./BlazorServerTest
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: TestCaclulatorSolution
-          path: ${{ github.workspace }}/publish
+          name: .net-app
+          path: ${{ github.workspace }}/myapp
 
       #- name: Deploy to Azure
       #  uses: azure/webapps-deploy@v2
@@ -50,8 +48,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: TestCaclulatorSolution
-          path: ./publish
+          name: .net-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -60,4 +57,4 @@ jobs:
           app-name: 'TestCaclulatorSolution'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_cbd79b749d9e45069d3086c20c30017a }}
-          package: ./publish
+          package: .
