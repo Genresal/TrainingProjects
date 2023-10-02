@@ -22,8 +22,9 @@ stages:
         installationVersion: '7.x'
     - script: dotnet build ./BlazorServerTest
       displayName: 'dotnet build'
-    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)
-      displayName: 'dotnet publish'
+#    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)
+#      displayName: 'dotnet publish'
+    - task: PublishBuildArtifacts@1
       
 #- stage: Deploy
 #  jobs:
