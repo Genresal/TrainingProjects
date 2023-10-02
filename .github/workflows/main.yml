@@ -57,6 +57,6 @@ jobs:
         id: deploy-to-webapp
         uses: Azure/pipelines@releases/v1
         with:
-            azure-devops-project-url: 'https://dev.azure.com/genresal/genresal'
+            azure-devops-project-url: 'https://dev.azure.com/genresal/MKI'
             azure-pipeline-name: 'Genresal.TrainingProjects' 
             azure-devops-token: '${{ secrets.AZURE_PIPELINE_TOKEN }}'

@@ -1,13 +1,47 @@
 trigger: []
 
-pr:
-- '*'  # This will also trigger the pipeline on pull requests
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # Change this to the desired branch
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
-jobs:
-- job: BuildAndDeploy
-  steps:
-  - script: echo 'Build and deploy steps go here'
-    displayName: 'Build and Deploy'
+variables:
+  azureSubscriptionEndpoint: 'Your-Azure-Service-Connection-Name'
+  webAppName: 'Your-App-Service-Name'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+        installationScript: 'install'
+        installationVersion: '7.x'
+    - script: dotnet build
+      displayName: 'dotnet build'
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+      displayName: 'dotnet publish'
+
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+        installationScript: 'install'
+        installationVersion: '7.x'
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: $(azureSubscriptionEndpoint)
+        appName: $(webAppName)
+        package: $(Pipeline.Workspace)/drop/**/*.zip
