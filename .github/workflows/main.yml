@@ -41,7 +41,7 @@ jobs:
       #    publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
       #    package: ./publish
 
-  deploy:
+  deploy-using-azure-pipelines:
     runs-on: ubuntu-latest
     needs: build
 
@@ -51,11 +51,10 @@ jobs:
         with:
           name: .net-app
 
-      - name: Deploy to Azure Web App
+      - name: Trigger an Azure Pipeline
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: Azure/pipelines@releases/v1
         with:
-          app-name: 'TestCaclulatorSolution'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_cbd79b749d9e45069d3086c20c30017a }}
-          package: .
+            azure-devops-project-url: 'https://dev.azure.com/genresal/genresal'
+            azure-pipeline-name: 'WebApp_Azure_Prod' 
+            azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
