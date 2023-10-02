@@ -1,5 +1,4 @@
-trigger:
-- '*'  # This will trigger the pipeline on every push to any branch
+trigger: []
 
 pr:
 - '*'  # This will also trigger the pipeline on pull requests
