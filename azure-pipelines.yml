@@ -42,7 +42,7 @@ stages:
         package: $(Pipeline.Workspace)/drop/**/*.zip
 
     - task: AzureDevOpsRelease@5
-       inputs:
+      inputs:
         azureSubscription: $(azureSubscriptionEndpoint)
         project: $(webAppName)
         definition: 'New release pipeline'
