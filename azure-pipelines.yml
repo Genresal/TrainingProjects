@@ -22,12 +22,13 @@ stages:
         installationVersion: '7.x'
     - script: dotnet build ./BlazorServerTest
       displayName: 'dotnet build'
-#    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)
-#      displayName: 'dotnet publish'
+    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)/publish
+      displayName: 'dotnet publish'
 
     - task: CopyFiles@2
       inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)' 
+        targetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       inputs:
