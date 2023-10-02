@@ -59,4 +59,4 @@ jobs:
         with:
             azure-devops-project-url: 'https://dev.azure.com/genresal/genresal'
             azure-pipeline-name: 'WebApp_Azure_Prod' 
-            azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
+            azure-devops-token: '${{ secrets.AZURE_PIPELINE_TOKEN }}'
