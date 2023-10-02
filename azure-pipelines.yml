@@ -20,9 +20,9 @@ stages:
         installationPath: $(Agent.ToolsDirectory)/dotnet
         installationScript: 'install'
         installationVersion: '7.x'
-    - script: dotnet build
+    - script: dotnet build ./BlazorServerTest
       displayName: 'dotnet build'
-    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)
       displayName: 'dotnet publish'
 
 - stage: Deploy
