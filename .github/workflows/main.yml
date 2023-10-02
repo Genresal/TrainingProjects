@@ -3,7 +3,9 @@ name: Azure Deployment
 on:
   push:
     branches:
-      - '*'  # This will trigger the workflow on every branch push
+      - main
+      - development
+      - feature/*
 
 jobs:
   build:
