@@ -24,7 +24,7 @@ stages:
       displayName: 'dotnet build'
     - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)
       displayName: 'dotnet publish'
-
+      #
 #- stage: Deploy
 #  jobs:
 #  - job: Deploy
