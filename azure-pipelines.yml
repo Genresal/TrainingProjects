@@ -11,8 +11,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  azureSubscriptionEndpoint: 'Your-Azure-Service-Connection-Name'
-  webAppName: 'Your-App-Service-Name'
+  azureSubscriptionEndpoint: 'Connection-Name'
+  webAppName: 'TestCaclulatorSolution'
 
 stages:
 - stage: Build
