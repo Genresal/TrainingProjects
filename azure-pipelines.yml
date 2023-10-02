@@ -2,11 +2,6 @@ trigger: []
 
 name: Build and Deploy
 
-on:
-  push:
-    branches:
-      - main  # Change this to the desired branch
-
 pool:
   vmImage: 'windows-latest'
 
