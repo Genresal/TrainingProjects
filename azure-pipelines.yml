@@ -24,7 +24,13 @@ stages:
     - script: |
         echo List of Folders in Current Working Directory:
         dir /B /AD
-        displayName: 'List Folders'
+      displayName: 'List Folders'
+
+    - script: |
+        cd BlazorServerTest
+        echo List of Folders in Current Working Directory:
+        dir /B /AD
+      displayName: 'List Folders 2'
 
     - script: dotnet build --project /BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet build'
