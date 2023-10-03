@@ -21,7 +21,12 @@ stages:
         installationScript: 'install'
         installationVersion: '7.x'
 
-    - script: dotnet build --project BlazorServerTest/BlazorServerTest.csproj
+    - script: |
+        echo List of Folders in Current Working Directory:
+        dir /B /AD
+        displayName: 'List Folders'
+
+    - script: dotnet build --project /BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet build'
 
     - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
