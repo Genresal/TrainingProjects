@@ -5,5 +5,5 @@ public class ChangeRecipeViewModel
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public List<CategoryViewModel>? Categories { get; set; }
+    public List<CategoryResponse>? Categories { get; set; }
 }

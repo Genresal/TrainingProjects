@@ -1,9 +1,9 @@
 using AutoFixture;
+using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Repositories;
 using BlazorTestAppTests.Infrastructure;
 using FluentAssertions;
-using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -15,12 +15,19 @@ namespace BlazorTestAppTests
         private readonly CategoryRepository _categoryRepository;
         private readonly RecipeRepository _recipeRepository;
         private readonly Fixture _fixture;
+        private readonly IMapper _mapper; // Add IMapper
 
         public RecipeCategoriesTests()
         {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+            });
+
+            _mapper = configuration.CreateMapper();
+
             _loggerMock = new Mock<ILogger<RecipeRepository>>();
-            _recipeRepository = new RecipeRepository(Context, new Mapper());
-            _categoryRepository = new CategoryRepository(Context, _recipeRepository, new Mapper());
+            _recipeRepository = new RecipeRepository(Context, _mapper);
+            _categoryRepository = new CategoryRepository(Context, _mapper);
             _fixture = new Fixture();
             //_fixture.Customize<Recipe>(c => c.OmitAutoProperties());    // Avoiding circular references. No it create instance with nullable props
 

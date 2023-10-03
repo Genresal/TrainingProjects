@@ -1,10 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using BlazorServerTest.Core.Data.Entities
-@using BlazorServerTest.Core.Data.Repositories
-@using BlazorServerTest.Core.Models
+@using BlazorServerTest.Core.Models.Categories
+@using BlazorServerTest.Services
 @using Mapster
-@inject RecipeRepository ForecastService
-@inject CategoryRepository CategoryService
+
 
 <button type="button" class="btn btn-primary" @onclick="ShowModal">Show Modal </button>
 <div class="modal" tabindex="-1" role="dialog" style="display: @(showModal ? "block" : "none")">
@@ -31,10 +30,10 @@
 						<div>
 							@foreach (var cat in categories)
 							{
-								<div class="form-check form-check-inline">
-									<input type="checkbox" class="form-check-input" id="@cat" @bind="cat.IsSelected" />
-									<label class="form-check-label" for="@cat">@cat.Name</label>
-								</div>
+								//<div class="form-check form-check-inline">
+								//	<input type="checkbox" class="form-check-input" id="@cat" @bind="cat.IsSelected" />
+								//	<label class="form-check-label" for="@cat">@cat.Name</label>
+								//</div>
 							}
 						</div>
 					</div>
@@ -58,7 +57,7 @@
 
 	private bool showModal;
 	private Recipe newItem = new ();
-	private List<CategoryViewModel> categories = new();
+	private List<CategoryResponse> categories = new();
 
 	private void ShowModal()
 	{
@@ -69,14 +68,15 @@
 	{
 		showModal = false;
 	}
-
+	/**/
 	protected override async Task OnInitializedAsync()
 	{
-		categories = (await CategoryService.GetAllAsync()).Adapt<List<CategoryViewModel>>();
+		//categories = (await CategoryService.GetAllAsync()).Adapt<List<CategoryResponse>>();
 	}
 
 	private async Task SaveData()
 	{
+		/*
 		var selectedCategories = categories.Where(x => x.IsSelected).ToList();
 		newItem.Categories = selectedCategories.Adapt<List<Category>>();
 		// Save data to database or do something with the form data
@@ -84,5 +84,6 @@
 		newItem = new ();
 		HideModal();
 		await OnDataSaved.InvokeAsync(added);
+		*/
 	}
-}
+}*
