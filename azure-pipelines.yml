@@ -20,14 +20,16 @@ stages:
         installationPath: $(Agent.ToolsDirectory)/dotnet
         installationScript: 'install'
         installationVersion: '7.x'
-    - script: dotnet build ./BlazorServerTest
+
+    - script: dotnet build --project BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet build'
-    - script: dotnet publish ./BlazorServerTest -c Release -o $(Build.ArtifactStagingDirectory)/publish
+
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet publish'
 
-    - task: CopyFiles@2
-      inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)/publish'
+#    - task: CopyFiles@2
+#      inputs:
+#        targetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
