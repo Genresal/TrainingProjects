@@ -71,6 +71,23 @@ public class CategoryManager
         return categoryDetails;
     }
 
+    public async Task<CategoryResponse?> CreateCategoryAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Try to create new Category");
+
+        var category = new Category()
+        {
+            Name = request.Name, //Guid.NewGuid().ToString(),
+            Description = request.Description,
+        };
+
+        await _categoryRepository.AddAsync(category, cancellationToken: cancellationToken);
+
+        _logger.LogInformation("New Category created with Id {Id} and name {name}", category.Id, category.Name);
+
+        return await GetCategoryDetailAsync(category.Id, cancellationToken);
+    }
+
     public async Task<CategoryResponse?> UpdateCategoryAsync(UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Try to update existing Category. Category ID : {ID}", request.Id);

@@ -1,6 +1,7 @@
 ﻿@using BlazorServerTest.Core.Data.Entities
-@using BlazorServerTest.Core.Data.Repositories
-@inject CategoryRepository Repository
+@using BlazorServerTest.Core.Business
+@using BlazorServerTest.Core.Models.Categories
+@inject CategoryManager Manager
 
 <MudDialog>
     <DialogContent>
@@ -26,13 +27,27 @@
     //void Submit() => MudDialog.Close(DialogResult.Ok(true));
     private async Task Submit()
     {
+
         if (item.Id == 0)
         {
-            await Repository.AddAsync(item);
+            var request = new CreateCategoryRequest()
+            {
+                Name = item.Name,
+                Description = item.Description
+            };
+
+            await Manager.CreateCategoryAsync(request, CancellationToken.None);
         }
         else
         {
-            await Repository.UpdateAsync(item);
+            var request = new UpdateCategoryRequest()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description
+            };
+
+            await Manager.UpdateCategoryAsync(request, CancellationToken.None);
         }
 
         MudDialog.Close(DialogResult.Ok(item.Id));
