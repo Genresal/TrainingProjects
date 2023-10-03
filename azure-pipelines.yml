@@ -43,34 +43,7 @@ stages:
     - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
       displayName: 'dotnet publish'
 
-#    - task: CopyFiles@2
-#      inputs:
-#        targetFolder: '$(Build.ArtifactStagingDirectory)'
-
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-      
-#- stage: Deploy
-#  jobs:
-#  - job: Deploy
-#    steps:
-#    - task: UseDotNet@2
-#      inputs:
-#        packageType: 'sdk'
-#        installationPath: $(Agent.ToolsDirectory)/dotnet
-#        installationScript: 'install'
-#        installationVersion: '7.x'
-#    - task: AzureWebApp@1
-#      inputs:
-#        azureSubscription: $(azureSubscriptionEndpoint)
-#        appName: $(webAppName)
-#        package: $(Pipeline.Workspace)/drop/**/*.zip
-#
-#    - task: AzureDevOpsRelease@5
-#      inputs:
-#        azureSubscription: $(azureSubscriptionEndpoint)
-#        project: $(webAppName)
-#        definition: 'New release pipeline'
-#        waitForCompletion: true # Set to 'false' if you want to trigger and move on without waiting for completion.
