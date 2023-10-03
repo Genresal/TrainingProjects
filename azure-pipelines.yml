@@ -32,7 +32,7 @@ stages:
         dir /B /AD
       displayName: 'List Folders 2'
 
-    - script: dotnet build --project /BlazorServerTest/BlazorServerTest.csproj
+    - script: dotnet build --project BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet build'
 
     - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
