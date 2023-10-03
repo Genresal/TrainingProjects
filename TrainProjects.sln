@@ -23,18 +23,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTestAppTests", "Blazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest.Core", "BlazorServerTest.Core\BlazorServerTest.Core.csproj", "{800E6683-5D88-4F7F-9A97-E97E0926F0E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTestApi", "BlazorServerTestApi\BlazorServerTestApi.csproj", "{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryLibraryTests", "InMemoryLibraryTests\InMemoryLibraryTests.csproj", "{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A752AE1C-B32F-416C-BBC5-A0A16AD39156}"
 	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
 		GTPCalculator.html = GTPCalculator.html
 		MacroCalculator.html = MacroCalculator.html
-		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudinaryWebApi", "CloudinaryWebApi\CloudinaryWebApi.csproj", "{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerTest.Api", "BlazorServerTest.Api\BlazorServerTest.Api.csproj", "{8B920D81-363A-4A59-AB05-C38F04B8A9B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,10 +78,6 @@ Global
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800E6683-5D88-4F7F-9A97-E97E0926F0E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D35D6F5-F46B-46B1-9BFC-383E7225CF37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86EFE3B8-5DDB-4F92-96B9-1B32B9B5F018}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -90,6 +86,10 @@ Global
 		{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CAE941A-1E36-48DA-AE7D-79A72BB9CE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B920D81-363A-4A59-AB05-C38F04B8A9B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B920D81-363A-4A59-AB05-C38F04B8A9B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B920D81-363A-4A59-AB05-C38F04B8A9B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B920D81-363A-4A59-AB05-C38F04B8A9B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

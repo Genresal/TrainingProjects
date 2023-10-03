@@ -1,37 +1,49 @@
-name: Azure Deployment
+trigger:
+  branches:
+    include:
+      - master
 
-on:
-  push:
-    branches:
-      - '*'  # This will trigger the workflow on every branch push
+name: Build and Deploy
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+pool:
+  vmImage: 'windows-latest'
 
+variables:
+  azureSubscriptionEndpoint: 'Azure subscription 1 (4effccd0-b865-4ccc-8676-7b920f901b89)'
+  webAppName: 'TestCaclulatorSolution'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+        installationScript: 'install'
+        installationVersion: '7.x'
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x  # Adjust to your desired version
+    - script: |
+        echo List of Folders in Current Working Directory:
+        dir /B /AD
+      displayName: 'List Folders'
 
-      - name: Build and test
-        run: |
-          dotnet build
-          dotnet test
+    - script: |
+        cd BlazorServerTest
+        echo List of Folders in Current Working Directory:
+        dir /B /AD
+      displayName: 'List Folders Inside Released Path'
 
-      - name: Publish Artifact
-        run: |
-          dotnet publish -c Release -o ./publish
-        working-directory: ./YourBlazorApp
+    - script: dotnet build
+      displayName: 'Build ASP.NET App'
+      workingDirectory: $(System.DefaultWorkingDirectory)/BlazorServerTest  # Set the correct path to your project
+      failOnStderr: true
 
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: your-app-name  # Replace with your Azure App Service name
-          slot-name: production
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./publish
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
+      displayName: 'dotnet publish'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
