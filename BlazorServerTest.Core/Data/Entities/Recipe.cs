@@ -13,6 +13,4 @@ public class Recipe : Entity
     public virtual ICollection<Ingredient> Ingredients { get; set; }
     public virtual ICollection<Step> Steps { get; set; }
     public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
-
-
 }

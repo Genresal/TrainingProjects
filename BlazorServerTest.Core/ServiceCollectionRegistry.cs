@@ -1,4 +1,5 @@
-﻿using BlazorServerTest.Core.AutoMapper;
+﻿using BlazorServerTest.Core.Business;
+using BlazorServerTest.Core.Business.AutoMapper;
 using BlazorServerTest.Core.Data;
 using BlazorServerTest.Core.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ public static class ServiceCollectionRegistry
 
         services.AddTransient<RecipeRepository>();
         services.AddTransient<CategoryRepository>();
+
+        services.AddTransient<CategoryManager>();
 
         //services.AddTransient<AuxService>();
         //services.AddHostedService<TimerHostedService>();

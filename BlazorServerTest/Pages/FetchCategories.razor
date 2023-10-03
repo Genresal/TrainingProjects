@@ -1,12 +1,8 @@
 ﻿@page "/fetchcategories"
-@using BlazorServerTest.Core.Data.Repositories
-@using BlazorServerTest.Core.Models
-@using BlazorServerTest.Services
-@using Microsoft.AspNetCore.Components
-@using BlazorServerTest.Core.Data.Entities
-@inject CategoryService CategoryService
-@inject CategoryRepository CategoryRepository
+@inject CategoryManager CategoryManager
 @inject IDialogService DialogService
+@using BlazorServerTest.Core.Models.Categories
+@using BlazorServerTest.Core.Business
 @inherits LayoutComponentBase
 
 <PageTitle>Weather forecast</PageTitle>
@@ -16,7 +12,7 @@
 <p>This component demonstrates fetching data from a repository.</p>
 <MudFab OnClick="@((e) => CreateCategory())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new item" Size="Size.Small" Class="mb-3" />
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<CategoryViewModel>>>(ServerReload))"
+<MudTable ServerData="@(new Func<TableState, Task<TableData<CategoryResponse>>>(ServerReload))"
           Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Periodic Elements</MudText>
@@ -25,9 +21,9 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh><MudTableSortLabel SortLabel="id_field" T="CategoryViewModel">Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="name_field" T="CategoryViewModel">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="quantity_field" T="CategoryViewModel">Quantity</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="id_field" T="CategoryResponse">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name_field" T="CategoryResponse">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="quantity_field" T="CategoryResponse">Quantity</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -55,8 +51,8 @@
 </MudTable>
 
 @code {
-    private TableData<CategoryViewModel> data;
-    private MudTable<CategoryViewModel> table;
+    private TableData<CategoryResponse> data;
+    private MudTable<CategoryResponse> table;
 
     private int totalItems;
     private string searchString = null;
@@ -66,12 +62,26 @@
         data = await CategoryRepository.LoadTable();
     }
     */
-    private async Task<TableData<CategoryViewModel>> ServerReload(TableState state)
+    private async Task<TableData<CategoryResponse>> ServerReload(TableState state)
     {
-        return await CategoryService.LoadTable(state, searchString);
+        var request = new CategoryRequest()
+        {
+            Name = searchString,
+            Page = state.Page,
+            PageSize = state.PageSize,
+            OrderBy = state.SortLabel,
+        };
+
+        var response = await CategoryManager.GetCategoriesAsync(request, CancellationToken.None);
+
+        return new TableData<CategoryResponse>()
+        {
+            Items = response.Items,
+            TotalItems = response.Total
+        };
     }
 
-    private async Task DeleteCategory(int id)
+    private async Task DeleteCategory(long id)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
@@ -85,8 +95,7 @@
 
         if (!result.Canceled)
         {
-            var category = await CategoryRepository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
-            await CategoryRepository.DeleteAsync(category);
+            await CategoryManager.DeleteCategoryAsync(id, CancellationToken.None);
             await table.ReloadServerData();
         }
     }
@@ -104,9 +113,9 @@
         }
     }
 
-    private async Task UpdateCategory(int id)
+    private async Task UpdateCategory(long id)
     {
-        var category = await CategoryRepository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
+        var category = await CategoryManager.GetCategoryDetailAsync(id, CancellationToken.None);
         var parameters = new DialogParameters { ["item"] = category };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };

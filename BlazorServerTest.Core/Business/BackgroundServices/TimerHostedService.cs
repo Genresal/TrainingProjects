@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorServerTest.Core.BackgroundServices;
+namespace BlazorServerTest.Core.Business.BackgroundServices;
 public class TimerHostedService : BackgroundService
 {
     private readonly ILogger<TimerHostedService> _logger;

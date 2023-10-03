@@ -1,5 +1,5 @@
 ﻿using BlazorServerTest.Core.Data.Repositories;
-using BlazorServerTest.Core.Models;
+using BlazorServerTest.Core.Models.Categories;
 using Mapster;
 using MudBlazor;
 
@@ -13,10 +13,11 @@ public class CategoryService
         _repository = repository;
     }
 
-    public async Task<TableData<CategoryViewModel>> LoadTable(TableState state, string searchString)
+    public async Task<TableData<CategoryResponse>> LoadTable(TableState state, string searchString)
     {
-        var rawData = await _repository.GetAllAsync();
-        var data = rawData.Adapt<IEnumerable<CategoryViewModel>>();
+        // rawData = await _repository.GetAllAsync();
+        var rawData = new List<CategoryResponse>();
+        var data = rawData.Adapt<IEnumerable<CategoryResponse>>();
 
         //move search to db
         if (!string.IsNullOrEmpty(searchString))
@@ -39,7 +40,7 @@ public class CategoryService
         }
 
         var pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        var mappedData = pagedData.Adapt<List<CategoryViewModel>>();
-        return new TableData<CategoryViewModel>() { TotalItems = totalItems, Items = mappedData };
+        var mappedData = pagedData.Adapt<List<CategoryResponse>>();
+        return new TableData<CategoryResponse>() { TotalItems = totalItems, Items = mappedData };
     }
 }

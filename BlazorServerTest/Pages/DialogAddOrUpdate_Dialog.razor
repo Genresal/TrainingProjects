@@ -1,6 +1,7 @@
-﻿@using BlazorServerTest.Core.Data.Entities
-@using BlazorServerTest.Core.Data.Repositories
-@using BlazorServerTest.Core.Models
+﻿@using BlazorServerTest.Core.Data.Repositories
+@using BlazorServerTest.Core.Models.Categories
+@using Microsoft.AspNetCore.Components
+@using BlazorServerTest.Core.Data.Entities
 @using Mapster
 @inject RecipeRepository RecipeRepository
 @inject CategoryRepository CategoryRepository
@@ -17,7 +18,7 @@
         <MudTextField @bind-Value="@recipe.Description" Label="Location"/>
         @foreach (var cat in categories)
         {
-            <MudCheckBox @bind-Checked="@cat.IsSelected" Label="@cat.Name" Color="Color.Primary"></MudCheckBox>
+            //<MudCheckBox @bind-Checked="@cat.IsSelected" Label="@cat.Name" Color="Color.Primary"></MudCheckBox>
         }
     </DialogContent>
     <DialogActions>
@@ -31,11 +32,11 @@
 
     [Parameter]
     public Recipe recipe { get; set; } = new Recipe();
-    private List<CategoryViewModel> categories { get; set; } = new List<CategoryViewModel>();
+    private List<CategoryResponse> categories { get; set; } = new List<CategoryResponse>();
 
     protected override async Task OnInitializedAsync()
     {
-        categories = (await CategoryRepository.GetAllAsync()).Adapt<List<CategoryViewModel>>();
+        //categories = (await CategoryRepository.GetAllAsync()).Adapt<List<CategoryResponse>>();
 
         if (recipe.Id > 0)
         {
@@ -44,7 +45,7 @@
             {
                 if (selectedIds.Contains(category.Id))
                 {
-                    category.IsSelected = true;
+                    //category.IsSelected = true;
                 }
             }
         }
@@ -53,7 +54,8 @@
     //void Submit() => MudDialog.Close(DialogResult.Ok(true));
     private async Task Submit()
     {
-        var selectedCategories = categories.Where(x => x.IsSelected).ToList();
+        //var selectedCategories = categories.Where(x => x.IsSelected).ToList();
+        var selectedCategories = categories;
         recipe.Categories = selectedCategories.Adapt<List<Category>>();
 
         if (recipe.Id == 0)

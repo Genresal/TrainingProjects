@@ -1,9 +1,11 @@
-﻿namespace BlazorServerTest.Core.Models;
+﻿using BlazorServerTest.Core.Models.Categories;
+
+namespace BlazorServerTest.Core.Models;
 public class RecipeViewModel
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    public List<CategoryViewModel> Categories { get; set; }
+    public List<CategoryResponse> Categories { get; set; }
 }

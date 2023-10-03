@@ -1,7 +1,6 @@
 using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace BlazorServerTest.Core.Data.Repositories
 {
@@ -12,9 +11,11 @@ namespace BlazorServerTest.Core.Data.Repositories
         {
         }
 
-        public Task<int> CountAsync(Expression<Func<Recipe, bool>>? predicate)
+        public Task<int> CountByCategoryIdAsync(long categoryId)
         {
-            return Context.Set<Recipe>().CountAsync(predicate);
+            return Context.Set<Recipe>()
+                .Where(recipe => recipe.Categories.Any(category => category.Id == categoryId))
+                .CountAsync();
         }
 
         public async Task<Recipe> AddAsync(Recipe entity)
