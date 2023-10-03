@@ -3,7 +3,7 @@ trigger:
     include:
       - master
 
-name: Build and Deploy
+name: '$(SourceBranchName)_$(Rev:rr)'
 
 pool:
   vmImage: 'windows-latest'
