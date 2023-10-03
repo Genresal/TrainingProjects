@@ -1,5 +1,5 @@
-﻿using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Infrastructure;
+﻿using BlazorServerTest.Core.Data;
+using BlazorServerTest.Core.Data.Entities;
 using Hangfire;
 using Hangfire.Storage;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +9,10 @@ namespace BlazorServerTest.Core.Services
 {
     public class AuxService
     {
-        protected readonly AppDbContext _context;
+        protected readonly ApplicationDbContext _context;
         protected readonly DbSet<Recipe> _dbSet;
         private readonly ILogger<AuxService> _logger;
-        public AuxService(AppDbContext context, ILogger<AuxService> logger)
+        public AuxService(ApplicationDbContext context, ILogger<AuxService> logger)
         {
             _context = context;
             _dbSet = _context.Set<Recipe>();

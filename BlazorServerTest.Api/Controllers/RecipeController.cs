@@ -1,9 +1,3 @@
-using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
-using BlazorServerTestApi.VIewModels;
-using Mapster;
-using Microsoft.AspNetCore.Mvc;
-
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
@@ -23,7 +17,7 @@ namespace BlazorServerTestApi.Controllers
         public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
         {
 
-            var result = await _repository.Add(viewModel.Adapt<Recipe>());
+            var result = await _repository.AddAsync(viewModel.Adapt<Recipe>());
 
             return result.Adapt<RecipeViewModel>();
         }
@@ -39,7 +33,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet("{id}")]
         public async Task<RecipeViewModel> Get(int id)
         {
-            var result = await _repository.Get(id);
+            var result = await _repository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
 
             return result.Adapt<RecipeViewModel>();
         }

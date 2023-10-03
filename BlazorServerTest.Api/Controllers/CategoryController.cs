@@ -1,8 +1,3 @@
-using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
-using InMemoryCachingLibrary.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
@@ -23,7 +18,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpPost]
         public async Task<Category> Add([FromBody] Category viewModel)
         {
-            var result = await _repository.Add(viewModel);
+            var result = await _repository.AddAsync(viewModel);
 
             return result;
         }
@@ -33,7 +28,7 @@ namespace BlazorServerTestApi.Controllers
         {
             var key = nameof(Category);
 
-            var result = await _cacheService.GetOrCreateAsync(key, _repository.GetAll);
+            var result = await _cacheService.GetOrCreateAsync(key, _repository.GetAllAsync);
 
             return result;
         }
@@ -41,7 +36,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet]
         public async Task<List<Category>> GetAll()
         {
-            var result = await _repository.GetAll();
+            var result = await _repository.GetAllAsync();
 
             return result;
         }
@@ -49,7 +44,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet("{id}")]
         public async Task<Category> Get(int id)
         {
-            var result = await _repository.Get(id);
+            var result = await _repository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
 
             return result;
         }
@@ -57,7 +52,8 @@ namespace BlazorServerTestApi.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            await _repository.Delete(id);
+            var entity = await _repository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
+            await _repository.DeleteAsync(entity);
         }
     }
 }

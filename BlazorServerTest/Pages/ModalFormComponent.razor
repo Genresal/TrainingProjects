@@ -72,7 +72,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		categories = (await CategoryService.GetAll()).Adapt<List<CategoryViewModel>>();
+		categories = (await CategoryService.GetAllAsync()).Adapt<List<CategoryViewModel>>();
 	}
 
 	private async Task SaveData()
@@ -80,7 +80,7 @@
 		var selectedCategories = categories.Where(x => x.IsSelected).ToList();
 		newItem.Categories = selectedCategories.Adapt<List<Category>>();
 		// Save data to database or do something with the form data
-		var added = await ForecastService.Add(newItem);
+		var added = await ForecastService.AddAsync(newItem);
 		newItem = new ();
 		HideModal();
 		await OnDataSaved.InvokeAsync(added);

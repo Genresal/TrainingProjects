@@ -35,7 +35,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        categories = (await CategoryRepository.GetAll()).Adapt<List<CategoryViewModel>>();
+        categories = (await CategoryRepository.GetAllAsync()).Adapt<List<CategoryViewModel>>();
 
         if (recipe.Id > 0)
         {
@@ -58,11 +58,11 @@
 
         if (recipe.Id == 0)
         {
-            await RecipeRepository.Add(recipe);
+            await RecipeRepository.AddAsync(recipe);
         }
         else
         {
-            await RecipeRepository.Update(recipe);
+            await RecipeRepository.UpdateAsync(recipe);
         }
 
         MudDialog.Close(DialogResult.Ok(recipe.Id));

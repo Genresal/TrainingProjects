@@ -27,10 +27,10 @@
 	public string ButtonText { get; set; }
 
 	[Parameter]
-	public int Id { get; set; }
+	public long Id { get; set; }
 
 	[Parameter]
-	public EventCallback<int> OnYes { get; set; }
+	public EventCallback<long> OnYes { get; set; }
 
 	private bool showModal;
 

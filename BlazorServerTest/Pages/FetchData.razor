@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @using BlazorServerTest.Core.Data.Entities
 @using BlazorServerTest.Core.Data.Repositories
+@using System.Net.WebSockets
 @inject RecipeRepository RecipeRepository
 
 <PageTitle>Weather forecast</PageTitle>
@@ -92,7 +93,7 @@ else
 
 	protected override async Task OnInitializedAsync()
     {
-		rawData = (await RecipeRepository.GetAll(includeProperties: x => x.Categories)).ToList();
+		rawData = (await RecipeRepository.PagedFindAsync<Recipe>(1, 10)).Items.ToList();
 	    AuxCalculating();
     }
 
@@ -109,7 +110,7 @@ else
 
     private async Task AddDefaultHandler()
     {
-		var addedItem = await RecipeRepository.AddDefault();
+		var addedItem = await RecipeRepository.AddDefaultAsync();
 		DataAddedHandler(addedItem);
     }
 
@@ -127,9 +128,14 @@ else
 		StateHasChanged();
 	}
 
-	private async Task DeleteHandler(int id)
+	private async Task DeleteHandler(long id)
 	{
-		await RecipeRepository.Delete(id);
+	    var entity = await RecipeRepository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
+	    if (entity is not null)
+	    {
+			await RecipeRepository.DeleteAsync(entity);
+	    }
+
 		rawData = rawData.Where(x => x.Id != id).ToList();
 		AuxCalculating();
 		StateHasChanged();

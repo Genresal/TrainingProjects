@@ -1,4 +1,5 @@
-﻿using BlazorServerTest.Core.Data.Repositories;
+﻿using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTest.Core.Models;
 using Mapster;
 using MudBlazor;
@@ -15,7 +16,7 @@ public class RecipeViewService
 
     public async Task<TableData<RecipeViewModel>> LoadTable(TableState state, string searchString)
     {
-        var rawData = await _repository.GetAll(includeProperties: x => x.Categories);
+        var rawData = new List<Recipe>();
         var data = rawData.Adapt<IEnumerable<RecipeViewModel>>();
 
         //move search to db
