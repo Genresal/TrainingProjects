@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - master
 
 name: Build and Deploy
 
