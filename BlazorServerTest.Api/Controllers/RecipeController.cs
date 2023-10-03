@@ -1,39 +1,47 @@
-using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
-using BlazorServerTestApi.VIewModels;
-using Mapster;
-using Microsoft.AspNetCore.Mvc;
-
 namespace BlazorServerTestApi.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class RecipeController : ControllerBase
-	{
-		private readonly RecipeRepository _repository;
-		private readonly ILogger<RecipeController> _logger;
+    [ApiController]
+    [Route("[controller]")]
+    public class RecipeController : ControllerBase
+    {
+        private readonly RecipeRepository _repository;
+        private readonly ILogger<RecipeController> _logger;
 
-		public RecipeController(RecipeRepository repository, ILogger<RecipeController> logger)
-		{
-			_repository = repository;
-			_logger = logger;
-		}
+        public RecipeController(RecipeRepository repository, ILogger<RecipeController> logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
 
-		[HttpPost]
-		public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
-		{
+        [HttpPost]
+        public async Task<RecipeViewModel> Add([FromBody] ChangeRecipeViewModel viewModel)
+        {
 
-			var result = await _repository.AddAsync(viewModel.Adapt<Recipe>());
+            var result = await _repository.AddAsync(viewModel.Adapt<Recipe>());
 
-			return result.Adapt<RecipeViewModel>();
-		}
+            return result.Adapt<RecipeViewModel>();
+        }
 
-		[HttpGet("{id}")]
-		public async Task<RecipeViewModel> Get(int id)
-		{
-			var result = await _repository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
+        [HttpGet]
+        public async Task<List<RecipeViewModel>> GetAll()
+        {
+            var result = await _repository.GetAll();
 
-			return result.Adapt<RecipeViewModel>();
-		}
-	}
+            return result.Adapt<List<RecipeViewModel>>();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<RecipeViewModel> Get(int id)
+        {
+            var result = await _repository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
+
+            return result.Adapt<RecipeViewModel>();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _repository.Delete(id);
+        }
+    }
 }
