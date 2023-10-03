@@ -24,7 +24,7 @@ stages:
     - script: dotnet build --project BlazorServerTest/BlazorServerTest.csproj
       displayName: 'dotnet build'
 
-    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
       displayName: 'dotnet publish'
 
 #    - task: CopyFiles@2
