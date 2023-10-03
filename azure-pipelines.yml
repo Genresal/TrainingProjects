@@ -1,4 +1,3 @@
-#trigger: []
 trigger: none
 
 name: Build and Deploy
@@ -31,10 +30,7 @@ stages:
         cd BlazorServerTest
         echo List of Folders in Current Working Directory:
         dir /B /AD
-      displayName: 'List Folders 2'
-
-#    - script: dotnet build
-#      displayName: 'dotnet build'
+      displayName: 'List Folders Inside Released Path'
 
     - script: dotnet build
       displayName: 'Build ASP.NET App'
