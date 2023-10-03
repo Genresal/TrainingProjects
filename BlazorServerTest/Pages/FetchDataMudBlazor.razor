@@ -3,6 +3,7 @@
 @using BlazorServerTest.Core.Models
 @using BlazorServerTest.Services
 @using Microsoft.AspNetCore.Components
+@using BlazorServerTest.Core.Data.Entities
 @inject RecipeViewService RecipeService
 @inject RecipeRepository RecipeRepository
 @inject IDialogService DialogService
@@ -91,7 +92,8 @@
 
         if (!result.Canceled)
         {
-            await RecipeRepository.Delete(id);
+            var recipe = await RecipeRepository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
+            await RecipeRepository.DeleteAsync(recipe);
             await table.ReloadServerData();
         }
     }
@@ -111,7 +113,7 @@
 
     private async Task UpdateRecipe(int id)
     {
-        var recipe = await RecipeRepository.Get(id, x =>x.Categories);
+        var recipe = await RecipeRepository.FirstOrDefaultAsync(x => x.Id == id, x =>x.Categories);
         var parameters = new DialogParameters { ["recipe"] = recipe };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };

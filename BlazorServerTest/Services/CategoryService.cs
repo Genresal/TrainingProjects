@@ -15,7 +15,7 @@ public class CategoryService
 
     public async Task<TableData<CategoryViewModel>> LoadTable(TableState state, string searchString)
     {
-        var rawData = await _repository.GetAll();
+        var rawData = await _repository.GetAllAsync();
         var data = rawData.Adapt<IEnumerable<CategoryViewModel>>();
 
         //move search to db

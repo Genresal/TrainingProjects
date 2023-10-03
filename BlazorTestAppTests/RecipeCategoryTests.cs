@@ -3,6 +3,7 @@ using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Repositories;
 using BlazorTestAppTests.Infrastructure;
 using FluentAssertions;
+using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -18,8 +19,8 @@ namespace BlazorTestAppTests
         public RecipeCategoriesTests()
         {
             _loggerMock = new Mock<ILogger<RecipeRepository>>();
-            _recipeRepository = new RecipeRepository(Context);
-            _categoryRepository = new CategoryRepository(Context, _recipeRepository);
+            _recipeRepository = new RecipeRepository(Context, new Mapper());
+            _categoryRepository = new CategoryRepository(Context, _recipeRepository, new Mapper());
             _fixture = new Fixture();
             //_fixture.Customize<Recipe>(c => c.OmitAutoProperties());    // Avoiding circular references. No it create instance with nullable props
 
@@ -40,7 +41,7 @@ namespace BlazorTestAppTests
             await AddToContext(entity);
 
             //Act
-            var result = await _recipeRepository.Get(entity.Id);
+            var result = await _recipeRepository.FirstOrDefaultAsync<Recipe>(x => x.Id == entity.Id, null, true, CancellationToken.None);
 
             //Assert
             result.Should().BeEquivalentTo(entity);

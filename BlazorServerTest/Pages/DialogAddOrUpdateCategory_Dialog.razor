@@ -28,11 +28,11 @@
     {
         if (item.Id == 0)
         {
-            await Repository.Add(item);
+            await Repository.AddAsync(item);
         }
         else
         {
-            await Repository.Update(item);
+            await Repository.UpdateAsync(item);
         }
 
         MudDialog.Close(DialogResult.Ok(item.Id));

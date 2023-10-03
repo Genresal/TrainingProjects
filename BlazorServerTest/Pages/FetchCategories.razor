@@ -85,7 +85,8 @@
 
         if (!result.Canceled)
         {
-            await CategoryRepository.Delete(id);
+            var category = await CategoryRepository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
+            await CategoryRepository.DeleteAsync(category);
             await table.ReloadServerData();
         }
     }
@@ -105,7 +106,7 @@
 
     private async Task UpdateCategory(int id)
     {
-        var category = await CategoryRepository.Get(id);
+        var category = await CategoryRepository.FirstOrDefaultAsync<Category>(x => x.Id == id, null, true, CancellationToken.None);
         var parameters = new DialogParameters { ["item"] = category };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };

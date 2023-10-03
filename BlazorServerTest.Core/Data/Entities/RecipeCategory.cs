@@ -2,8 +2,8 @@
 
 public class RecipeCategory
 {
-	public int RecipeId { get; set; }
-	public int CategoryId { get; set; }
+	public long RecipeId { get; set; }
+	public long CategoryId { get; set; }
 
 	public Recipe Recipe { get; set; }
 	public Category Category { get; set; }

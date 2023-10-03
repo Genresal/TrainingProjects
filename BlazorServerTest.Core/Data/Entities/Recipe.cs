@@ -1,9 +1,8 @@
-﻿using BlazorServerTest.Core.Data.Entities.Interfaces;
+﻿using BlazorServerTest.Core.Data.Entities.Core;
 
 namespace BlazorServerTest.Core.Data.Entities;
-public class Recipe : IEntity
+public class Recipe : Entity
 {
-    public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public int? PrepTime { get; set; }

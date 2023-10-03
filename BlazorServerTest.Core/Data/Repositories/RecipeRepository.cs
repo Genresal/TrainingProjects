@@ -1,52 +1,55 @@
+using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BlazorServerTest.Core.Data.Repositories
 {
-    public class RecipeRepository : BaseRepository<Recipe>
+    public class RecipeRepository : Repository<Recipe>
     {
-        public RecipeRepository(AppDbContext context) : base(context)
+        public RecipeRepository(ApplicationDbContext context,
+            IMapper mapper) : base(context, mapper)
         {
         }
 
-        public override async Task<Recipe> Add(Recipe entity)
+        public Task<int> CountAsync(Expression<Func<Recipe, bool>>? predicate)
+        {
+            return Context.Set<Recipe>().CountAsync(predicate);
+        }
+
+        public async Task<Recipe> AddAsync(Recipe entity)
         {
             foreach (var category in entity.Categories)
             {
-                _context.Attach(category);
+                Context.Attach(category);
             }
 
-            await _context.AddAsync(entity);
-            /*
-            var categoryRecipes = entity.Categories.Select(x => new RecipeCategory() { CategoryId = x.Id, RecipeId = entity.Id });
-            _context.RecipeCategories.AddRange(categoryRecipes);
-            */
-            await _context.SaveChangesAsync();
+            await Context.AddAsync(entity);
+            await Context.SaveChangesAsync();
 
-            _dbSet.Entry(entity).State = EntityState.Detached;
+            Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
-        public override async Task<Recipe> Update(Recipe entity)
+        public async Task<Recipe> UpdateAsync(Recipe entity)
         {
-            _dbSet.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
 
-            var cats = _context.RecipeCategories.Where(x => x.RecipeId == entity.Id);
-            _context.RecipeCategories.RemoveRange(cats);
+            var cats = Context.RecipeCategories.Where(x => x.RecipeId == entity.Id);
+            Context.RecipeCategories.RemoveRange(cats);
             var newCats = entity.Categories.Select(x => new RecipeCategory() { RecipeId = entity.Id, CategoryId = x.Id });
-            _context.RecipeCategories.AddRange(newCats);
+            Context.RecipeCategories.AddRange(newCats);
 
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
 
-            _dbSet.Entry(entity).State = EntityState.Detached;
+            Context.Entry(entity).State = EntityState.Detached;
 
             return entity;
         }
 
-        public Task<Recipe> AddDefault()
+        public Task<Recipe> AddDefaultAsync()
         {
-            return Add(new Recipe
+            return AddAsync(new Recipe
             {
                 Name = "DefaultRecipe"
             });

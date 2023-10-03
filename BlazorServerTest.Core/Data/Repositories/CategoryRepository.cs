@@ -1,36 +1,38 @@
-﻿using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Infrastructure;
+﻿using AutoMapper;
+using BlazorServerTest.Core.Data.Entities;
 
 namespace BlazorServerTest.Core.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository<Category>
+    public class CategoryRepository : Repository<Category>
     {
         private readonly RecipeRepository _recipeRepository;
 
-        public CategoryRepository(AppDbContext context, RecipeRepository recipeRepository) : base(context)
+        public CategoryRepository(ApplicationDbContext context,
+            RecipeRepository recipeRepository,
+            IMapper mapper) : base(context, mapper)
         {
             _recipeRepository = recipeRepository;
         }
 
         public async Task<List<Category>> CalculateRecipesQuantity()
         {
-            var categories = await base.GetAll();
+            var categories = await PagedFindAsync<string>(1, 10);
 
-            foreach (var cat in categories)
+            foreach (var cat in categories.Items)
             {
-                var catRecipesCount = await _recipeRepository.Count(x => x.Categories.Contains(cat));
+                var catRecipesCount = await _recipeRepository.CountAsync(x => x.Categories.Contains(cat));
+
 
                 if (cat.Quantity != catRecipesCount)
                 {
                     cat.Quantity = catRecipesCount;
-                    //await Update(cat);
                 }
             }
 
-            return categories;
+            return categories.Items.ToList();
         }
 
-        public override Task<List<Category>> GetAll()
+        public Task<List<Category>> GetAllAsync()
         {
             return CalculateRecipesQuantity();
         }
