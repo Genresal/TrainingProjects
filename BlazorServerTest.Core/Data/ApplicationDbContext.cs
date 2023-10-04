@@ -1,8 +1,4 @@
-﻿using BlazorServerTest.Core.Data.Entities;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-
-namespace BlazorServerTest.Core.Data;
+﻿namespace BlazorServerTest.Core.Data;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -22,6 +18,9 @@ public class ApplicationDbContext : DbContext
 
             optionsBuilder.UseSqlite(connection);
         }
+        */
+        optionsBuilder.UseInMemoryDatabase("MyInMemoryDatabase");
+        optionsBuilder.EnableSensitiveDataLogging();
     }
 
     public DbSet<Recipe> Recipes { get; set; }

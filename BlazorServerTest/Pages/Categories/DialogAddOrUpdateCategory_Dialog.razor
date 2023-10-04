@@ -1,5 +1,4 @@
-﻿@using BlazorServerTest.Core.Data.Entities
-@using BlazorServerTest.Core.Business
+﻿@using BlazorServerTest.Core.Business
 @using BlazorServerTest.Core.Models.Categories
 @inject CategoryManager Manager
 
@@ -11,7 +10,7 @@
         }
 
         <MudTextField @bind-Value="@item.Name" Label="Category Name"/>
-        <MudTextField @bind-Value="@item.Unit" Label="Unit"/>
+        <MudTextField @bind-Value="@item.Description" Label="Description" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -22,9 +21,8 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public Category item { get; set; } = new Category();
+    [Parameter] public BaseCategory item { get; set; } = new BaseCategory();
 
-    //void Submit() => MudDialog.Close(DialogResult.Ok(true));
     private async Task Submit()
     {
 

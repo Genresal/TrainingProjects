@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Models;
 using BlazorServerTest.Core.Data.Repositories;
+using BlazorServerTest.Core.Enums;
+using BlazorServerTest.Core.Extensions;
 using BlazorServerTest.Core.Models.Categories;
 using LinqKit;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace BlazorServerTest.Core.Business;
 
@@ -35,12 +39,14 @@ public class CategoryManager
             predicate = predicate.And(x => x.Name.ToLower().Contains(request.Name.ToLower()));
         }
 
+        (var sortExpression, bool ascOrder) = GetOrderByExpression(request);
+
         var result = await _categoryRepository.PagedFindAsync<CategoryResponse, object>(
             request.Page,
             request.PageSize,
             predicate,
-            null,
-            true,
+            sortExpression,
+            ascOrder,
             cancellationToken);
 
 
@@ -128,5 +134,26 @@ public class CategoryManager
         }
 
         return category;
+    }
+
+    private static (Expression<Func<Category, object>>, bool) GetOrderByExpression(SortedRequest request)
+    {
+        var orderByClause = request.GetFirstOrderByClause();
+
+        // default order
+        Expression<Func<Category, object>> sortExpression = x => x.Id;
+
+        if (orderByClause.Key == nameof(Category.Name).ToLower())
+        {
+            sortExpression = x => x.Name;
+        }
+        else if (orderByClause.Key == nameof(Category.Description).ToLower())
+        {
+            sortExpression = x => x.Description;
+        }
+
+        var isAscending = orderByClause.Value == SortOrder.Ascending;
+
+        return (sortExpression, isAscending);
     }
 }
