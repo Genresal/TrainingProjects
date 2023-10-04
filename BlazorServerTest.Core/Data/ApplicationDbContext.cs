@@ -1,5 +1,4 @@
 ﻿using BlazorServerTest.Core.Data.Entities;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest.Core.Data;
@@ -14,7 +13,7 @@ public class ApplicationDbContext : DbContext
     //In SqLite when i delete entities from result table count works from cache or smth, it uses onl data!!!
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)   // For inmemory testing
+        /*if (!optionsBuilder.IsConfigured)   // For inmemory testing
         {
             var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "./Db.db" };
             var connectionString = connectionStringBuilder.ToString();
@@ -22,6 +21,8 @@ public class ApplicationDbContext : DbContext
 
             optionsBuilder.UseSqlite(connection);
         }
+        */
+        optionsBuilder.UseInMemoryDatabase("MyInMemoryDatabase");
     }
 
     public DbSet<Recipe> Recipes { get; set; }
@@ -29,7 +30,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<RecipeCategory> RecipeCategories { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Step> Steps { get; set; }
-
 
     //Fluent API
     protected override void OnModelCreating(ModelBuilder modelBuilder)
