@@ -43,16 +43,6 @@ public class CategoryManager
             true,
             cancellationToken);
 
-
-        foreach (var cat in result.Items)
-        {
-            var catRecipesCount = await _recipeRepository.CountByCategoryIdAsync(cat.Id);
-            if (cat.Quantity != catRecipesCount)
-            {
-                cat.Quantity = catRecipesCount;
-            }
-        }
-
         return new CategoryPagedResponse
         {
             Items = result.Items,

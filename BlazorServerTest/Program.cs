@@ -61,4 +61,7 @@ app.MapFallbackToPage("/_Host");
 
 //app.UseHangfireDashboard();
 
+// endpoints
+app.MapGet("/health", () => "Hello World!");
+
 app.Run();
