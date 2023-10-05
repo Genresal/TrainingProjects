@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Models;
 using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTest.Core.Enums;
 using BlazorServerTest.Core.Extensions;
 using BlazorServerTest.Core.Models.Categories;
+using BlazorServerTest.Core.Models.Common;
 using LinqKit;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -48,16 +48,6 @@ public class CategoryManager
             sortExpression,
             ascOrder,
             cancellationToken);
-
-
-        foreach (var cat in result.Items)
-        {
-            var catRecipesCount = await _recipeRepository.CountByCategoryIdAsync(cat.Id);
-            if (cat.Quantity != catRecipesCount)
-            {
-                cat.Quantity = catRecipesCount;
-            }
-        }
 
         return new CategoryPagedResponse
         {

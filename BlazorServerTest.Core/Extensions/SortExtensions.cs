@@ -1,5 +1,5 @@
-﻿using BlazorServerTest.Core.Data.Models;
-using BlazorServerTest.Core.Enums;
+﻿using BlazorServerTest.Core.Enums;
+using BlazorServerTest.Core.Models.Common;
 
 namespace BlazorServerTest.Core.Extensions;
 

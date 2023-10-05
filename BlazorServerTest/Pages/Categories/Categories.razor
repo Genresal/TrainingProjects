@@ -16,10 +16,10 @@
           Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Categories</MudText>
-            <MudSpacer/>
-            <MudIconButton OnClick="@(x => OnSearch(string.Empty))" Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small"/>
-            <MudTextField T="string" Value="searchString" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudSpacer/>
+        <MudIconButton Class="mt-4 me-4" OnClick="@(x => OnSearch(string.Empty))" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium"/>
+        <MudTextField T="string" Value="searchString" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
         <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Id).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Id)</MudTableSortLabel></MudTh>
@@ -34,8 +34,9 @@
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
         <MudTd Class="d-flex justify-center">
-            <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" />
-            <MudIconButton OnClick="@((e) => DeleteCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" />
+            <MudIconButton OnClick="@((e) => ViewCategory(context.Id))" Icon="@Icons.Material.Filled.ViewList" Color="Color.Primary" Size="Size.Small"/>
+            <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"/>
+            <MudIconButton OnClick="@((e) => DeleteCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"/>
         </MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -45,7 +46,7 @@
         <MudText>Loading...</MudText>
     </LoadingContent>
     <PagerContent>
-        <MudTablePager />
+        <MudTablePager/>
     </PagerContent>
 </MudTable>
 
@@ -55,6 +56,12 @@
 
     private int totalItems;
     private string searchString = null;
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
 
     private async Task<TableData<CategoryResponse>> ServerReload(TableState state)
     {
@@ -75,21 +82,18 @@
         };
     }
 
-    private async Task DeleteCategory(long id)
+    private async Task ViewCategory(long id)
     {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
-        parameters.Add("Color", Color.Error);
+        var category = await CategoryManager.GetCategoryDetailAsync(id, CancellationToken.None);
+        var parameters = new DialogParameters { ["ViewModel"] = category };
 
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<DialogTemplateExample_Dialog>("Delete", parameters, options);
+        var dialog = await DialogService.ShowAsync<ViewCategory_Modal<CategoryResponse>>("View Category", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await CategoryManager.DeleteCategoryAsync(id, CancellationToken.None);
             await table.ReloadServerData();
         }
     }
@@ -123,9 +127,22 @@
         }
     }
 
-    private void OnSearch(string text)
+    private async Task DeleteCategory(long id)
     {
-        searchString = text;
-        table.ReloadServerData();
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogTemplateExample_Dialog>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await CategoryManager.DeleteCategoryAsync(id, CancellationToken.None);
+            await table.ReloadServerData();
+        }
     }
 }

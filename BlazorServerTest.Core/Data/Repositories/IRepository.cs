@@ -1,5 +1,5 @@
 ﻿using BlazorServerTest.Core.Data.Entities.Core;
-using BlazorServerTest.Core.Data.Models;
+using BlazorServerTest.Core.Models.Common;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 

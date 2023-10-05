@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BlazorServerTest.Core.Data.Entities.Core;
-using BlazorServerTest.Core.Data.Models;
 using BlazorServerTest.Core.Extensions;
+using BlazorServerTest.Core.Models.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
