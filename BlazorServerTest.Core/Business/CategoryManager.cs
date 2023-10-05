@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Models;
 using BlazorServerTest.Core.Data.Repositories;
 using BlazorServerTest.Core.Enums;
 using BlazorServerTest.Core.Extensions;
 using BlazorServerTest.Core.Models.Categories;
+using BlazorServerTest.Core.Models.Common;
 using LinqKit;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;

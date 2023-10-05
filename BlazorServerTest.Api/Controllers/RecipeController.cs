@@ -1,7 +1,13 @@
+using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Repositories;
+using BlazorServerTestApi.VIewModels;
+using Mapster;
+using Microsoft.AspNetCore.Mvc;
+
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Components.Route("[controller]")]
     public class RecipeController : ControllerBase
     {
         private readonly RecipeRepository _repository;

@@ -1,4 +1,4 @@
-﻿using BlazorServerTest.Core.Data.Models;
+﻿using BlazorServerTest.Core.Models.Common;
 
 namespace BlazorServerTest.Core.Models.Categories;
 

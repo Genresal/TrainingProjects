@@ -1,7 +1,12 @@
+using BlazorServerTest.Core.Data.Entities;
+using BlazorServerTest.Core.Data.Repositories;
+using InMemoryCachingLibrary.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Components.Route("[controller]")]
     public class CategoryController : ControllerBase
     {
         private readonly CategoryRepository _repository;
@@ -28,7 +33,7 @@ namespace BlazorServerTestApi.Controllers
         {
             var key = nameof(Category);
 
-            var result = await _cacheService.GetOrCreateAsync(key, _repository.GetAllAsync);
+            var result = await _cacheService.GetOrCreateAsync(key, _repository.FindAsync());
 
             return result;
         }

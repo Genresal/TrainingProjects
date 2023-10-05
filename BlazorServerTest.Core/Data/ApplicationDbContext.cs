@@ -1,4 +1,7 @@
-﻿namespace BlazorServerTest.Core.Data;
+﻿using BlazorServerTest.Core.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace BlazorServerTest.Core.Data;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

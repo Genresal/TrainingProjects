@@ -1,4 +1,4 @@
-﻿using BlazorServerTest.Core.Models;
+﻿using BlazorServerTest.Core.Models.Categories;
 
 namespace BlazorServerTestApi.VIewModels;
 public class ChangeRecipeViewModel

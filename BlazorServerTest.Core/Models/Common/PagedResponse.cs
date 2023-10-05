@@ -1,4 +1,4 @@
-﻿namespace BlazorServerTest.Core.Data.Models;
+﻿namespace BlazorServerTest.Core.Models.Common;
 
 public class PagedResponse<T>
 {
