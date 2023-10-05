@@ -21,7 +21,7 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public BaseCategory item { get; set; } = new BaseCategory();
+    [Parameter] public BaseCategory item { get; set; } = new();
 
     private async Task Submit()
     {
