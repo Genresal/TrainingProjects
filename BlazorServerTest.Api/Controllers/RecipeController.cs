@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Components.Route("[controller]")]
+    [Route("[controller]")]
     public class RecipeController : ControllerBase
     {
         private readonly RecipeRepository _repository;
