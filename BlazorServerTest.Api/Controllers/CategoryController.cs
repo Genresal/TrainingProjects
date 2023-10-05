@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlazorServerTestApi.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Components.Route("[controller]")]
+    [Route("[controller]")]
     public class CategoryController : ControllerBase
     {
         private readonly CategoryRepository _repository;
@@ -33,15 +33,15 @@ namespace BlazorServerTestApi.Controllers
         {
             var key = nameof(Category);
 
-            var result = await _cacheService.GetOrCreateAsync(key, _repository.FindAsync());
+            //var result = await _cacheService.GetOrCreateAsync(key, new List<Category>());
 
-            return result;
+            return new List<Category>();
         }
 
         [HttpGet]
         public async Task<List<Category>> GetAll()
         {
-            var result = await _repository.GetAllAsync();
+            var result = new List<Category>();
 
             return result;
         }

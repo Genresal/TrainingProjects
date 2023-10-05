@@ -31,7 +31,7 @@ namespace BlazorServerTestApi.Controllers
         [HttpGet]
         public async Task<List<RecipeViewModel>> GetAll()
         {
-            var result = await _repository.GetAll();
+            var result = new List<RecipeViewModel>();
 
             return result.Adapt<List<RecipeViewModel>>();
         }
@@ -42,12 +42,6 @@ namespace BlazorServerTestApi.Controllers
             var result = await _repository.FirstOrDefaultAsync<Recipe>(x => x.Id == id, null, true, CancellationToken.None);
 
             return result.Adapt<RecipeViewModel>();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task Delete(int id)
-        {
-            await _repository.Delete(id);
         }
     }
 }
