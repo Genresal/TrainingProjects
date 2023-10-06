@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>72a56596-4bff-4b76-8983-fce692274e32</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +20,7 @@
 	  <PackageReference Include="FluentAssertions" Version="6.10.0" />
 	  <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
 	  <PackageReference Include="Mapster" Version="7.4.0" />
+	  <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
 	  <PackageReference Include="MudBlazor" Version="6.1.9" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
@@ -31,14 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BlazorServerTest.Core\BlazorServerTest.Core.csproj" />
     <ProjectReference Include="..\InMemoryCachingLibrary\InMemoryCachingLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\DialogTemplateExample_Dialog.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\DialogTemplateExample_Dialog.razor" />
   </ItemGroup>
 
 </Project>

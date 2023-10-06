@@ -12,13 +12,13 @@ public class Category : Entity
     public int? Quantity => CalculateQuantity();
 
 
-    public virtual ICollection<Recipe>? Recipes { get; set; }
+    public List<RecipeCategory>? RecipeCategories { get; set; }
 
     private int? CalculateQuantity()
     {
-        if (Recipes == null)
+        if (RecipeCategories == null)
             return null;
 
-        return Recipes.Count;
+        return RecipeCategories.Count;
     }
 }

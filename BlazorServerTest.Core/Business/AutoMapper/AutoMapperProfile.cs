@@ -7,5 +7,6 @@ public partial class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateCategoryMapperProfile();
+        CreateRecipeMapperProfile();
     }
 }

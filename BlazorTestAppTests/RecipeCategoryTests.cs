@@ -1,7 +1,8 @@
 using AutoFixture;
 using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
+using BlazorServerTest.Core.Data.Repositories.Categories;
+using BlazorServerTest.Core.Data.Repositories.Recipes;
 using BlazorTestAppTests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;

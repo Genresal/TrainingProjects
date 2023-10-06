@@ -1,0 +1,167 @@
+﻿@page "/recipes"
+@inject RecipeManager RecipeManager
+@inject CategoryManager CategoryManager
+@inject IDialogService DialogService
+@using BlazorServerTest.Core.Models.Categories
+@using BlazorServerTest.Core.Business
+@using BlazorServerTest.Core.Models.Recipes
+@using BlazorServerTest.Models
+@inherits LayoutComponentBase
+
+<PageTitle>Recipes</PageTitle>
+
+<h1>Recipes</h1>
+
+<p>This component demonstrates fetching data from a repository.</p>
+<MudFab OnClick="@((e) => CreateCategory())" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Label="Add new item" Size="Size.Small" Class="mb-3 me-2" />
+
+<MudGrid>
+    <MudItem xs="12" sm="2">
+        <MudPaper Class="d-flex flex-column align-left justify-center mud-width-full p-2">
+            <MudText Typo="Typo.h6">Categories</MudText>
+            @foreach (var category in categories)
+            {
+                <MudCheckBox T="bool" Checked="category.IsChecked" CheckedChanged="@(c => HandleCheckedChanged(category, c))" Label="@category.Item.Name"/>
+            }
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="10">
+        <MudPaper>
+            <MudTable ServerData="@(new Func<TableState, Task<TableData<RecipeResponse>>>(ServerReload))"
+                      Dense="true" Hover="true" Striped="true" Bordered="true" @ref="table">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Recipes</MudText>
+                    <MudSpacer />
+                    <MudIconButton Class="mt-4 me-4" OnClick="@(x => OnSearch(string.Empty))" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium" />
+                    <MudTextField T="string" Value="searchString" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Id).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Id)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Name).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Name)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Description).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Description)</MudTableSortLabel></MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Id">@context.Id</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Description">@context.Description</MudTd>
+                    <MudTd Class="d-flex justify-center">
+                        <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" />
+                        <MudIconButton OnClick="@((e) => DeleteCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" />
+                    </MudTd>
+                </RowTemplate>
+                <NoRecordsContent>
+                    <MudText>No matching records found</MudText>
+                </NoRecordsContent>
+                <LoadingContent>
+                    <MudText>Loading...</MudText>
+                </LoadingContent>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+@code {
+    private List<CheckboxModel<CategoryResponse>> categories { get; set; } = new ();
+    private TableData<RecipeResponse> data;
+    private MudTable<RecipeResponse> table;
+
+    private int totalItems;
+    private string searchString = null;
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    private void HandleCheckedChanged(CheckboxModel<CategoryResponse> item, bool isChecked)
+    {
+        item.IsChecked = isChecked;
+        table.ReloadServerData();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (await CategoryManager.GetCategoriesAsync(new CategoryRequest() { Page = 1, PageSize = 100 }, CancellationToken.None)).Items
+            .ToList()
+            .Select(x => new CheckboxModel<CategoryResponse>()
+            {
+                Item = x,
+            })
+            .ToList();        
+    }
+
+    private async Task<TableData<RecipeResponse>> ServerReload(TableState state)
+    {
+        var request = new RecipeRequest()
+            {
+                Name = searchString,
+                CategoryIds = categories.Where(x => x.IsChecked).Select(x => x.Item.Id).ToList(),
+                Page = state.Page + 1, //MudBlazor count first page as 0
+                PageSize = state.PageSize,
+                OrderBy = $"{state.SortLabel}:{state.SortDirection}",
+            };
+
+        var response = await RecipeManager.GetRecipesAsync(request, CancellationToken.None);
+
+        return new TableData<RecipeResponse>()
+            {
+                Items = response.Items,
+                TotalItems = response.Total
+            };
+    }
+
+    private async Task CreateCategory()
+    {
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Create new Category", options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
+    private async Task UpdateCategory(long id)
+    {
+        var recipe = await RecipeManager.GetRecipeDetailAsync(id, CancellationToken.None);
+        var parameters = new DialogParameters { ["item"] = recipe };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Update Category", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
+    private async Task DeleteCategory(long id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete these records? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogTemplateExample_Dialog>("Delete", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await RecipeManager.DeleteCategoryAsync(id, CancellationToken.None);
+            await table.ReloadServerData();
+        }
+    }
+}

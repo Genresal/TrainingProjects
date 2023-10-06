@@ -1,10 +1,12 @@
-﻿namespace BlazorServerTest.Core.Data.Entities;
+﻿using BlazorServerTest.Core.Data.Entities.Core;
 
-public class RecipeCategory
+namespace BlazorServerTest.Core.Data.Entities;
+
+public class RecipeCategory : Entity
 {
-	public long RecipeId { get; set; }
-	public long CategoryId { get; set; }
+    public long RecipeId { get; set; }
+    public long CategoryId { get; set; }
 
-	public Recipe Recipe { get; set; }
-	public Category Category { get; set; }
+    public Recipe? Recipe { get; set; }
+    public Category? Category { get; set; }
 }

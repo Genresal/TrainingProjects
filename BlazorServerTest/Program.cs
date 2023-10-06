@@ -1,5 +1,8 @@
 using BlazorServerTest.Core;
+using BlazorServerTest.Core.Business;
+using BlazorServerTest.Core.Models.Recipes;
 using InMemoryCachingLibrary;
+using Microsoft.AspNetCore.Mvc;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +56,10 @@ app.MapFallbackToPage("/_Host");
 //app.UseHangfireDashboard();
 
 // endpoints
-app.MapGet("/health", () => "Hello World!");
+app.MapGet("/api/health", () => "Hello World!");
+// TODO This one not works
+// TODO Docker not works
+app.MapGet("/api/recipes", async ([FromQuery] RecipeRequest? request, RecipeManager manager) => await manager.GetRecipesAsync(request, CancellationToken.None));
+app.MapPut("/api/recipes", async (UpdateRecipeRequest request, RecipeManager manager) => await manager.UpdateRecipeAsync(request, CancellationToken.None));
 
 app.Run();

@@ -1,0 +1,81 @@
+﻿@using BlazorServerTest.Core.Models.Categories
+@using Microsoft.AspNetCore.Components
+@using BlazorServerTest.Core.Business
+@using BlazorServerTest.Core.Models.Recipes
+@using BlazorServerTest.Models
+@inject CategoryManager CategoryManager
+@inject RecipeManager RecipeManager
+
+<MudDialog>
+    <DialogContent>
+        @if (item.Id != 0)
+        {
+            <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @item.Id.ToString().</MudText>
+        }
+
+        <MudTextField @bind-Value="@item.Name" Label="Server Name"/>
+        <MudTextField @bind-Value="@item.Description" Label="Location"/>
+        @foreach (var category in categories)
+        {
+            //<MudCheckBox @bind-Checked="@cat.IsSelected" Label="@cat.Name" Color="Color.Primary"></MudCheckBox>
+            //<MudCheckBox Label="@category.Name" Checked="@IsCategorySelected(category.Id)" CheckedChanged="(e) => ToggleCategory(category.Id, e.Value)"  Color="Color.Primary"></MudCheckBox>
+            <MudCheckBox @bind-Checked="@category.IsChecked" Label="@category.Item.Name" />
+        }
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public RecipeDetailedResponse item { get; set; } = new();
+    private List<CheckboxModel<CategoryResponse>> categories { get; set; } = new List<CheckboxModel<CategoryResponse>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (await CategoryManager.GetCategoriesAsync(new CategoryRequest() { Page = 1, PageSize = 100 }, CancellationToken.None)).Items
+            .ToList()
+            .Select(x => new CheckboxModel<CategoryResponse>()
+            {
+                Item = x,
+                IsChecked = item.Categories!.Any(c => c.Id == x.Id)
+            })
+            .ToList();
+    }
+
+    private async Task Submit()
+    {
+        if (item.Id == 0)
+        {
+            var request = new CreateRecipeRequest()
+            {
+                Name = item.Name,
+                Description = item.Description,
+                CategoryIds = categories.Where(x => x.IsChecked).Select(x => x.Item.Id).ToList(),
+            };
+
+            await RecipeManager.CreateRecipeAsync(request, CancellationToken.None);
+        }
+        else
+        {
+            var request = new UpdateRecipeRequest()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                CategoryIds = categories.Where(x => x.IsChecked).Select(x => x.Item.Id).ToList(),
+            };
+
+            await RecipeManager.UpdateRecipeAsync(request, CancellationToken.None);
+        }
+
+        MudDialog.Close(DialogResult.Ok(item.Id));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

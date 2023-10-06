@@ -25,7 +25,6 @@
 
     private async Task Submit()
     {
-
         if (item.Id == 0)
         {
             var request = new CreateCategoryRequest()
@@ -50,5 +49,6 @@
 
         MudDialog.Close(DialogResult.Ok(item.Id));
     }
+
     void Cancel() => MudDialog.Cancel();
 }

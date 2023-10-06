@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlazorServerTest.Core.Data.Entities;
-using BlazorServerTest.Core.Data.Repositories;
+using BlazorServerTest.Core.Data.Repositories.Categories;
 using BlazorServerTest.Core.Enums;
 using BlazorServerTest.Core.Extensions;
 using BlazorServerTest.Core.Models.Categories;
@@ -16,17 +16,14 @@ public class CategoryManager
     private readonly ILogger<CategoryManager> _logger;
     private readonly IMapper _mapper;
     private readonly CategoryRepository _categoryRepository;
-    private readonly RecipeRepository _recipeRepository;
 
     public CategoryManager(ILogger<CategoryManager> logger,
         IMapper mapper,
-        CategoryRepository categoryRepository,
-        RecipeRepository recipeRepository)
+        CategoryRepository categoryRepository)
     {
         _logger = logger;
         _mapper = mapper;
         _categoryRepository = categoryRepository;
-        _recipeRepository = recipeRepository;
     }
 
     public async Task<CategoryPagedResponse> GetCategoriesAsync(CategoryRequest request, CancellationToken cancellationToken)
@@ -60,7 +57,7 @@ public class CategoryManager
 
     public async Task<CategoryResponse> GetCategoryDetailAsync(long categoryId, CancellationToken cancellationToken = default)
     {
-        var category = await GetCategoryAsync(categoryId, cancellationToken);
+        var category = await _categoryRepository.GetFullDataByIdAsync(categoryId, cancellationToken);
 
         var categoryDetails = _mapper.Map<CategoryResponse>(category);
 
@@ -109,6 +106,37 @@ public class CategoryManager
         var category = await GetCategoryAsync(categoryId, cancellationToken);
 
         await _categoryRepository.DeleteAsync(category, cancellationToken: cancellationToken);
+    }
+
+    public async Task SeedTestCategoriesAsync(int count, CancellationToken cancellationToken)
+    {
+        if (count <= 0)
+            count = 1;
+
+        if (count > 30)
+            count = 30;
+
+        _logger.LogInformation("Try to add list of test categories");
+
+        List<Category> data = new();
+
+        for (int i = 0; i < count; i++)
+        {
+            data.Add(new() { Name = Guid.NewGuid().ToString().Substring(0, 16) });
+        }
+
+        data[0].RecipeCategories = new List<RecipeCategory>()
+        {
+            new()
+            {
+                Recipe = new Recipe()
+                    {
+                        Name = Guid.NewGuid().ToString().Substring(0, 16)
+                    },
+            }
+        };
+
+        await _categoryRepository.AddRangeAsync(data, cancellationToken: cancellationToken);
     }
 
     // Private methods
