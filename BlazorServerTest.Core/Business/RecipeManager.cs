@@ -131,7 +131,7 @@ public class RecipeManager
         return await GetRecipeDetailAsync(request.Id, cancellationToken);
     }
 
-    public async Task DeleteCategoryAsync(long id, CancellationToken cancellationToken)
+    public async Task DeleteRecipeAsync(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Try to delete the Recipe. Recipe id: {ID}", id);
 

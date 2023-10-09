@@ -37,18 +37,21 @@
                                   AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                 </ToolBarContent>
                 <HeaderContent>
-                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Id).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Id)</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Name).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Name)</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortLabel="@nameof(CategoryResponse.Description).ToLower()" T="CategoryResponse">@nameof(CategoryResponse.Description)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(RecipeResponse.Id).ToLower()" T="RecipeResponse">@nameof(RecipeResponse.Id)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(RecipeResponse.Name).ToLower()" T="RecipeResponse">@nameof(RecipeResponse.Name)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(RecipeResponse.Description).ToLower()" T="RecipeResponse">@nameof(RecipeResponse.Description)</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="@nameof(RecipeResponse.AverageRating).ToLower()" T="RecipeResponse">@nameof(RecipeResponse.AverageRating)</MudTableSortLabel></MudTh>
                     <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Id">@context.Id</MudTd>
                     <MudTd DataLabel="Name">@context.Name</MudTd>
                     <MudTd DataLabel="Description">@context.Description</MudTd>
+                    <MudTd DataLabel="Rating">@context.AverageRating</MudTd>
                     <MudTd Class="d-flex justify-center">
-                        <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" />
-                        <MudIconButton OnClick="@((e) => DeleteCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" />
+                        <MudIconButton OnClick="@((e) => ViewRecipe(context.Id))" Icon="@Icons.Material.Filled.ViewList" Color="Color.Primary" Size="Size.Small" />
+                        <MudIconButton OnClick="@((e) => UpdateCategory(context.Id))" Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"/>
+                        <MudIconButton OnClick="@((e) => DeleteCategory(context.Id))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"/>
                     </MudTd>
                 </RowTemplate>
                 <NoRecordsContent>
@@ -117,6 +120,22 @@
             };
     }
 
+    private async Task ViewRecipe(long id)
+    {
+        var category = await RecipeManager.GetRecipeDetailAsync(id, CancellationToken.None);
+        var parameters = new DialogParameters { ["ViewModel"] = category };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<ViewRecipe_Modal>("View Category", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await table.ReloadServerData();
+        }
+    }
+
     private async Task CreateCategory()
     {
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
@@ -160,7 +179,7 @@
 
         if (!result.Canceled)
         {
-            await RecipeManager.DeleteCategoryAsync(id, CancellationToken.None);
+            await RecipeManager.DeleteRecipeAsync(id, CancellationToken.None);
             await table.ReloadServerData();
         }
     }

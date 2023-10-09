@@ -2,7 +2,9 @@ using BlazorServerTest.Core;
 using BlazorServerTest.Core.Business;
 using BlazorServerTest.Core.Models.Recipes;
 using InMemoryCachingLibrary;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ builder.Services.AddInMemoryCachingService(builder.Configuration);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+
+//Azure AD
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddCors(opt =>
 {

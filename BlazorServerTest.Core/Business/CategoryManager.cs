@@ -131,7 +131,26 @@ public class CategoryManager
             {
                 Recipe = new Recipe()
                     {
-                        Name = Guid.NewGuid().ToString().Substring(0, 16)
+                        Name = Guid.NewGuid().ToString().Substring(0, 16),
+                        Marks = new List<RecipeMark>()
+                        {
+                            new() {Rating = 5},
+                            new() {Rating = 5},
+                            new() {Rating = 5},
+                            new() {Rating = 4},
+                        },
+                        AverageRating = 4.75,
+                        RecipeIngredients = new List<RecipeIngredient>()
+                        {
+                            new RecipeIngredient()
+                            {
+                                Quantity = 10,
+                                Ingredient = new ()
+                                {
+                                    Name = "INGREDIENT!!!"
+                                }
+                            }
+                        }
                     },
             }
         };

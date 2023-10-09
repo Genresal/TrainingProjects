@@ -1,0 +1,36 @@
+﻿@using BlazorServerTest.Core.Models.Recipes
+@using BlazorServerTest.Core.Business
+
+@inject RecipeRatingManager recipeRetingManager
+
+<MudDialog Width="50%">
+    <DialogContent>
+        <!-- Place the detailed view of your view model here -->
+        <!-- You can use parameters to pass data to this component -->
+        <!-- For example: @ViewModel .Name, @ViewModel .Description, etc. -->
+        @foreach (var property in typeof(RecipeResponse).GetProperties())
+        {
+            <p>@property.Name: @property.GetValue(ViewModel)</p>
+        }
+        
+        <MudRating SelectedValueChanged="HandleHoveredValueChanged" />
+        <MudText Typo="Typo.subtitle2" Class="deep-purple-text mt-2">Rate our product!</MudText>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Cancel">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public RecipeResponse ViewModel { get; set; }
+
+    private void HandleHoveredValueChanged(int rating)
+    {
+        recipeRetingManager.AddRatingAsync(new RatingRequest(ViewModel.Id, rating), CancellationToken.None).GetAwaiter().GetResult();
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

@@ -16,6 +16,9 @@ public class RecipeRepository : Repository<Recipe>
         return Context.Set<Recipe>()
             .Include(x => x.RecipeCategories)
             .ThenInclude(x => x.Category)
+            .Include(x => x.Marks)
+            .Include(x => x.RecipeIngredients)
+            .ThenInclude(x => x.Ingredient)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }

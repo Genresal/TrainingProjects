@@ -2,6 +2,7 @@
 using BlazorServerTest.Core.Business.AutoMapper;
 using BlazorServerTest.Core.Data;
 using BlazorServerTest.Core.Data.Repositories.Categories;
+using BlazorServerTest.Core.Data.Repositories.Ingredients;
 using BlazorServerTest.Core.Data.Repositories.Recipes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,9 +37,13 @@ public static class ServiceCollectionRegistry
         services.AddTransient<RecipeRepository>();
         services.AddTransient<CategoryRepository>();
         services.AddTransient<RecipeCategoryRepository>();
+        services.AddTransient<RatingRepository>();
+        services.AddTransient<RecipeIngredientRepository>();
+        services.AddTransient<IngredientRepository>();
 
         services.AddTransient<CategoryManager>();
         services.AddTransient<RecipeManager>();
+        services.AddTransient<RecipeRatingManager>();
 
         //services.AddTransient<AuxService>();
         //services.AddHostedService<TimerHostedService>();

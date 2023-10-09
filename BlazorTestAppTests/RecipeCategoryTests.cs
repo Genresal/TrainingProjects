@@ -42,9 +42,8 @@ namespace BlazorTestAppTests
         {
             //Arrange
             var entity = _fixture.Build<Recipe>()
-                .Without(x => x.Categories)
+                .Without(x => x.RecipeCategories)
                 .Without(x => x.Steps)
-                .Without(x => x.Ingredients)
                 .Create();
             await AddToContext(entity);
 

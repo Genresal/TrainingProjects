@@ -23,11 +23,11 @@ public static class TestRecipes
             new StepEntity { Id = 1, Description = "Step 1" },
             new StepEntity { Id = 2, Description = "Step 2" }
         },*/
-        Categories = new List<Category>
+        /*Categories = new List<Category>
         {
             new Category { Id = 1, },
             //new CategoryEntity { Id = 2, }
-        }
+        }*/
     };
 
     public static List<Recipe> RecipeEntityCollection => new()
