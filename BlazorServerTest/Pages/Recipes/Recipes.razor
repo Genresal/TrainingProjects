@@ -122,12 +122,12 @@
 
     private async Task ViewRecipe(long id)
     {
-        var category = await RecipeManager.GetRecipeDetailAsync(id, CancellationToken.None);
-        var parameters = new DialogParameters { ["ViewModel"] = category };
+        var recipe = await RecipeManager.GetRecipeDetailAsync(id, CancellationToken.None);
+        var parameters = new DialogParameters { ["ViewModel"] = recipe };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<ViewRecipe_Modal>("View Category", parameters, options);
+        var dialog = await DialogService.ShowAsync<ViewRecipe_Modal>("View Recipe", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)

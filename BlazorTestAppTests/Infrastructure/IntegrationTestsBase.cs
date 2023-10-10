@@ -1,4 +1,4 @@
-﻿using BlazorServerTest.Core.Data;
+﻿using BlazorServerTest.Core.Data.Contexts;
 using BlazorServerTest.Core.Data.Entities.Core;
 using Microsoft.EntityFrameworkCore;
 

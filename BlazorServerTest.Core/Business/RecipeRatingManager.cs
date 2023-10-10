@@ -24,7 +24,7 @@ public class RecipeRatingManager
         _recipeRatingRepository = recipeRatingRepository;
     }
 
-    public async Task AddRatingAsync(RatingRequest request, CancellationToken cancellationToken)
+    public async Task<double> AddRatingAsync(RatingRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Try to date recipe");
 
@@ -42,5 +42,7 @@ public class RecipeRatingManager
         await _recipeRepository.UpdateAsync(recipe, cancellationToken: cancellationToken);
 
         _logger.LogInformation("The recipe has been rated");
+
+        return recipe.AverageRating!.Value;
     }
 }

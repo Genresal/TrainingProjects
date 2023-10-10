@@ -108,56 +108,6 @@ public class CategoryManager
         await _categoryRepository.DeleteAsync(category, cancellationToken: cancellationToken);
     }
 
-    public async Task SeedTestCategoriesAsync(int count, CancellationToken cancellationToken)
-    {
-        if (count <= 0)
-            count = 1;
-
-        if (count > 30)
-            count = 30;
-
-        _logger.LogInformation("Try to add list of test categories");
-
-        List<Category> data = new();
-
-        for (int i = 0; i < count; i++)
-        {
-            data.Add(new() { Name = Guid.NewGuid().ToString().Substring(0, 16) });
-        }
-
-        data[0].RecipeCategories = new List<RecipeCategory>()
-        {
-            new()
-            {
-                Recipe = new Recipe()
-                    {
-                        Name = Guid.NewGuid().ToString().Substring(0, 16),
-                        Marks = new List<RecipeMark>()
-                        {
-                            new() {Rating = 5},
-                            new() {Rating = 5},
-                            new() {Rating = 5},
-                            new() {Rating = 4},
-                        },
-                        AverageRating = 4.75,
-                        RecipeIngredients = new List<RecipeIngredient>()
-                        {
-                            new RecipeIngredient()
-                            {
-                                Quantity = 10,
-                                Ingredient = new ()
-                                {
-                                    Name = "INGREDIENT!!!"
-                                }
-                            }
-                        }
-                    },
-            }
-        };
-
-        await _categoryRepository.AddRangeAsync(data, cancellationToken: cancellationToken);
-    }
-
     // Private methods
 
     private async Task<Category> GetCategoryAsync(long categoryId, CancellationToken cancellationToken)
@@ -187,6 +137,10 @@ public class CategoryManager
         else if (orderByClause.Key == nameof(Category.Description).ToLower())
         {
             sortExpression = x => x.Description;
+        }
+        else if (orderByClause.Key == nameof(Category.Quantity).ToLower())
+        {
+            sortExpression = x => x.Quantity;
         }
 
         var isAscending = orderByClause.Value == SortOrder.Ascending;

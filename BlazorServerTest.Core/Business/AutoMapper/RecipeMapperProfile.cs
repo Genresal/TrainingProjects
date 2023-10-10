@@ -12,7 +12,7 @@ public partial class AutoMapperProfile : Profile
         CreateMap<Recipe, RecipeResponse>();
         CreateMap<Recipe, RecipeDetailedResponse>()
             .ForMember(d => d.Categories, o => o.MapFrom(s => s.RecipeCategories.Select(x => x.Category)))
-            //.ForMember(d => d.Ingredients, o => o.MapFrom(s => s.RecipeIngredients.Select(x => x.Ingredient)))
+            .ForMember(d => d.Ingredients, o => o.MapFrom(s => s.RecipeIngredients))
             .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src.AverageRating));
     }
 }

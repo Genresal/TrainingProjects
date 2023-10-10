@@ -1,10 +1,12 @@
 using BlazorServerTest.Core;
 using BlazorServerTest.Core.Business;
+using BlazorServerTest.Core.Data.Contexts;
 using BlazorServerTest.Core.Models.Recipes;
 using InMemoryCachingLibrary;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
+using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,18 @@ builder.Services.AddInMemoryCachingService(builder.Configuration);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 10000;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+});
 
 //Azure AD
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
@@ -41,6 +54,9 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 */
 var app = builder.Build();
+
+// Add initial data to the DB
+await app.Services.InitializeDb();
 
 if (!app.Environment.IsDevelopment())
 {

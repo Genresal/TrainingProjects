@@ -1,36 +1,83 @@
 ﻿@using BlazorServerTest.Core.Models.Recipes
 @using BlazorServerTest.Core.Business
 
-@inject RecipeRatingManager recipeRetingManager
+@inject RecipeRatingManager RecipeRatingManager
+@inject ISnackbar SnackbarService
 
 <MudDialog Width="50%">
     <DialogContent>
-        <!-- Place the detailed view of your view model here -->
-        <!-- You can use parameters to pass data to this component -->
-        <!-- For example: @ViewModel .Name, @ViewModel .Description, etc. -->
-        @foreach (var property in typeof(RecipeResponse).GetProperties())
+        <!-- Display Recipe Details -->
+        <h3>@ViewModel.Name</h3>
+        <p>@ViewModel.Id</p>
+        <p>Average Rating: @ViewModel.AverageRating</p>
+
+        <!-- Ingredients List -->
+        <p>Ingredients:</p>
+        @if (ViewModel.Ingredients is not null && ViewModel.Ingredients.Any())
         {
-            <p>@property.Name: @property.GetValue(ViewModel)</p>
+            <MudList Clickable="true">
+                @foreach (var ingredient in ViewModel.Ingredients)
+                {
+                    <MudListItem Icon="@Icons.Material.Filled.Bookmark">
+                        @ingredient.Name - @ingredient.Quantity
+                    </MudListItem>
+                }
+            </MudList>
         }
-        
-        <MudRating SelectedValueChanged="HandleHoveredValueChanged" />
-        <MudText Typo="Typo.subtitle2" Class="deep-purple-text mt-2">Rate our product!</MudText>
+
+        <!-- Rating Control -->
+        <MudText Typo="Typo.subtitle2" Class="deep-purple-text mt-4">Rate this recipe!</MudText>
+        <MudRating Disabled="@disabled" Class="mt-2" SelectedValueChanged="HandleRatingValueChanged" />
 
     </DialogContent>
     <DialogActions>
+        <!-- Close Button -->
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Cancel">Close</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public RecipeDetailedResponse ViewModel { get; set; }
 
-    [Parameter] public RecipeResponse ViewModel { get; set; }
+    private bool disabled = false;
 
-    private void HandleHoveredValueChanged(int rating)
+    // Handle Rating Value Change
+    private void HandleRatingValueChanged(int rating)
     {
-        recipeRetingManager.AddRatingAsync(new RatingRequest(ViewModel.Id, rating), CancellationToken.None).GetAwaiter().GetResult();
+        // Use async/await for asynchronous operations
+        _ = RateRecipeAsync(rating);
     }
 
-    void Cancel() => MudDialog.Cancel();
+    // Asynchronously rate the recipe
+    private async Task RateRecipeAsync(int rating)
+    {
+        // Call the API to add a rating and await the response
+        var response = await RecipeRatingManager.AddRatingAsync(new RatingRequest(ViewModel.Id, rating), CancellationToken.None);
+
+        // Check for success or handle errors here if needed
+        if (response != null)
+        {
+            // Optionally update the ViewModel or perform other actions
+            ViewModel.AverageRating = response;
+            disabled = true;
+        }
+        else
+        {
+            // Handle the error case
+            // You can display an error message to the user
+            ShowErrorMessage("An error occurred while rating the recipe. Please try again later.");
+        }
+    }
+
+    // Display an error message using a toast or any other suitable method
+    private void ShowErrorMessage(string message)
+    {
+    // You can use a toast component or another UI element to show the error message to the user
+    // For example, you can use a MudSnackbar or a custom error display component
+        SnackbarService.Add(message, Severity.Error);
+    }
+
+    // Close the dialog
+    private void Cancel() => MudDialog.Cancel();
 }
