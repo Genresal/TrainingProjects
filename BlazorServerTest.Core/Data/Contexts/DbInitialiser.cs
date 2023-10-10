@@ -28,6 +28,8 @@ public static class DbInitializer
                     Recipe = new Recipe()
                     {
                         Name = Guid.NewGuid().ToString().Substring(0, 16),
+                        ImageUrl = "https://res.cloudinary.com/dx07nzr59/image/upload/v1695145914/none/fxbng5bf2ybezb3rwytl.jpg",
+                        Created = DateTime.Now,
                         Marks = new List<RecipeMark>()
                         {
                             new() {Rating = 5},
@@ -47,6 +49,13 @@ public static class DbInitializer
                                     Unit = "g."
                                 }
                             }
+                        },
+                        Steps = new List<Step>()
+                        {
+                            new Step() {Description = "Step 1", Order = 1},
+                            new Step() {Description = "Step 2", Order = 2},
+                            new Step() {Description = "Step 3", Order = 3},
+                            new Step() {Description = "Decide where and how you want to store your decision documents. You can use a database, file storage, or any other suitable storage mechanism.", Order = 5},
                         }
                     },
                 }

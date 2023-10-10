@@ -17,8 +17,9 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Categories</MudText>
         <MudSpacer/>
-        <MudIconButton Class="mt-4 me-4" OnClick="@(x => OnSearch(string.Empty))" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium"/>
-        <MudTextField T="string" Value="searchString" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+        <MudIconButton Class="mt-4 me-4" OnClick="FocusOnTextField" Icon="@Icons.Material.Outlined.Search" Color="Color.Primary" Size="Size.Medium" />
+        <MudIconButton Class="mt-4 me-4" OnClick="SearchField.Clear" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium" />
+        <MudTextField T="string" @ref="SearchField" ValueChanged="table.ReloadServerData" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -54,20 +55,25 @@
     private TableData<CategoryResponse> data;
     private MudTable<CategoryResponse> table;
 
-    private int totalItems;
-    private string searchString = null;
+    private MudTextField<string> SearchField { get; set; } = new ();
 
-    private void OnSearch(string text)
+    private void FocusOnTextField()
     {
-        searchString = text;
-        table.ReloadServerData();
+        if (SearchField != null)
+        {
+    // Access the underlying HTML element
+            var inputElement = SearchField.InputReference.ElementReference;
+
+    // Focus on the input element
+            inputElement.FocusAsync();
+        }
     }
 
     private async Task<TableData<CategoryResponse>> ServerReload(TableState state)
     {
         var request = new CategoryRequest()
         {
-            Name = searchString,
+            Name = SearchField.Value,
             Page = state.Page + 1, //MudBlazor count first page as 0
             PageSize = state.PageSize,
             OrderBy = $"{state.SortLabel}:{state.SortDirection}",
@@ -89,7 +95,7 @@
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<ViewCategory_Modal<CategoryResponse>>("View Category", parameters, options);
+        var dialog = await DialogService.ShowAsync<ViewCategoryModal<CategoryResponse>>("View Category", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
@@ -102,7 +108,7 @@
     {
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialog = await DialogService.ShowAsync<DialogAddOrUpdateCategory_Dialog>("Create new Category", options);
+        var dialog = await DialogService.ShowAsync<AddOrUpdateModal>("Create new Category", options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
@@ -118,7 +124,7 @@
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<DialogAddOrUpdateCategory_Dialog>("Update Category", parameters, options);
+        var dialog = await DialogService.ShowAsync<AddOrUpdateModal>("Update Category", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)

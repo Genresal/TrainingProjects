@@ -8,7 +8,7 @@ public class Recipe : Entity
     public int? PrepTime { get; set; }
     public int? CookTime { get; set; }
     public int? Servings { get; set; }
-    public byte[]? Image { get; set; }
+    public string? ImageUrl { get; set; }
     public double? AverageRating { get; set; }
 
     public virtual ICollection<Step> Steps { get; set; }

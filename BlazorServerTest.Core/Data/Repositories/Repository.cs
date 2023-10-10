@@ -32,6 +32,11 @@ public class Repository<T> : IRepository<T> where T : Entity
         await Context.SaveChangesAsync();
     }
 
+    public void Attach(T entity)
+    {
+        Context.Attach(entity);
+    }
+
     public void Detach(T entity)
     {
         Context.Entry(entity).State = EntityState.Detached;

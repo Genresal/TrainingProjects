@@ -8,6 +8,13 @@
     <DialogContent>
         <!-- Display Recipe Details -->
         <h3>@ViewModel.Name</h3>
+
+        <!-- Image Rendering -->
+        @if (!string.IsNullOrEmpty(ViewModel.ImageUrl))
+        {
+            <MudImage Src="@ViewModel.ImageUrl" Height="150" Alt="Recipe Image" Elevation="25" Class="mt-4, rounded-lg" />
+        }
+
         <p>@ViewModel.Id</p>
         <p>Average Rating: @ViewModel.AverageRating</p>
 
@@ -20,6 +27,20 @@
                 {
                     <MudListItem Icon="@Icons.Material.Filled.Bookmark">
                         @ingredient.Name - @ingredient.Quantity
+                    </MudListItem>
+                }
+            </MudList>
+        }
+        
+        <!-- Steps List -->
+        <p>Steps:</p>
+        @if (ViewModel.Steps is not null && ViewModel.Steps.Any())
+        {
+            <MudList Clickable="true">
+                @foreach (var step in ViewModel.Steps)
+                {
+                    <MudListItem Icon="@Icons.Material.Filled.Bookmark">
+                        @step.Order - @step.Description
                     </MudListItem>
                 }
             </MudList>

@@ -48,6 +48,16 @@ public class RecipeManager
             predicate = predicate.And(x => x.RecipeCategories.Any(x => request.CategoryIds.Contains(x.CategoryId)));
         }
 
+        if (request.StartDateTime != null)
+        {
+            predicate = predicate.And(x => x.Created >= request.StartDateTime);
+        }
+
+        if (request.EndDateTime != null)
+        {
+            predicate = predicate.And(x => x.Created <= request.EndDateTime);
+        }
+
         (var sortExpression, bool ascOrder) = GetOrderByExpression(request);
 
         var result = await _recipeRepository.PagedFindAsync<RecipeResponse, object>(

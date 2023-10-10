@@ -35,6 +35,7 @@ public class RecipeRatingManager
         };
 
         var recipe = await _recipeRepository.GetFullDataByIdAsync(request.RecipeId, cancellationToken);
+        _recipeRepository.Attach(recipe);
 
         recipe.Marks.Add(rating);
         recipe.AverageRating = recipe.CalculateRating();

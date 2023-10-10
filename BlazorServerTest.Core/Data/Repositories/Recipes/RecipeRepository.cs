@@ -20,6 +20,7 @@ public class RecipeRepository : Repository<Recipe>
             .Include(x => x.Marks)
             .Include(x => x.RecipeIngredients)
             .ThenInclude(x => x.Ingredient)
+            .Include(x => x.Steps)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }

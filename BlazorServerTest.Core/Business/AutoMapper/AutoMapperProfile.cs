@@ -9,5 +9,6 @@ public partial class AutoMapperProfile : Profile
         CreateCategoryMapperProfile();
         CreateRecipeMapperProfile();
         CreateIngredientMapperProfile();
+        CreateStepMapperProfile();
     }
 }

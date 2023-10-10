@@ -18,11 +18,25 @@
 <MudGrid>
     <MudItem xs="12" sm="2">
         <MudPaper Class="d-flex flex-column align-left justify-center mud-width-full p-2">
-            <MudText Typo="Typo.h6">Categories</MudText>
+
+            <MudText Typo="Typo.h5">Categories</MudText>
             @foreach (var category in categories)
             {
                 <MudCheckBox T="bool" Checked="category.IsChecked" CheckedChanged="@(c => HandleCheckedChanged(category, c))" Label="@category.Item.Name"/>
             }
+            <MudDivider/>
+
+            <MudText Typo="Typo.h5">Creation date</MudText>
+            <MudDatePicker @bind-Date="From" Label="From" AutoClose="true">
+                <PickerActions>
+                    <MudButton Class="mr-auto align-self-start" OnClick="@(() => From = null)">Clear</MudButton>
+                </PickerActions>
+            </MudDatePicker>
+            <MudDatePicker @bind-Date="To" Label="To" AutoClose="true">
+                <PickerActions>
+                    <MudButton Class="mr-auto align-self-start" OnClick="@(() => To = null)">Clear</MudButton>
+                </PickerActions>
+            </MudDatePicker>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="10">
@@ -32,8 +46,8 @@
                 <ToolBarContent>
                     <MudText Typo="Typo.h6">Recipes</MudText>
                     <MudSpacer />
-                    <MudIconButton Class="mt-4 me-4" OnClick="@(x => OnSearch(string.Empty))" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium" />
-                    <MudTextField T="string" Value="searchString" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                    <MudIconButton Class="mt-4 me-4" OnClick="SearchField.Clear" Icon="@Icons.Material.Outlined.Clear" Color="Color.Error" Size="Size.Medium" />
+                    <MudTextField T="string" @ref="SearchField" ValueChanged="table.ReloadServerData" Placeholder="Search" Adornment="Adornment.Start"
                                   AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                 </ToolBarContent>
                 <HeaderContent>
@@ -66,22 +80,35 @@
             </MudTable>
         </MudPaper>
     </MudItem>
-
 </MudGrid>
 
 @code {
     private List<CheckboxModel<CategoryResponse>> categories { get; set; } = new ();
     private TableData<RecipeResponse> data;
     private MudTable<RecipeResponse> table;
+    private DateTime? from;
+    private DateTime? to;
 
-    private int totalItems;
-    private string searchString = null;
-
-    private void OnSearch(string text)
+    private DateTime? From
     {
-        searchString = text;
-        table.ReloadServerData();
+        get => from;
+        set
+        {
+            from = value;
+            table.ReloadServerData();
+        }
     }
+    private DateTime? To
+    {
+        get => to;
+        set
+        {
+            to = value;
+            table.ReloadServerData();
+        }
+    }
+
+    private MudTextField<string> SearchField { get; set; } = new ();
 
     private void HandleCheckedChanged(CheckboxModel<CategoryResponse> item, bool isChecked)
     {
@@ -104,8 +131,10 @@
     {
         var request = new RecipeRequest()
             {
-                Name = searchString,
+                Name = SearchField.Value,
                 CategoryIds = categories.Where(x => x.IsChecked).Select(x => x.Item.Id).ToList(),
+                StartDateTime = From,
+                EndDateTime = To,
                 Page = state.Page + 1, //MudBlazor count first page as 0
                 PageSize = state.PageSize,
                 OrderBy = $"{state.SortLabel}:{state.SortDirection}",
@@ -127,7 +156,7 @@
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<ViewRecipe_Modal>("View Recipe", parameters, options);
+        var dialog = await DialogService.ShowAsync<ViewRecipeModal>("View Recipe", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
@@ -140,7 +169,7 @@
     {
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Create new Category", options);
+        var dialog = await DialogService.ShowAsync<AddOrUpdateModal>("Create new Category", options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
@@ -156,7 +185,7 @@
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
-        var dialog = await DialogService.ShowAsync<DialogAddOrUpdate_Dialog>("Update Category", parameters, options);
+        var dialog = await DialogService.ShowAsync<AddOrUpdateModal>("Update Category", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)

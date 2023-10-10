@@ -12,6 +12,8 @@ public interface IRepository<T> where T : IEntity
     // -=======================-
     Task Complete();
 
+    void Attach(T entity);
+
     void Detach(T entity);
 
     void DetachRange(IEnumerable<T> entities);

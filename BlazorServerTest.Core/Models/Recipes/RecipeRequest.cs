@@ -9,7 +9,12 @@ public class RecipeRequest : SortedRequest
 
     public List<long>? CategoryIds { get; set; }
 
+    public DateTime? StartDateTime { get; set; }
+
+    public DateTime? EndDateTime { get; set; }
+
     // For Minimal API 
+
     public static bool TryParse(string queryString, out RecipeRequest request)
     {
         request = new RecipeRequest();
