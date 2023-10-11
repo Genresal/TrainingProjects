@@ -1,4 +1,4 @@
-﻿namespace BlazorServerTest.Core.Extensions;
+﻿namespace BlazorServerTest.Core.Commons.Extensions;
 
 public static class CollectionExtension
 {

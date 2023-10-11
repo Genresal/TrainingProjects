@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace BlazorServerTest.Core.Enums;
+namespace BlazorServerTest.Core.Commons.Enums;
 
 public enum SortOrder
 {

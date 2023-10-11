@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using BlazorServerTest.Core.Commons.Enums;
+using BlazorServerTest.Core.Commons.Extensions;
 using BlazorServerTest.Core.Data.Entities;
 using BlazorServerTest.Core.Data.Repositories.Categories;
-using BlazorServerTest.Core.Enums;
-using BlazorServerTest.Core.Extensions;
 using BlazorServerTest.Core.Models.Categories;
 using BlazorServerTest.Core.Models.Common;
 using LinqKit;

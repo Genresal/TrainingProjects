@@ -7,7 +7,6 @@ using BlazorServerTest.Core.Data.Repositories.Recipes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace BlazorServerTest.Core;
 public static class ServiceCollectionRegistry
@@ -33,6 +32,7 @@ public static class ServiceCollectionRegistry
             options.UseInMemoryDatabase(databaseName: "InMemoryDb");
         }, ServiceLifetime.Transient);
 
+        // Add Automapper
         services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
 
         services.AddTransient<RecipeRepository>();

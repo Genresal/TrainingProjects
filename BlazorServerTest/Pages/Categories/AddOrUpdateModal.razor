@@ -1,16 +1,27 @@
 ﻿@using BlazorServerTest.Core.Business
 @using BlazorServerTest.Core.Models.Categories
+@using BlazorServerTest.Core.Validators.Categories
 @inject CategoryManager Manager
+@inject ISnackbar SnackbarService
 
 <MudDialog>
     <DialogContent>
-        @if (item.Id != 0)
-        {
-            <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @item.Id.ToString().</MudText>
-        }
-
-        <MudTextField @bind-Value="@item.Name" Label="Category Name"/>
-        <MudTextField @bind-Value="@item.Description" Label="Description" />
+        <MudForm Model="@item" @ref="@form" Validation="@(validator.ValidateValue)" ValidationDelay="0">
+            <MudGrid>
+                @if (item.Id != 0)
+                {
+                    <MudItem xs=12>
+                        <MudText Class="mb-3" Align="Align.Left">Item <b>Id</b> is @item.Id.ToString().</MudText>
+                    </MudItem>
+                }
+                <MudItem xs=12>
+                    <MudTextField For="@(() => item.Name)" Immediate="false" @bind-Value="@item.Name" Label="Category Name" />
+                </MudItem>
+                <MudItem xs=12>
+                    <MudTextField For="@(() => item.Description)" Immediate="false" @bind-Value="@item.Description" Label="Description" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -20,34 +31,42 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public BaseCategory item { get; set; } = new();
+    private MudForm form;
+    private BaseCategoryValidator validator = new ();
 
     private async Task Submit()
     {
-        if (item.Id == 0)
+        await form.Validate();
+
+        if (form.IsValid)
         {
-            var request = new CreateCategoryRequest()
+            if (item.Id == 0)
             {
-                Name = item.Name,
-                Description = item.Description
-            };
+                var request = new CreateCategoryRequest()
+                {
+                    Name = item.Name,
+                    Description = item.Description
+                };
 
-            await Manager.CreateCategoryAsync(request, CancellationToken.None);
-        }
-        else
-        {
-            var request = new UpdateCategoryRequest()
+                await Manager.CreateCategoryAsync(request, CancellationToken.None);
+                SnackbarService.Add("New Category has been added");
+            }
+            else
             {
-                Id = item.Id,
-                Name = item.Name,
-                Description = item.Description
-            };
+                var request = new UpdateCategoryRequest()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description
+                };
 
-            await Manager.UpdateCategoryAsync(request, CancellationToken.None);
+                await Manager.UpdateCategoryAsync(request, CancellationToken.None);
+                SnackbarService.Add($"New Category with name: {request.Name} has been updated");
+            }
+
+            MudDialog.Close(DialogResult.Ok(item.Id));
         }
-
-        MudDialog.Close(DialogResult.Ok(item.Id));
     }
 
     void Cancel() => MudDialog.Cancel();

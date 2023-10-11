@@ -1,7 +1,7 @@
-﻿using BlazorServerTest.Core.Enums;
+﻿using BlazorServerTest.Core.Commons.Enums;
 using BlazorServerTest.Core.Models.Common;
 
-namespace BlazorServerTest.Core.Extensions;
+namespace BlazorServerTest.Core.Commons.Extensions;
 
 public static class SortExtensions
 {
@@ -18,7 +18,7 @@ public static class SortExtensions
                 var values = param.Split(":");
 
                 fieldsAndOrders.Add(
-                    new KeyValuePair<string, SortOrder>(values[0].ToLower(), (values.Length == 2 && values[1].ToLower().Equals("descending")) ? SortOrder.Descending : SortOrder.Ascending)
+                    new KeyValuePair<string, SortOrder>(values[0].ToLower(), values.Length == 2 && values[1].ToLower().Equals("descending") ? SortOrder.Descending : SortOrder.Ascending)
                 );
             }
         }
@@ -32,7 +32,7 @@ public static class SortExtensions
             var firstOrderParams = request.OrderBy.Trim().Split(',').First();
             var values = firstOrderParams.Split(":");
 
-            return new KeyValuePair<string, SortOrder>(values[0].ToLower(), (values.Length == 2 && values[1].ToLower().Equals("descending")) ? SortOrder.Descending : SortOrder.Ascending);
+            return new KeyValuePair<string, SortOrder>(values[0].ToLower(), values.Length == 2 && values[1].ToLower().Equals("descending") ? SortOrder.Descending : SortOrder.Ascending);
         }
 
         return default;

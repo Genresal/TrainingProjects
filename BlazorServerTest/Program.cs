@@ -2,6 +2,9 @@ using BlazorServerTest.Core;
 using BlazorServerTest.Core.Business;
 using BlazorServerTest.Core.Data.Contexts;
 using BlazorServerTest.Core.Models.Recipes;
+using FluentAssertions.Common;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using InMemoryCachingLibrary;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +15,9 @@ using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCoreServices();
+
+// add Fluent validation
+builder.Services.AddValidatorsFromAssemblyContaining<Program>().AddFluentValidationAutoValidation();
 
 // InMemory service
 builder.Services.AddInMemoryCachingService(builder.Configuration);
