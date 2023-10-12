@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InMemoryCachingLibrary\InMemoryCachingLibrary.csproj" />
+    <ProjectReference Include="..\..\src\InMemoryCachingLibrary\InMemoryCachingLibrary.csproj" />
   </ItemGroup>
 
 </Project>

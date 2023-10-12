@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorServerTest\BlazorServerTest.csproj" />
+    <ProjectReference Include="..\..\src\BlazorServerTest\BlazorServerTest.csproj" />
   </ItemGroup>
 
 </Project>
