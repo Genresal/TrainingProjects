@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2023-02-22_14-57-39" tag="">
+  <assembly name="BlazorServerTest">
+    <class name="AspNetCoreGeneratedDocument.Pages_Error" coveredlines="0" coverablelines="4" totallines="42" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="BlazorServerTest.Pages.ConfirmModalComponent" coveredlines="0" coverablelines="16" totallines="52" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="8" />
+    <class name="BlazorServerTest.Pages.Counter" coveredlines="0" coverablelines="5" totallines="18" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="BlazorServerTest.Pages.ErrorModel" coveredlines="0" coverablelines="9" totallines="27" coveredbranches="0" totalbranches="4" coveredcodeelements="0" totalcodeelements="4" />
+    <class name="BlazorServerTest.Pages.FetchCategories" coveredlines="0" coverablelines="29" totallines="76" coveredbranches="0" totalbranches="4" coveredcodeelements="0" totalcodeelements="5" />
+    <class name="BlazorServerTest.Pages.FetchData" coveredlines="0" coverablelines="74" totallines="145" coveredbranches="0" totalbranches="14" coveredcodeelements="0" totalcodeelements="12" />
+    <class name="BlazorServerTest.Pages.FetchDataMudBlazor" coveredlines="0" coverablelines="17" totallines="74" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="BlazorServerTest.Pages.HangfirePage" coveredlines="0" coverablelines="10" totallines="31" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="BlazorServerTest.Pages.ModalFormComponent" coveredlines="0" coverablelines="23" totallines="87" coveredbranches="0" totalbranches="4" coveredcodeelements="0" totalcodeelements="7" />
+    <class name="BlazorServerTest.Pages.ModalWrapperComponent" coveredlines="0" coverablelines="13" totallines="39" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="6" />
+    <class name="BlazorServerTest.Pages.Pages__Host" coveredlines="0" coverablelines="2" totallines="40" coveredbranches="0" totalbranches="10" coveredcodeelements="0" totalcodeelements="2" />
+    <class name="BlazorServerTest.Pages.ShowDataModalComponent" coveredlines="0" coverablelines="8" totallines="33" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="4" />
+    <class name="BlazorServerTest.Services.RecipeViewService" coveredlines="0" coverablelines="19" totallines="38" coveredbranches="0" totalbranches="6" coveredcodeelements="0" totalcodeelements="2" />
+    <class name="BlazorServerTest.Shared.MainLayout" coveredlines="0" coverablelines="1" totallines="19" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="BlazorServerTest.Shared.NavMenu" coveredlines="0" coverablelines="5" totallines="54" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="BlazorServerTest.Shared.SurveyPrompt" coveredlines="0" coverablelines="2" totallines="16" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="2" />
+    <class name="Program" coveredlines="0" coverablelines="35" totallines="62" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="1" />
+  </assembly>
+  <assembly name="BlazorServerTest.Core">
+    <class name="BlazorServerTest.Core.BackgroundServices.TimerHostedService" coveredlines="0" coverablelines="24" totallines="43" coveredbranches="0" totalbranches="2" coveredcodeelements="0" totalcodeelements="4" />
+    <class name="BlazorServerTest.Core.Data.Entities.Category" coveredlines="4" coverablelines="5" totallines="12" coveredbranches="0" totalbranches="0" coveredcodeelements="4" totalcodeelements="5" />
+    <class name="BlazorServerTest.Core.Data.Entities.Ingredient" coveredlines="0" coverablelines="6" totallines="14" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="6" />
+    <class name="BlazorServerTest.Core.Data.Entities.Recipe" coveredlines="10" coverablelines="10" totallines="19" coveredbranches="0" totalbranches="0" coveredcodeelements="10" totalcodeelements="10" />
+    <class name="BlazorServerTest.Core.Data.Entities.RecipeCategory" coveredlines="2" coverablelines="4" totallines="10" coveredbranches="0" totalbranches="0" coveredcodeelements="2" totalcodeelements="4" />
+    <class name="BlazorServerTest.Core.Data.Entities.Step" coveredlines="0" coverablelines="5" totallines="12" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="5" />
+    <class name="BlazorServerTest.Core.Data.Infrastructure.AppDbContext" coveredlines="27" coverablelines="27" totallines="77" coveredbranches="0" totalbranches="0" coveredcodeelements="7" totalcodeelements="7" />
+    <class name="BlazorServerTest.Core.Data.Repositories.BaseRepository`1" coveredlines="28" coverablelines="39" totallines="72" coveredbranches="2" totalbranches="2" coveredcodeelements="7" totalcodeelements="9" />
+    <class name="BlazorServerTest.Core.Data.Repositories.CategoryRepository" coveredlines="16" coverablelines="20" totallines="38" coveredbranches="4" totalbranches="6" coveredcodeelements="3" totalcodeelements="3" />
+    <class name="BlazorServerTest.Core.Data.Repositories.RecipeRepository" coveredlines="3" coverablelines="23" totallines="43" coveredbranches="0" totalbranches="4" coveredcodeelements="1" totalcodeelements="4" />
+    <class name="BlazorServerTest.Core.Models.CategoryViewModel" coveredlines="0" coverablelines="3" totallines="7" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="3" />
+    <class name="BlazorServerTest.Core.Models.RecipeViewModel" coveredlines="0" coverablelines="4" totallines="9" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="4" />
+    <class name="BlazorServerTest.Core.ServiceCollectionRegistry" coveredlines="0" coverablelines="7" totallines="23" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="BlazorServerTest.Core.Services.AuxService" coveredlines="0" coverablelines="39" totallines="67" coveredbranches="0" totalbranches="6" coveredcodeelements="0" totalcodeelements="6" />
+  </assembly>
+  <assembly name="InMemoryCachingLibrary">
+    <class name="InMemoryCachingLibrary.CacheSettings" coveredlines="0" coverablelines="1" totallines="13" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="InMemoryCachingLibrary.ServiceRegistry" coveredlines="0" coverablelines="5" totallines="18" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="InMemoryCachingLibrary.Services.CacheService" coveredlines="0" coverablelines="38" totallines="75" coveredbranches="0" totalbranches="8" coveredcodeelements="0" totalcodeelements="5" />
+  </assembly>
+</coverage>

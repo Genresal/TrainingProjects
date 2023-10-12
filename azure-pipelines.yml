@@ -30,17 +30,17 @@ stages:
       displayName: 'List Folders'
 
     - script: |
-        cd BlazorServerTest
+        cd src/BlazorServerTest
         echo List of Folders in Current Working Directory:
         dir /B /AD
       displayName: 'List Folders Inside Released Path'
 
     - script: dotnet build
       displayName: 'Build ASP.NET App'
-      workingDirectory: $(System.DefaultWorkingDirectory)/BlazorServerTest  # Set the correct path to your project
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/BlazorServerTest  # Set the correct path to your project
       failOnStderr: true
 
-    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory) --no-restore src/BlazorServerTest/BlazorServerTest.csproj -maxcpucount:4
       displayName: 'dotnet publish'
 
     - task: PublishBuildArtifacts@1

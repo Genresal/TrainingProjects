@@ -22,6 +22,6 @@ jobs:
 
       - name: Build and test
         run: |
-          cd BlazorServerTest
+          cd src/BlazorServerTest
           dotnet build
           dotnet test
