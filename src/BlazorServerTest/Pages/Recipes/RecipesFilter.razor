@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorServerTest.Core.Models.Categories
+@using BlazorServerTest.Models
+@using BlazorServerTest.Core.Business
+@inject CategoryManager CategoryManager
+
+<MudPaper Class="d-flex flex-column align-left justify-center mud-width-full p-2">
+
+    <MudText Typo="Typo.h5">Categories</MudText>
+    @foreach (var category in categories)
+    {
+        <MudCheckBox T="bool" CheckedChanged="@(c => HandleCheckedChanged(category, c))" Label="@category.Item.Name" />
+    }
+    <MudDivider/>
+
+    <MudText Typo="Typo.h5">Creation date</MudText>
+    <MudDatePicker @bind-Date="From" Label="From" AutoClose="true">
+        <PickerActions>
+            <MudButton Class="mr-auto align-self-start" OnClick="@(() => From = null)">Clear</MudButton>
+        </PickerActions>
+    </MudDatePicker>
+    <MudDatePicker @bind-Date="To" Label="To" AutoClose="true">
+        <PickerActions>
+            <MudButton Class="mr-auto align-self-start" OnClick="@(() => To = null)">Clear</MudButton>
+        </PickerActions>
+    </MudDatePicker>
+</MudPaper>
+
+@code {
+
+    private DateTime? from;
+    private DateTime? to;
+
+    public DateTime? From
+    {
+        get => from;
+        set
+        {
+            from = value;
+            FilterChanged.InvokeAsync();
+        }
+    }
+    public DateTime? To
+    {
+        get => to;
+        set
+        {
+            to = value;
+            FilterChanged.InvokeAsync();
+        }
+    }
+    [Parameter] public EventCallback FilterChanged { get; set; }
+    [Parameter] public List<CheckboxModel<CategoryResponse>> categories { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (await CategoryManager.GetCategoriesAsync(new CategoryRequest() { Page = 1, PageSize = 100 }, CancellationToken.None)).Items
+            .ToList()
+            .Select(x => new CheckboxModel<CategoryResponse>()
+            {
+                Item = x,
+            })
+            .ToList();
+    }
+    /*
+    protected override void OnParametersSet()
+    {
+        FilterChanged.InvokeAsync();
+    }
+    */
+    
+    private async Task HandleCheckedChanged(CheckboxModel<CategoryResponse> item, bool isChecked)
+    {
+        item.IsChecked = isChecked;
+        await FilterChanged.InvokeAsync();
+    }
+}

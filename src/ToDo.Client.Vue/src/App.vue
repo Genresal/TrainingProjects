@@ -10,6 +10,14 @@ import TheWelcome from './components/TheWelcome.vue'
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
     </div>
+
+    <div id="app">
+      <nav>
+        <router-link to="/">Home</router-link>
+        <router-link to="/table">Table Page</router-link>
+      </nav>
+      <router-view />
+    </div>
   </header>
 
   <main>

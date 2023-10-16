@@ -4,7 +4,18 @@ using ToDo.Minimal.Api;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(name: "client", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
+
+app.UseCors("client");
 
 var todoItems = app.MapGroup("/todoitems");
 
@@ -62,7 +73,9 @@ static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db
 
     await db.SaveChangesAsync();
 
-    return TypedResults.NoContent();
+    todoItemDTO = new TodoItemDTO(todo);
+
+    return TypedResults.Ok(todoItemDTO);
 }
 
 static async Task<IResult> DeleteTodo(int id, TodoDb db)
