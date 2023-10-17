@@ -10,12 +10,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["BlazorServerTest/BlazorServerTest.csproj", "BlazorServerTest/"]
-COPY ["BlazorServerTest.Core/BlazorServerTest.Core.csproj", "BlazorServerTest.Core/"]
-COPY ["InMemoryCachingLibrary/InMemoryCachingLibrary.csproj", "InMemoryCachingLibrary/"]
-RUN dotnet restore "BlazorServerTest/BlazorServerTest.csproj"
+COPY ["src/BlazorServerTest/BlazorServerTest.csproj", "src/BlazorServerTest/"]
+COPY ["src/BlazorServerTest.Core/BlazorServerTest.Core.csproj", "src/BlazorServerTest.Core/"]
+COPY ["src/InMemoryCachingLibrary/InMemoryCachingLibrary.csproj", "src/InMemoryCachingLibrary/"]
+RUN dotnet restore "src/BlazorServerTest/BlazorServerTest.csproj"
 COPY . .
-WORKDIR "/src/BlazorServerTest"
+WORKDIR "/src/src/BlazorServerTest"
 RUN dotnet build "BlazorServerTest.csproj" -c Release -o /app/build
 
 FROM build AS publish
