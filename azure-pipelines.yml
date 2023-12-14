@@ -22,7 +22,7 @@ stages:
         packageType: 'sdk'
         installationPath: $(Agent.ToolsDirectory)/dotnet
         installationScript: 'install'
-        installationVersion: '7.x'
+        installationVersion: '8.x'
 
     - script: |
         echo List of Folders in Current Working Directory:
