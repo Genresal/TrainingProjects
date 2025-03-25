@@ -1,0 +1,6 @@
+@Oauth2Project_HostAddress = http://localhost:5232
+
+GET {{Oauth2Project_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
